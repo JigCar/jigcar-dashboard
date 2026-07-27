@@ -117,7 +117,7 @@ emails_daily = {
     "2026-07-24": [16, 0, 0, 2, 6, 6],
     "2026-07-25": [1, 0, 0, 0, 1, 0],
     "2026-07-26": [0, 0, 0, 0, 1, 0],
-    "2026-07-27": [3, 0, 4, 12, 18, 5],
+    "2026-07-27": [3, 0, 4, 12, 31, 5],
 }
 EMAIL_COVERED_FROM = "2026-07-24"
 
@@ -127,7 +127,7 @@ tasks_daily = {
     "2026-07-22": [3, 0, 0, 0, 0, 0],
     "2026-07-23": [0, 0, 0, 1, 0, 0],
     "2026-07-24": [14, 0, 0, 0, 0, 0],
-    "2026-07-27": [2, 0, 1, 0, 2, 0],
+    "2026-07-27": [2, 0, 1, 0, 5, 0],
 }
 
 # ---------- LinkedIn ----------
@@ -140,11 +140,11 @@ li_conn_all = {
     "2026-07-22": [1, 0, 0, 0, 0, 0],
     "2026-07-23": [0, 0, 0, 1, 0, 0],
     "2026-07-24": [10, 0, 0, 0, 0, 0],
-    "2026-07-27": [1, 0, 1, 0, 2, 0],
+    "2026-07-27": [1, 0, 1, 0, 5, 0],
 }
 li_conn_deal = {k: list(v) for k, v in li_conn_all.items()}
-LI_CONN_SENT_EVENTS = 33      # Groovin "invitation sent" notes, 21-27 Jul, rep unknown
-LI_CONN_ATTRIBUTED = 16       # attributed via Touch-1; the gap is stated in coverage
+LI_CONN_SENT_EVENTS = 39      # Groovin "invitation sent" notes, 21-27 Jul, rep unknown
+LI_CONN_ATTRIBUTED = 19       # attributed via Touch-1; the gap is stated in coverage
 
 # Messages: the rep is named in the chat-note title, so these are attributable.
 # Counted once per person/company note pair.
@@ -153,12 +153,23 @@ li_msg_all = {
     "2026-07-22": [0, 0, 1, 0, 2, 0],
     "2026-07-23": [0, 0, 0, 0, 1, 0],
     "2026-07-24": [0, 1, 0, 0, 2, 0],
-    "2026-07-27": [0, 0, 2, 0, 0, 0],
+    "2026-07-27": [0, 0, 2, 0, 2, 0],
 }
 LI_NOTE_COVERED_FROM = "2026-07-21"
 
 # deal-associated messages: resolved in code from the chat note's company -> deal join.
 li_msg_deal = json.load(open(f"{SP}/raw/li_msg_deal.json"))
+
+# ---------- email deal split (classify_emails.py) ----------
+# Sent emails split by what the recipient is to us. A raw count says how busy
+# someone looks; this says whether the work touched pipeline. Only covers days
+# whose recipient lists were pulled, and that window is carried through so the
+# dashboard labels it rather than implying the whole period is classified.
+_es = json.load(open(f"{SP}/raw/email_split.json"))
+emails_deal = {d: v["open"] for d, v in _es["by_day"].items()}
+emails_cust = {d: v["won"] for d, v in _es["by_day"].items()}
+EMAIL_SPLIT_FROM = (_es.get("covered_from") or "")[:10]
+EMAIL_SPLIT_TO = (_es.get("covered_to") or "")[:10]
 
 # ---------- deals assigned per day (Attio created_at) ----------
 deals_daily = collections.defaultdict(z)
@@ -232,7 +243,8 @@ for m in ALL_MOVES:
 daily = {"meetings": dict(meetings_daily), "calls": calls_daily, "emails": emails_daily,
          "tasks": tasks_daily, "deals": dict(deals_daily), "progressed": dict(progressed_daily),
          "shutoff": dict(shutoff_daily), "liConnAll": li_conn_all, "liConnDeal": li_conn_deal,
-         "liMsgAll": li_msg_all, "liMsgDeal": li_msg_deal}
+         "liMsgAll": li_msg_all, "liMsgDeal": li_msg_deal,
+         "emailsDeal": emails_deal, "emailsCust": emails_cust}
 
 # ---------- revenue ----------
 closed_won = [d for d in deals if d["stage"] == "Closed Won"]
@@ -408,6 +420,15 @@ coverage = {
     "li_connect_gap": (f"Groovin logged {LI_CONN_SENT_EVENTS} invitation-sent events 21-27 Jul but the notes carry "
                        f"no rep; {LI_CONN_ATTRIBUTED} are attributed via Touch-1 tasks"),
     "calls_source": "Allo team analytics per seat; Rupert has no Allo account",
+    "email_split_from": EMAIL_SPLIT_FROM,
+    "email_split_to": EMAIL_SPLIT_TO,
+    "email_split_note": (
+        "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), "
+        "customer (Closed Won), or neither. Resolved by recipient domain to the Attio company "
+        "and its strongest deal state. Only classified for the window above; days outside it "
+        "show a total with no split."),
+    "email_split_join": (f"{_es.get('domains_resolving')} domains resolve to a deal; "
+                         "89 of 96 open deals are joinable and 100% by pipeline value"),
 }
 
 state = {"schema": 3, "last_run": RUN_DATE, "last_run_stamp": RUN_STAMP,
