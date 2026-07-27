@@ -364,8 +364,39 @@ rangeText = {"today": dlabel(d0),
              "quarter": f"Q3 to date, 1-{d0.day} {MONTHS[d0.month - 1]}",
              "trailing7": f"{dm(t7_start)} - {dm(d0)} (7 days)"}
 
+# ---------- leave (Zelt absence feed) ----------
+# Activity is only meaningful against days a person was actually at work. Without
+# this, a booked holiday reads as a performance gap.
+leave = json.load(open(f"{SP}/raw/leave.json"))
+leave_by_person = leave["by_person"]
+off_today = leave["by_date"].get(RUN_DATE, [])
+
+
+def working_days(person, start, end):
+    """Weekdays in the range that the person was not on full-day leave.
+
+    A half day still counts as a working day: they were partly at work, so the
+    day is not removed, it is just not treated as a full one.
+    """
+    days = leave_by_person.get(person, {})
+    a, b = datetime.date(*[int(x) for x in start.split("-")]), datetime.date(*[int(x) for x in end.split("-")])
+    n, cur = 0, a
+    while cur <= b:
+        if cur.weekday() < 5 and days.get(str(cur)) != "FULL":
+            n += 1
+        cur += datetime.timedelta(days=1)
+    return n
+
+
+attendance = {r: {v: working_days(r, *ranges[v]) for v in ranges} for r in REPS}
+leave_summary = {r: sorted(k for k, v in leave_by_person.get(r, {}).items()) for r in REPS}
+
 coverage = {
     "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
+    "leave_source": ("Zelt absence calendar; the Jigcar holidays calendar holds no events after "
+                     "mid-2025 and is not read"),
+    "attendance_note": ("activity is measured against working days attended, so booked leave is "
+                        "never counted as inactivity; a half day still counts as attended"),
     "stage_diff": STAGE_DIFF,
     "stage_moves_accumulated": len(ALL_MOVES),
     "email_covered_from": EMAIL_COVERED_FROM,
@@ -395,6 +426,9 @@ state = {"schema": 3, "last_run": RUN_DATE, "last_run_stamp": RUN_STAMP,
          # carried forward, not recomputed: slack_messages.py owns this and needs the
          # history to escalate on the third consecutive day rather than repeat itself
          "perf_flags": (_ps.get("perf_flags", {}) if prev else {}),
+         "leave": leave_summary,
+         "off_today": off_today,
+         "attendance": attendance,
          "coverage": coverage}
 
 os.makedirs(f"{SP}/build", exist_ok=True)
@@ -411,7 +445,8 @@ payload = {"RUN_STAMP": RUN_STAMP, "RUN_DATE": RUN_DATE, "QUARTER_TARGET": QUART
            "wonBookCount": len(closed_won),
            "connectivity": connectivity, "ranges": ranges, "rangeText": rangeText,
            "archives": archives, "coverage": coverage,
-           "stageMoves": ALL_MOVES}
+           "stageMoves": ALL_MOVES,
+           "leave": leave_summary, "offToday": off_today, "attendance": attendance}
 json.dump(payload, open(f"{SP}/build/payload.json", "w"), indent=1)
 
 print("=== VALIDATION ===")
@@ -425,6 +460,8 @@ print("newly won stamped:", [m["name"] for m in newly_won])
 print("Q3 won:", sum(e["arr"] for e in q3_won), [(e["name"], e["arr"], e["owner"]) for e in q3_won])
 print("contract out:", sum(c["arr"] for c in contract_deals))
 print("acq (full won book):", dict(acq))
+print("off today:", [f"{e['person']}{' (' + e['half'] + ')' if e['half'] else ''}" for e in off_today] or "nobody")
+print("working days attended, trailing7:", {r: attendance[r]["trailing7"] for r in REPS})
 for q, a in archives.items():
     print(q, "created", a["createdCount"], "pipeline", a["createdPipeline"],
           "won", len(a["closedWon"]), "outcomes", a["outcomes"])

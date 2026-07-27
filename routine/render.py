@@ -50,6 +50,13 @@ HEAD = r'''<!DOCTYPE html>
   .cmatrix th:first-child,.cmatrix td:first-child{text-align:left;color:var(--muted)}
   .cmatrix thead th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
   .cmatrix td .cdot{display:inline-block;vertical-align:middle}
+  .offrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:12.5px}
+  .offrow .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+  .offpill{display:inline-flex;align-items:center;gap:6px;background:rgba(224,169,59,.13);border:1px solid #5c4a1f;
+    color:var(--amber);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600}
+  .offpill small{color:var(--muted);font-weight:600}
+  .card .leavetag{display:inline-block;background:rgba(224,169,59,.15);color:var(--amber);font-size:10.5px;
+    font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle}
   .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)}
   .legend span{display:flex;align-items:center;gap:5px}
   .target{background:linear-gradient(135deg,#123b26 0%,#0d1f16 60%,#141414 100%);border:1px solid #1f5c3a;border-radius:16px;padding:22px 24px;margin:0 0 16px}
@@ -348,6 +355,8 @@ function bandFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.label
 const contractDeals=__OCDEALS__;
 const wonYTD=__WONYTD__;
 const connectivity=__CONN__;
+const offToday=__OFFTODAY__;
+const attendance=__ATTENDANCE__;
 const ranges=__RANGES__;
 const rangeText=__RANGETEXT__;
 const viewLabel={today:'Today',yesterday:'Yesterday',week:'This week',month:'This month',quarter:'This quarter'};
@@ -391,7 +400,9 @@ function render(){
   const cards=document.getElementById('cards'); cards.innerHTML='';
   reps.forEach((r,i)=>{
     cards.innerHTML+=`<div class="card">
-      <div class="name">${r}</div><div class="role">${roles[i]}</div>
+      <div class="name">${r}${(function(){var o=offToday.filter(function(e){return e.person===r;})[0];
+        return o?'<span class="leavetag">'+(o.half?'off '+o.half:'on leave')+'</span>':'';})()}</div>
+      <div class="role">${roles[i]}</div>
       <div class="stat"><span>Sales meetings</span><span class="v ${mtgs[i]?'g':'m'}">${mtgs[i]}</span></div>
       <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${connectivity.seats[r][0]==='na'?'n/a':calls[i]}</span></div>
       <div class="stat"><span>Emails</span><span class="v ${emails[i]?'g':'m'}">${emails[i]}</span></div>
@@ -587,6 +598,10 @@ function renderConn(){
     <div class="ttl">Connectivity . data as at ${connectivity.updated} . rebuilt each weekday 08:00</div>
     <div class="ws">${ws}</div>
     <table class="cmatrix"><thead>${head}</thead><tbody>${rows}</tbody></table>
+    ${offToday.length?'<div class="offrow"><span class="k">Off today</span>'+offToday.map(function(e){
+        return '<span class="offpill">'+e.person+(e.half?' <small>'+e.half+' only</small>':'')+'</span>';}).join('')
+      +'<span class="m" style="font-size:11px">from the Zelt absence calendar</span></div>'
+      :'<div class="offrow"><span class="k">Off today</span><span class="m" style="font-size:12px">nobody</span></div>'}
     <div class="legend">
       <span><span class="cdot ok"></span> connected</span>
       <span><span class="cdot partial"></span> partial</span>
@@ -892,6 +907,8 @@ subs={
  "__OCDEALS__":J(p["contractDeals"]),
  "__WONYTD__":J(p["wonYTD"]),
  "__CONN__":J(p["connectivity"]),
+ "__OFFTODAY__":J(p["offToday"]),
+ "__ATTENDANCE__":J(p["attendance"]),
  "__RANGES__":J(p["ranges"]),
  "__RANGETEXT__":J(p["rangeText"]),
  "__ACQ__":J(p["acqChannels"]),

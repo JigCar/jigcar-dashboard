@@ -99,6 +99,56 @@
    }
   }
  },
+ "attendance": {
+  "Bianca": {
+   "month": 19,
+   "quarter": 19,
+   "today": 1,
+   "trailing7": 5,
+   "week": 1,
+   "yesterday": 0
+  },
+  "Chris": {
+   "month": 19,
+   "quarter": 19,
+   "today": 1,
+   "trailing7": 5,
+   "week": 1,
+   "yesterday": 0
+  },
+  "Elliott": {
+   "month": 19,
+   "quarter": 19,
+   "today": 1,
+   "trailing7": 5,
+   "week": 1,
+   "yesterday": 0
+  },
+  "James": {
+   "month": 17,
+   "quarter": 17,
+   "today": 1,
+   "trailing7": 4,
+   "week": 1,
+   "yesterday": 0
+  },
+  "Luke": {
+   "month": 17,
+   "quarter": 17,
+   "today": 0,
+   "trailing7": 3,
+   "week": 0,
+   "yesterday": 0
+  },
+  "Rupert": {
+   "month": 19,
+   "quarter": 19,
+   "today": 1,
+   "trailing7": 5,
+   "week": 1,
+   "yesterday": 0
+  }
+ },
  "connectivity": {
   "seats": {
    "Bianca": [
@@ -132,7 +182,7 @@
     "unknown"
    ]
   },
-  "updated": "27 Jul 2026, 17:40",
+  "updated": "27 Jul 2026, 18:05",
   "workspace": [
    {
     "name": "Attio",
@@ -152,10 +202,12 @@
   ]
  },
  "coverage": {
+  "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_source": "Allo team analytics per seat; Rupert has no Allo account",
   "email_covered_from": "2026-07-24",
   "email_note": "continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
+  "leave_source": "Zelt absence calendar; the Jigcar holidays calendar holds no events after mid-2025 and is not read",
   "li_connect_gap": "Groovin logged 14 invitation-sent events 21-27 Jul but the notes carry no rep; 13 are attributed via Touch-1 tasks",
   "li_connects_attributed_by": "cadence Touch-1 completed connect task on the owner's deal",
   "linkedin_notes_covered_from": "2026-07-21",
@@ -612,7 +664,61 @@
   }
  },
  "last_run": "2026-07-27",
- "last_run_stamp": "27 Jul 2026, 17:40",
+ "last_run_stamp": "27 Jul 2026, 18:05",
+ "leave": {
+  "Bianca": [
+   "2026-07-27",
+   "2026-07-29",
+   "2026-08-04",
+   "2026-08-20",
+   "2026-08-21",
+   "2026-08-22",
+   "2026-08-23",
+   "2026-08-24"
+  ],
+  "Chris": [
+   "2026-08-07",
+   "2026-08-12",
+   "2026-08-13",
+   "2026-08-20",
+   "2026-08-21",
+   "2026-08-22",
+   "2026-08-23",
+   "2026-08-24",
+   "2026-09-18",
+   "2026-09-24",
+   "2026-09-25"
+  ],
+  "Elliott": [
+   "2026-08-31"
+  ],
+  "James": [
+   "2026-07-10",
+   "2026-07-24",
+   "2026-08-15",
+   "2026-08-17",
+   "2026-08-24",
+   "2026-09-07",
+   "2026-09-08",
+   "2026-09-09",
+   "2026-09-10"
+  ],
+  "Luke": [
+   "2026-06-29",
+   "2026-07-24",
+   "2026-07-27",
+   "2026-07-30",
+   "2026-07-31"
+  ],
+  "Rupert": [
+   "2026-08-10",
+   "2026-08-11",
+   "2026-08-12",
+   "2026-08-13",
+   "2026-08-14",
+   "2026-08-31"
+  ]
+ },
  "meeting_classification": {
   "excluded": {
    "2026-07-06|Simon / Elliott": "adviser",
@@ -631,6 +737,20 @@
   "included_count": 42,
   "internal_only_count": 64
  },
+ "off_today": [
+  {
+   "half": "AM",
+   "person": "Bianca"
+  },
+  {
+   "half": null,
+   "person": "Krzysztof Burka"
+  },
+  {
+   "half": null,
+   "person": "Luke"
+  }
+ ],
  "perf_flags": {
   "2026-07-27": "Luke"
  },

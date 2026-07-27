@@ -7,6 +7,7 @@ https://jigcar.github.io/jigcar-dashboard/index-18.html
 ## Run order
 
 1. `parse_granola.py` - parses the Granola meeting dump into `raw/granola.json`.
+1b. `parse_leave.py` - parses the Zelt absence feed into `raw/leave.json`.
 2. `etl.py` - deterministic transform. Loads the deal pages, classifies meetings,
    computes every scorecard metric per person per day, and writes
    `dashboard_state.json` plus `payload.json`.

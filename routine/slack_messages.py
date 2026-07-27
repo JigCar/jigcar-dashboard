@@ -134,13 +134,30 @@ if stalled:
 WEEK_BASIS = "trailing7" if "trailing7" in payload["ranges"] else "week"
 wk = {m: agg(m, WEEK_BASIS) for m in CORE_METRICS}
 qt = {m: agg(m, "quarter") for m in CORE_METRICS}
+
+# Leave gate. Someone on booked holiday has not underperformed, they were not at
+# work, and naming them to leadership for it is exactly the noise this line must
+# avoid. Two guards: never flag a person who is off today, and never judge a
+# window in which they attended too few days for it to mean anything.
+MIN_ATTENDED = 4
+OFF_TODAY_FULL = {e["person"] for e in state.get("off_today", []) if not e.get("half")}
+ATTENDANCE = state.get("attendance", {})
+
 cands = []
+skipped = []
 for name in OUTBOUND_SEATS:
     i = REPS.index(name)
+    attended = ATTENDANCE.get(name, {}).get(WEEK_BASIS, 5)
+    if name in OFF_TODAY_FULL:
+        skipped.append((name, "on leave today"))
+        continue
+    if attended < MIN_ATTENDED:
+        skipped.append((name, f"only {attended} working days attended"))
+        continue
     zeros = [m for m in CORE_METRICS if wk[m][i] == 0]
     if len(zeros) >= 2:
         cands.append({"name": name, "i": i, "zeros": zeros, "nz": len(zeros),
-                      "q_mtg": qt["meetings"][i]})
+                      "q_mtg": qt["meetings"][i], "attended": attended})
 cands.sort(key=lambda c: (-c["nz"], c["q_mtg"]))
 
 # escalate, do not repeat: count consecutive prior days this person was flagged
@@ -170,7 +187,9 @@ if cands:
     tail = f" {word(mq)} all quarter." if "meetings" in covered else f" {word(mq)} sales meetings all quarter."
     if streak >= 3:
         tail += " Third day running."
-    span = "in the last seven days" if WEEK_BASIS == "trailing7" else "all week"
+    att = c["attended"]
+    span = (f"across {word(att, lower=True)} working days"
+            if att < 5 else ("in the last seven days" if WEEK_BASIS == "trailing7" else "all week"))
     perf_risk = f"{flagged_name}: no {zero_txt} {span}{extra_txt}.{tail}"
 
 # record today's flag so tomorrow can escalate rather than repeat
@@ -262,4 +281,6 @@ if __name__ == "__main__":
     print(f"deal risk fired: {bool(deal_risk)} | perf risk fired: {bool(perf_risk)} -> {flagged_name}")
     print(f"celebration trigger: {celebration!r}")
     print(f"spike basis: {'trailing 4wk avg' if have_4_weeks else 'same-day team record (under 4 weeks of history)'}")
-    print(f"perf candidates: {[(c['name'], c['zeros']) for c in cands]}")
+    print(f"perf candidates: {[(c['name'], c['zeros'], str(c['attended']) + 'd attended') for c in cands]}")
+    print(f"perf skipped by the leave gate: {skipped}")
+    print(f"off today: {[(e['person'], e['half'] or 'full') for e in state.get('off_today', [])] or 'nobody'}")
