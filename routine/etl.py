@@ -117,7 +117,7 @@ emails_daily = {
     "2026-07-24": [16, 0, 0, 2, 6, 6],
     "2026-07-25": [1, 0, 0, 0, 1, 0],
     "2026-07-26": [0, 0, 0, 0, 1, 0],
-    "2026-07-27": [1, 0, 0, 8, 10, 2],
+    "2026-07-27": [3, 0, 4, 12, 18, 5],
 }
 EMAIL_COVERED_FROM = "2026-07-24"
 
@@ -127,7 +127,7 @@ tasks_daily = {
     "2026-07-22": [3, 0, 0, 0, 0, 0],
     "2026-07-23": [0, 0, 0, 1, 0, 0],
     "2026-07-24": [14, 0, 0, 0, 0, 0],
-    "2026-07-27": [2, 0, 0, 0, 0, 0],
+    "2026-07-27": [2, 0, 1, 0, 2, 0],
 }
 
 # ---------- LinkedIn ----------
@@ -140,11 +140,11 @@ li_conn_all = {
     "2026-07-22": [1, 0, 0, 0, 0, 0],
     "2026-07-23": [0, 0, 0, 1, 0, 0],
     "2026-07-24": [10, 0, 0, 0, 0, 0],
-    "2026-07-27": [1, 0, 0, 0, 0, 0],
+    "2026-07-27": [1, 0, 1, 0, 2, 0],
 }
 li_conn_deal = {k: list(v) for k, v in li_conn_all.items()}
-LI_CONN_SENT_EVENTS = 14      # Groovin "invitation sent" notes, 21-27 Jul, rep unknown
-LI_CONN_ATTRIBUTED = 13       # attributed via Touch-1; the gap is stated in coverage
+LI_CONN_SENT_EVENTS = 33      # Groovin "invitation sent" notes, 21-27 Jul, rep unknown
+LI_CONN_ATTRIBUTED = 16       # attributed via Touch-1; the gap is stated in coverage
 
 # Messages: the rep is named in the chat-note title, so these are attributable.
 # Counted once per person/company note pair.
@@ -153,7 +153,7 @@ li_msg_all = {
     "2026-07-22": [0, 0, 1, 0, 2, 0],
     "2026-07-23": [0, 0, 0, 0, 1, 0],
     "2026-07-24": [0, 1, 0, 0, 2, 0],
-    "2026-07-27": [0, 0, 1, 0, 0, 0],
+    "2026-07-27": [0, 0, 2, 0, 0, 0],
 }
 LI_NOTE_COVERED_FROM = "2026-07-21"
 
@@ -400,7 +400,7 @@ coverage = {
     "stage_diff": STAGE_DIFF,
     "stage_moves_accumulated": len(ALL_MOVES),
     "email_covered_from": EMAIL_COVERED_FROM,
-    "email_note": "continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor",
+    "email_note": "continuous from 24 Jul 07:53 to the run stamp; earlier July days are not covered by this run and read as a floor",
     "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
     "linkedin_notes_covered_from": LI_NOTE_COVERED_FROM,
     "tasks_dated_by": "completed_at from the Attio tasks API",

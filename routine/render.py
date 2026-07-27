@@ -865,28 +865,30 @@ cov["known_gaps"]=[
 READ_OVERALL = J(
  "<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> "
  "\u00a326,400 is won, 6.6% of the \u00a3400,000 target, both deals Chris. \u00a3195,600 sits in Contracts, which still "
- "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 42 "
- "external meetings in July, 80 attendee-credits across the six. Elliott carries 31 of those credits, James 14 and Rupert "
- "13, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what "
+ "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 43 "
+ "external meetings in July, 83 attendee-credits across the six. Elliott carries 31 of those credits, James 15 and Rupert "
+ "14, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what "
  "he touches, both Q3 closes and \u00a3147,600 of the \u00a3195,600 out for contract, on seven external meetings.")
 
 READ_LIST = J(
  '<li><span class="pill red">Flag</span> <strong>Citygate \u00a375,600 and West Herr \u00a372,000</strong> both passed '
  'their 20 July estimated close and have sat in Contracts for seven days. That is \u00a3147,600, three quarters of the '
  'contract book, with no stage movement logged. Chris owns both.</li>'
- '<li><span class="pill green">Measured move</span> <strong>Bianca</strong> advanced <strong>Nelson Automotive Group'
- '</strong> from Buy Signal to Qualification. This is the first progression the stage diff has observed rather than '
- 'inferred, and it is the Buy-Signal-to-Qualification step the team was asked to record so the creation cap releases.</li>'
+ '<li><span class="pill green">Measured move</span> Four deals advanced Buy Signal to Qualification today, all seen by '
+ 'the stage diff rather than inferred: <strong>Nelson Automotive Group</strong> (Bianca), <strong>Hendrick Automotive '
+ 'Group</strong> and <strong>Sonic Automotive / EchoPark</strong> (Elliott), <strong>Cardinale Automotive Group</strong> '
+ '(James). That is the step the team was asked to record so the creation cap releases, and it is now being recorded.</li>'
  '<li><span class="pill green">Working it</span> <strong>Chris</strong>: 19 completed cadence tasks and 12 LinkedIn '
- 'connects this week, 16 deals created this month, both closed-won deals, and he ran today\u2019s Ecomotive value-case '
- 'present back. Gap is calls, one all month.</li>'
- '<li><span class="pill red">Flag</span> <strong>Luke</strong>: four sales meetings all quarter, and the Ecomotive '
- 'present back today is his first in seven days. No sent email and no completed cadence task across the whole week, and '
- 'none of his 12 Buy Signal deals shows recorded outreach. He created 16 deals this month, so the top of the funnel is '
- 'moving faster than the conversations behind it.</li>'
+ 'connects this month, 16 deals created, both closed-won deals, and he ran today\u2019s Ecomotive value-case present '
+ 'back. Gap is calls, one all month.</li>'
+ '<li><span class="pill amber">Read with care</span> <strong>Luke</strong> shows four sales meetings all quarter and no '
+ 'sent email or completed cadence task in the last seven days, but he was on booked leave on Friday and again today, so '
+ 'that window holds three working days for him, not seven. He still joined the Ecomotive present back today. The open '
+ 'question is his 12 Buy Signal deals with no recorded outreach, not the headline activity count.</li>'
  '<li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 31 meeting credits, <strong>James</strong> '
- 'at 14 and <strong>Rupert</strong> at 13. Worth asking which of those a rep could be running instead.</li>'
- '<li><span class="pill grey">Account side</span> <strong>Bianca</strong>: 11 meeting credits, nearly all existing '
+ 'at 15 and <strong>Rupert</strong> at 14. Elliott also sent 18 emails today and opened six new deals, so the top of the '
+ 'US dealer-group push is running through the founder. Worth asking which of that a rep could carry.</li>'
+ '<li><span class="pill grey">Account side</span> <strong>Bianca</strong>: 12 meeting credits, nearly all existing '
  'accounts (Citygate, Vindis, RH Car Transport, Big Motoring World, LSH). Right shape for onboarding and CS, thin on new '
  'business by design.</li>'
  '<li><span class="pill green">Year view</span> The leaderboard tells a different story from the quarter: Elliott leads '

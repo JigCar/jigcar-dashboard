@@ -214,8 +214,15 @@ if have_4_weeks:
             if today_v >= SPIKE_FLOOR and avg and today_v >= 2 * avg:
                 spikes.append((name, m, today_v))
 else:
+    # A "record" is only meaningful against a metric with enough history behind it.
+    # Email coverage starts partway through the period, so today would look like a
+    # record simply because the earlier days are missing rather than quiet, and a
+    # person would be named for a coverage artefact.
+    MIN_HISTORY_DAYS = 5
     for m in CORE_METRICS:
         series = {d: sum(v) for d, v in daily.get(m, {}).items()}
+        if len(series) < MIN_HISTORY_DAYS:
+            continue
         if not series:
             continue
         today_v = series.get(RUN_DATE, 0)
@@ -281,6 +288,7 @@ if __name__ == "__main__":
     print(f"deal risk fired: {bool(deal_risk)} | perf risk fired: {bool(perf_risk)} -> {flagged_name}")
     print(f"celebration trigger: {celebration!r}")
     print(f"spike basis: {'trailing 4wk avg' if have_4_weeks else 'same-day team record (under 4 weeks of history)'}")
+    print("metric history depth: " + str({m: len(daily.get(m, {})) for m in CORE_METRICS}))
     print(f"perf candidates: {[(c['name'], c['zeros'], str(c['attended']) + 'd attended') for c in cands]}")
     print(f"perf skipped by the leave gate: {skipped}")
     print(f"off today: {[(e['person'], e['half'] or 'full') for e in state.get('off_today', [])] or 'nobody'}")
