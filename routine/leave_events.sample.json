@@ -1,52 +1,145 @@
 {
- "_source": "Google Calendar, Zelt absence feed c_394bfca8162a353b330bd82c20841ba18f041a86f8fafe24e610890a86f25331@group.calendar.google.com",
+ "_source": "Zelt absence calendar c_394bfca8...@group.calendar.google.com",
  "_pulled": "2026-07-27",
- "_range": "2026-06-28 to 2026-10-01",
- "_note": "Birthdays and work anniversaries are excluded at source. The Jigcar holidays calendar was checked and holds no events in this range; it was last used mid-2025.",
+ "_range": "2026-06-22 to 2026-08-05",
  "events": [
-  {"summary": "Luke Nogueira Paid time off", "email": "luke.nogueira@jigcar.com", "start": "2026-06-29", "end": "2026-06-29"},
-  {"summary": "Wojciech Kumon Paid time off", "email": "wojciech.kumon@jigcar.com", "start": "2026-07-03", "end": "2026-07-08"},
-  {"summary": "Adam Bystran Paid time off", "email": "adam.bystran@jigcar.com", "start": "2026-07-03", "end": "2026-07-03"},
-  {"summary": "Ibrahim Ozan Yilmazlar Paid time off", "email": "ibrahim.yilmazlar@jigcar.com", "start": "2026-07-03", "end": "2026-07-03"},
-  {"summary": "James Griffin Paid time off", "email": "james.griffin@jigcar.com", "start": "2026-07-10", "end": "2026-07-10"},
-  {"summary": "Jessie Johal Paid time off", "email": "jessie.johal@jigcar.com", "start": "2026-07-10", "end": "2026-07-10"},
-  {"summary": "Lewis Evans Paid time off", "email": "lewis.evans@jigcar.com", "start": "2026-07-17", "end": "2026-07-21"},
-  {"summary": "Alexei Khmelev Paid time off", "email": "alexei.khmelev@jigcar.com", "start": "2026-07-23", "end": "2026-07-23"},
-  {"summary": "James Griffin Paid time off", "email": "james.griffin@jigcar.com", "start": "2026-07-24", "end": "2026-07-24"},
-  {"summary": "Luke Nogueira Paid time off", "email": "luke.nogueira@jigcar.com", "start": "2026-07-24", "end": "2026-07-24"},
-  {"summary": "Bianca Monteiro Paid time off (AM)", "email": "bianca.monteiro@jigcar.com", "start": "2026-07-27", "end": "2026-07-27", "description": "Back in the afternoon"},
-  {"summary": "Krzysztof Burka Paid time off", "email": "krzysztof.burka@jigcar.com", "start": "2026-07-27", "end": "2026-08-05"},
-  {"summary": "Luke Nogueira Paid time off", "email": "luke.nogueira@jigcar.com", "start": "2026-07-27", "end": "2026-07-27"},
-  {"summary": "Eerik Saksi Paid time off", "email": "eerik.saksi@jigcar.com", "start": "2026-07-29", "end": "2026-08-01"},
-  {"summary": "Bianca Monteiro Paid time off", "email": "bianca.monteiro@jigcar.com", "start": "2026-07-29", "end": "2026-07-29"},
-  {"summary": "Luke Nogueira Paid time off", "email": "luke.nogueira@jigcar.com", "start": "2026-07-30", "end": "2026-08-01"},
-  {"summary": "Eerik Saksi Away", "email": "eerik.saksi@jigcar.com", "start": "2026-08-03", "end": "2026-08-03"},
-  {"summary": "Bianca Monteiro Paid time off", "email": "bianca.monteiro@jigcar.com", "start": "2026-08-04", "end": "2026-08-04"},
-  {"summary": "Chris White Paid time off", "email": "chris.white@jigcar.com", "start": "2026-08-07", "end": "2026-08-07"},
-  {"summary": "Rupert Paid time off", "email": "rupert@jigcar.com", "start": "2026-08-10", "end": "2026-08-15"},
-  {"summary": "Chris White Paid time off", "email": "chris.white@jigcar.com", "start": "2026-08-12", "end": "2026-08-14"},
-  {"summary": "Jessie Johal Paid time off", "email": "jessie.johal@jigcar.com", "start": "2026-08-14", "end": "2026-08-14"},
-  {"summary": "Public Holiday (Asuncion) for James Griffin", "email": null, "start": "2026-08-15", "end": "2026-08-16"},
-  {"summary": "Wojciech Kumon Paid time off", "email": "wojciech.kumon@jigcar.com", "start": "2026-08-17", "end": "2026-08-22"},
-  {"summary": "James Griffin Paid time off", "email": "james.griffin@jigcar.com", "start": "2026-08-17", "end": "2026-08-17"},
-  {"summary": "Jessie Johal Paid time off", "email": "jessie.johal@jigcar.com", "start": "2026-08-19", "end": "2026-08-19"},
-  {"summary": "Chris White Paid time off", "email": "chris.white@jigcar.com", "start": "2026-08-20", "end": "2026-08-25"},
-  {"summary": "Bianca Monteiro Paid time off", "email": "bianca.monteiro@jigcar.com", "start": "2026-08-20", "end": "2026-08-25"},
-  {"summary": "James Griffin Paid time off", "email": "james.griffin@jigcar.com", "start": "2026-08-24", "end": "2026-08-24"},
-  {"summary": "Ian Aquino Paid time off", "email": "ian.aquino@jigcar.com", "start": "2026-08-28", "end": "2026-08-28"},
-  {"summary": "Public Holiday (Summer bank holiday) for Elliott", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Public Holiday (Summer bank holiday) for Rupert", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Public Holiday (Summer bank holiday) for Lewis Evans", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Public Holiday (Summer bank holiday) for Adam Bystran", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Public Holiday (Summer bank holiday) for Jonathan Pollock", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Public Holiday (Summer bank holiday) for Amy Kang", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Public Holiday (Summer bank holiday) for Krzysztof Burka", "email": null, "start": "2026-08-31", "end": "2026-09-01"},
-  {"summary": "Amy Kang Paid time off", "email": "amy.kang@jigcar.com", "start": "2026-09-01", "end": "2026-09-12"},
-  {"summary": "Jessie Johal Paid time off", "email": "jessie.johal@jigcar.com", "start": "2026-09-01", "end": "2026-09-03"},
-  {"summary": "Lewis Evans Paid time off", "email": "lewis.evans@jigcar.com", "start": "2026-09-02", "end": "2026-09-19"},
-  {"summary": "James Griffin Paid time off", "email": "james.griffin@jigcar.com", "start": "2026-09-07", "end": "2026-09-11"},
-  {"summary": "Chris White Paid time off", "email": "chris.white@jigcar.com", "start": "2026-09-18", "end": "2026-09-18"},
-  {"summary": "Wojciech Kumon Paid time off", "email": "wojciech.kumon@jigcar.com", "start": "2026-09-21", "end": "2026-10-03"},
-  {"summary": "Chris White Paid time off", "email": "chris.white@jigcar.com", "start": "2026-09-24", "end": "2026-09-26"}
+  {
+   "summary": "James Griffin Paid time off",
+   "start": "2026-06-22",
+   "end": "2026-06-27",
+   "email": "james.griffin@jigcar.com"
+  },
+  {
+   "summary": "Luke Nogueira Paid time off",
+   "start": "2026-06-25",
+   "end": "2026-06-27",
+   "email": "luke.nogueira@jigcar.com"
+  },
+  {
+   "summary": "Luke Nogueira Paid time off",
+   "start": "2026-06-29",
+   "end": "2026-06-29",
+   "email": "luke.nogueira@jigcar.com"
+  },
+  {
+   "summary": "Wojciech Kumon Paid time off",
+   "start": "2026-07-03",
+   "end": "2026-07-08",
+   "email": "wojciech.kumon@jigcar.com"
+  },
+  {
+   "summary": "Adam Bystran Paid time off",
+   "start": "2026-07-03",
+   "end": "2026-07-03",
+   "email": "adam.bystran@jigcar.com"
+  },
+  {
+   "summary": "Ibrahim Ozan Yilmazlar Paid time off",
+   "start": "2026-07-03",
+   "end": "2026-07-03",
+   "email": "ibrahim.yilmazlar@jigcar.com"
+  },
+  {
+   "summary": "James Griffin Paid time off",
+   "start": "2026-07-10",
+   "end": "2026-07-10",
+   "email": "james.griffin@jigcar.com"
+  },
+  {
+   "summary": "Jessie Johal Paid time off",
+   "start": "2026-07-10",
+   "end": "2026-07-10",
+   "email": "jessie.johal@jigcar.com"
+  },
+  {
+   "summary": "Lewis Evans Paid time off",
+   "start": "2026-07-17",
+   "end": "2026-07-21",
+   "email": "lewis.evans@jigcar.com"
+  },
+  {
+   "summary": "Lewis Evans's Birthday",
+   "start": "2026-07-17",
+   "end": "2026-07-18",
+   "email": ""
+  },
+  {
+   "summary": "Radomir Vladislavic's Birthday",
+   "start": "2026-07-18",
+   "end": "2026-07-19",
+   "email": ""
+  },
+  {
+   "summary": "Alexei Khmelev's Birthday",
+   "start": "2026-07-22",
+   "end": "2026-07-23",
+   "email": ""
+  },
+  {
+   "summary": "Alexei Khmelev Paid time off",
+   "start": "2026-07-23",
+   "end": "2026-07-23",
+   "email": "alexei.khmelev@jigcar.com"
+  },
+  {
+   "summary": "James Griffin Paid time off",
+   "start": "2026-07-24",
+   "end": "2026-07-24",
+   "email": "james.griffin@jigcar.com"
+  },
+  {
+   "summary": "Luke Nogueira Paid time off",
+   "start": "2026-07-24",
+   "end": "2026-07-24",
+   "email": "luke.nogueira@jigcar.com"
+  },
+  {
+   "summary": "Bianca Monteiro Paid time off (AM)",
+   "start": "2026-07-27",
+   "end": "2026-07-27",
+   "email": "bianca.monteiro@jigcar.com"
+  },
+  {
+   "summary": "Krzysztof Burka Paid time off",
+   "start": "2026-07-27",
+   "end": "2026-08-05",
+   "email": "krzysztof.burka@jigcar.com"
+  },
+  {
+   "summary": "Luke Nogueira Paid time off",
+   "start": "2026-07-27",
+   "end": "2026-07-27",
+   "email": "luke.nogueira@jigcar.com"
+  },
+  {
+   "summary": "Eerik Saksi Paid time off",
+   "start": "2026-07-29",
+   "end": "2026-08-01",
+   "email": "eerik.saksi@jigcar.com"
+  },
+  {
+   "summary": "Bianca Monteiro Paid time off",
+   "start": "2026-07-29",
+   "end": "2026-07-29",
+   "email": "bianca.monteiro@jigcar.com"
+  },
+  {
+   "summary": "Luke Nogueira Paid time off",
+   "start": "2026-07-30",
+   "end": "2026-08-01",
+   "email": "luke.nogueira@jigcar.com"
+  },
+  {
+   "summary": "Eerik Saksi Away",
+   "start": "2026-08-03",
+   "end": "2026-08-03",
+   "email": "eerik.saksi@jigcar.com"
+  },
+  {
+   "summary": "Bianca Monteiro Paid time off",
+   "start": "2026-08-04",
+   "end": "2026-08-04",
+   "email": "bianca.monteiro@jigcar.com"
+  }
  ]
 }

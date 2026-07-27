@@ -8,32 +8,32 @@
     {
      "created": 20,
      "name": "Luke",
-     "value": 63200
+     "value": 63200.0
     },
     {
      "created": 13,
      "name": "Chris",
-     "value": 342400
+     "value": 342400.0
     },
     {
      "created": 4,
      "name": "Bob O'Reilly",
-     "value": 105000
+     "value": 105000.0
     },
     {
      "created": 4,
      "name": "James",
-     "value": 0
+     "value": 0.0
     },
     {
      "created": 4,
      "name": "Elliott",
-     "value": 142000
+     "value": 142000.0
     }
    ],
    "closedWon": [
     {
-     "arr": 24840,
+     "arr": 24840.0,
      "channel": "Inbound - referral",
      "date": "Q1 2026",
      "name": "Focus VM",
@@ -41,7 +41,7 @@
     }
    ],
    "createdCount": 45,
-   "createdPipeline": 652600,
+   "createdPipeline": 652600.0,
    "label": "Q1 2026 (Jan - Mar) . reconstructed archive",
    "outcomes": {
     "Live (New Lead to Contracts)": 19,
@@ -58,31 +58,31 @@
     {
      "created": 8,
      "name": "Luke",
-     "value": 144000
+     "value": 144000.0
     },
     {
      "created": 7,
      "name": "Chris",
-     "value": 186000
+     "value": 186000.0
     }
    ],
    "closedWon": [
     {
-     "arr": 43200,
+     "arr": 43200.0,
      "channel": "Outbound - Direct",
      "date": "Q2 2026",
      "name": "Monmotors",
      "owner": "Elliott"
     },
     {
-     "arr": 17820,
+     "arr": 17820.0,
      "channel": "Outbound - Direct",
      "date": "Q2 2026",
      "name": "Premier Travel Logistics",
      "owner": "Luke"
     },
     {
-     "arr": 8400,
+     "arr": 8400.0,
      "channel": "Outbound - Direct",
      "date": "Q2 2026",
      "name": "RH Car Transport",
@@ -90,7 +90,7 @@
     }
    ],
    "createdCount": 15,
-   "createdPipeline": 330000,
+   "createdPipeline": 330000.0,
    "label": "Q2 2026 (Apr - Jun) . reconstructed archive",
    "outcomes": {
     "Live (New Lead to Contracts)": 6,
@@ -150,107 +150,135 @@
   }
  },
  "connectivity": {
-  "seats": {
-   "Bianca": [
-    "unknown",
-    "ok",
-    "unknown"
-   ],
-   "Chris": [
-    "ok",
-    "ok",
-    "unknown"
-   ],
-   "Elliott": [
-    "ok",
-    "ok",
-    "ok"
-   ],
-   "James": [
-    "ok",
-    "ok",
-    "ok"
-   ],
-   "Luke": [
-    "ok",
-    "ok",
-    "ok"
-   ],
-   "Rupert": [
-    "na",
-    "partial",
-    "unknown"
-   ]
+  "notes": {
+   "Luke_allo": "seat active, 4 calls 22-23 Jul",
+   "Rupert_allo": "no Allo account",
+   "Rupert_email": "own mailbox not connected; sends visible only where a teammate was a recipient, so his figure is a floor",
+   "Rupert_groovin": "no LinkedIn events attributed to Rupert in the covered window; cannot distinguish no activity from no seat"
   },
-  "updated": "27 Jul 2026, 23:05",
-  "workspace": [
-   {
-    "name": "Attio",
-    "note": "deals, tasks, notes, email search",
-    "status": "ok"
+  "seats": {
+   "Allo": {
+    "Bianca": "ok",
+    "Chris": "ok",
+    "Elliott": "ok",
+    "James": "ok",
+    "Luke": "ok",
+    "Rupert": "na"
    },
-   {
-    "name": "Granola",
-    "note": "meetings, 128 in July",
-    "status": "ok"
+   "Email": {
+    "Bianca": "ok",
+    "Chris": "ok",
+    "Elliott": "ok",
+    "James": "ok",
+    "Luke": "ok",
+    "Rupert": "partial"
    },
-   {
-    "name": "Apollo",
-    "note": "sends route via mailboxes",
-    "status": "unknown"
+   "Groovin": {
+    "Bianca": "ok",
+    "Chris": "ok",
+    "Elliott": "ok",
+    "James": "ok",
+    "Luke": "ok",
+    "Rupert": "unknown"
    }
-  ]
+  },
+  "updated": "27 Jul 2026, 22:20",
+  "workspace": {
+   "Apollo": {
+    "note": "not queried; Apollo sends route through the Attio mailboxes and are counted there",
+    "status": "unknown"
+   },
+   "Attio": {
+    "note": "252 deals, 193 tasks, 2172 notes via REST",
+    "status": "ok"
+   },
+   "Granola": {
+    "note": "128 meetings parsed, 1-27 Jul",
+    "status": "ok"
+   }
+  }
  },
  "coverage": {
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
-  "calls_source": "Allo team analytics per seat; Rupert has no Allo account",
+  "calls_source": "Allo per-seat call records (16 calls 2026-07-01 to 2026-07-27); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "continuous from 24 Jul 07:53 to the run stamp; earlier July days are not covered by this run and read as a floor",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-27T08:06:41Z to 2026-07-27T20:58:58.000Z and carried forward 3 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-27",
-  "email_split_join": "172 domains resolve to a deal; 89 of 96 open deals are joinable and 100% by pipeline value",
+  "email_split_join": "172 domains resolve to a deal; 89 of 96 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-07-27",
+  "join_coverage": {
+   "domains_resolving": 172,
+   "joinable": 89,
+   "joinable_pct_by_value": 100.0,
+   "joinable_value": 2044880.0,
+   "open_deals": 96,
+   "pipeline_value": 2044880.0,
+   "unjoinable": 7,
+   "unjoinable_deals": [
+    {
+     "name": "Trade Logistica",
+     "owner": "Luke",
+     "reason": "no company linked",
+     "stage": "Qualification",
+     "value": 0.0
+    },
+    {
+     "name": "MVT Logistics",
+     "owner": "Luke",
+     "reason": "no company linked",
+     "stage": "Qualification",
+     "value": 0.0
+    },
+    {
+     "name": "Hartwell",
+     "owner": "Chris",
+     "reason": "company has no domain",
+     "stage": "Qualification",
+     "value": 0.0
+    },
+    {
+     "name": "Rupert Wood",
+     "owner": "Luke",
+     "reason": "no company linked",
+     "stage": "New Lead",
+     "value": 0.0
+    },
+    {
+     "name": "Toyota GB PLC",
+     "owner": "Jon Pollock",
+     "reason": "no company linked",
+     "stage": "Qualification",
+     "value": 0.0
+    },
+    {
+     "name": "DVMM",
+     "owner": "Luke",
+     "reason": "no company linked",
+     "stage": "New Lead",
+     "value": 0.0
+    },
+    {
+     "name": "Adapt Vehicle Solutions",
+     "owner": "Luke",
+     "reason": "no company linked",
+     "stage": "New Lead",
+     "value": 0.0
+    }
+   ]
+  },
+  "join_note": "7 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
   "leave_source": "Zelt absence calendar; the Jigcar holidays calendar holds no events after mid-2025 and is not read",
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
   "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [
-   {
-    "date": "2026-07-27",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Hendrick Automotive Group",
-    "owner": "Elliott",
-    "record_id": "41b75c36",
-    "to": "Qualification",
-    "value": 0
-   },
-   {
-    "date": "2026-07-27",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Sonic Automotive / EchoPark",
-    "owner": "Elliott",
-    "record_id": "6285799c",
-    "to": "Qualification",
-    "value": 0
-   },
-   {
-    "date": "2026-07-27",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Cardinale Automotive Group",
-    "owner": "James",
-    "record_id": "e62789e9",
-    "to": "Qualification",
-    "value": 0
-   }
-  ],
+  "stage_diff": [],
   "stage_moves_accumulated": 4,
-  "tasks_dated_by": "completed_at from the Attio tasks API"
+  "tasks_dated_by": "completed_at from the Attio tasks API",
+  "tasks_unassigned": 2
  },
  "daily_metrics": {
   "calls": {
@@ -597,7 +625,7 @@
     0,
     0,
     0,
-    4,
+    7,
     0
    ],
    "2026-07-22": [
@@ -605,7 +633,7 @@
     0,
     2,
     0,
-    2,
+    1,
     0
    ],
    "2026-07-23": [
@@ -621,15 +649,15 @@
     2,
     0,
     0,
-    3,
+    4,
     0
    ],
    "2026-07-27": [
     0,
     0,
-    3,
+    4,
     0,
-    2,
+    6,
     0
    ]
   },
@@ -639,7 +667,7 @@
     0,
     1,
     0,
-    1,
+    0,
     0
    ],
    "2026-07-27": [
@@ -647,7 +675,7 @@
     0,
     1,
     0,
-    0,
+    2,
     0
    ]
   },
@@ -793,6 +821,126 @@
   },
   "shutoff": {},
   "tasks": {
+   "2024-12-29": [
+    0,
+    0,
+    0,
+    0,
+    55,
+    0
+   ],
+   "2025-01-13": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "2025-01-20": [
+    0,
+    0,
+    0,
+    0,
+    5,
+    0
+   ],
+   "2025-04-09": [
+    0,
+    0,
+    0,
+    0,
+    12,
+    0
+   ],
+   "2025-10-10": [
+    0,
+    4,
+    0,
+    0,
+    2,
+    0
+   ],
+   "2025-10-16": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "2025-10-20": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "2025-10-24": [
+    0,
+    2,
+    0,
+    0,
+    0,
+    0
+   ],
+   "2025-10-28": [
+    0,
+    7,
+    0,
+    0,
+    6,
+    0
+   ],
+   "2025-11-24": [
+    0,
+    10,
+    1,
+    0,
+    6,
+    1
+   ],
+   "2025-11-25": [
+    0,
+    1,
+    0,
+    0,
+    3,
+    0
+   ],
+   "2026-02-26": [
+    0,
+    1,
+    0,
+    1,
+    0,
+    0
+   ],
+   "2026-03-09": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
+   "2026-04-27": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    1
+   ],
+   "2026-06-30": [
+    0,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
    "2026-07-07": [
     0,
     0,
@@ -836,60 +984,34 @@
   }
  },
  "last_run": "2026-07-27",
- "last_run_stamp": "27 Jul 2026, 23:05",
+ "last_run_stamp": "27 Jul 2026, 22:20",
  "leave": {
   "Bianca": [
    "2026-07-27",
    "2026-07-29",
-   "2026-08-04",
-   "2026-08-20",
-   "2026-08-21",
-   "2026-08-22",
-   "2026-08-23",
-   "2026-08-24"
+   "2026-08-04"
   ],
-  "Chris": [
-   "2026-08-07",
-   "2026-08-12",
-   "2026-08-13",
-   "2026-08-20",
-   "2026-08-21",
-   "2026-08-22",
-   "2026-08-23",
-   "2026-08-24",
-   "2026-09-18",
-   "2026-09-24",
-   "2026-09-25"
-  ],
-  "Elliott": [
-   "2026-08-31"
-  ],
+  "Chris": [],
+  "Elliott": [],
   "James": [
+   "2026-06-22",
+   "2026-06-23",
+   "2026-06-24",
+   "2026-06-25",
+   "2026-06-26",
    "2026-07-10",
-   "2026-07-24",
-   "2026-08-15",
-   "2026-08-17",
-   "2026-08-24",
-   "2026-09-07",
-   "2026-09-08",
-   "2026-09-09",
-   "2026-09-10"
+   "2026-07-24"
   ],
   "Luke": [
+   "2026-06-25",
+   "2026-06-26",
    "2026-06-29",
    "2026-07-24",
    "2026-07-27",
    "2026-07-30",
    "2026-07-31"
   ],
-  "Rupert": [
-   "2026-08-10",
-   "2026-08-11",
-   "2026-08-12",
-   "2026-08-13",
-   "2026-08-14",
-   "2026-08-31"
-  ]
+  "Rupert": []
  },
  "meeting_classification": {
   "excluded": {
@@ -924,7 +1046,7 @@
   }
  ],
  "perf_flags": {
-  "2026-07-27": "Luke"
+  "2026-07-27": null
  },
  "pre_2026_won": [
   "12f2dbef",
@@ -986,1262 +1108,1262 @@
   "000b3101": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "00ca65fa": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 36000
+   "value": 36000.0
   },
   "024e1ee8": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 25000
+   "value": 25000.0
   },
   "03cf687c": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 60000
+   "value": 60000.0
   },
   "05192a52": {
    "owner": "Elliott",
    "stage": "Demo",
-   "value": 0
+   "value": 0.0
   },
   "0700de21": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "07e5e656": {
    "owner": "Rupert",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "07ed98b3": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "087da215": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "096631be": {
    "owner": "Bob O'Reilly",
    "stage": "New Lead",
-   "value": 30000
+   "value": 30000.0
   },
   "0cb33403": {
    "owner": "Chris",
    "stage": "Closed Won",
-   "value": 14400
+   "value": 14400.0
   },
   "0d12d0a8": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "0d6b09af": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 24000
+   "value": 24000.0
   },
   "0eb839e9": {
    "owner": "James",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "0f6d09c4": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "0fca43a8": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "103bfcf1": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "11060c52": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "11c3a835": {
    "owner": "Luke",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "11ebdd39": {
    "owner": "Chris",
    "stage": "Proposal",
-   "value": 90000
+   "value": 90000.0
   },
   "124b5252": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 9000
+   "value": 9000.0
   },
   "12caefb7": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "12f2dbef": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 23040
+   "value": 23040.0
   },
   "161c9d9e": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 40000
+   "value": 40000.0
   },
   "16e17bdf": {
    "owner": "Elliott",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "17b805fb": {
    "owner": "Luke",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "182fe5b9": {
    "owner": "Luke",
    "stage": "Demo",
-   "value": 40000
+   "value": 40000.0
   },
   "18dafab6": {
    "owner": "Bob O'Reilly",
    "stage": "Proposal",
-   "value": 36000
+   "value": 36000.0
   },
   "18ea02a6": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 69000
+   "value": 69000.0
   },
   "1988b641": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 43200
+   "value": 43200.0
   },
   "1aae4121": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "1bcdcb0f": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "1c237999": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "1e58853c": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 100000
+   "value": 100000.0
   },
   "1f38e393": {
    "owner": "Elliott",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "1f6a572c": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "1ff4cc2c": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 36000
+   "value": 36000.0
   },
   "227ceccf": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "2566cc1c": {
    "owner": "Elliott",
    "stage": "New Lead",
-   "value": 0
+   "value": 0.0
   },
   "29477d84": {
    "owner": "Bob O'Reilly",
    "stage": "Proposal",
-   "value": 100000
+   "value": 100000.0
   },
   "2a408139": {
    "owner": "James",
    "stage": null,
-   "value": 0
+   "value": 0.0
   },
   "2a93c15b": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "2c0e0107": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 40000
+   "value": 40000.0
   },
   "2c146b83": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 24000
+   "value": 24000.0
   },
   "2e619b15": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "2f5bbde1": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 36000
+   "value": 36000.0
   },
   "30866ff1": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 88320
+   "value": 88320.0
   },
   "30de2274": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "31eda37c": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "327bd3a8": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "32a89555": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "33224ee3": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "35f9a982": {
    "owner": "Jon Pollock",
    "stage": "New Lead",
-   "value": 29480
+   "value": 29480.0
   },
   "3638665a": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "36bb095e": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "37ec0802": {
    "owner": "Chris",
    "stage": "Demo",
-   "value": 40000
+   "value": 40000.0
   },
   "3863d284": {
    "owner": "Luke",
    "stage": "Proposal",
-   "value": 7200
+   "value": 7200.0
   },
   "3a825192": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 57600
+   "value": 57600.0
   },
   "3bf92673": {
    "owner": "Bob O'Reilly",
    "stage": "Proposal",
-   "value": 120000
+   "value": 120000.0
   },
   "3bf98762": {
    "owner": "Rupert",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "3c5d9298": {
    "owner": "Elliott",
    "stage": "Proposal",
-   "value": 90000
+   "value": 90000.0
   },
   "3e20a392": {
    "owner": "Elliott",
    "stage": "Churn",
-   "value": 6000
+   "value": 6000.0
   },
   "3f1a45e1": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 76800
+   "value": 76800.0
   },
   "40978935": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "41558700": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "41b75c36": {
    "owner": "Elliott",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "446e041b": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "4680be99": {
    "owner": "Luke",
    "stage": "Closed Won",
-   "value": 17820
+   "value": 17820.0
   },
   "46cda5a2": {
    "owner": "Pierre de Villeplee",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "477eba00": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "47fceeb5": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "4f7c177d": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "505a2d32": {
    "owner": "Luke",
    "stage": "Proposal",
-   "value": 21000
+   "value": 21000.0
   },
   "5067f870": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "51769b24": {
    "owner": "Luke",
    "stage": "Demo",
-   "value": 80000
+   "value": 80000.0
   },
   "53b2e023": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "5660b717": {
    "owner": "Elliott",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "56e9edc1": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "5775de2b": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 132000
+   "value": 132000.0
   },
   "57ba950c": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "58be4a55": {
    "owner": "Luke",
    "stage": "Closed Won",
-   "value": 8400
+   "value": 8400.0
   },
   "5a8fdb4e": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 45000
+   "value": 45000.0
   },
   "5ac4d583": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "5af217b3": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "5ceabc04": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "5e25e605": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "5e540f8c": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 20000
+   "value": 20000.0
   },
   "5e6c1851": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 40000
+   "value": 40000.0
   },
   "5ee2adb0": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 81000
+   "value": 81000.0
   },
   "600b8dd7": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "605bb99c": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "6066ca19": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 100000
+   "value": 100000.0
   },
   "61411697": {
    "owner": "Rupert",
    "stage": "Closed Won",
-   "value": 24840
+   "value": 24840.0
   },
   "620aff54": {
    "owner": "Bob O'Reilly",
    "stage": "Qualification",
-   "value": 80000
+   "value": 80000.0
   },
   "6285799c": {
    "owner": "Elliott",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "62a53068": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "6455a9d7": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "65f02c4c": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "665c0cc1": {
    "owner": "Chris",
    "stage": "Contracts",
-   "value": 75600
+   "value": 75600.0
   },
   "686df339": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "687bf397": {
    "owner": "Chris",
    "stage": "Proposal",
-   "value": 12000
+   "value": 12000.0
   },
   "6a1362ee": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "6c9765c0": {
    "owner": "Chris",
    "stage": "Demo",
-   "value": 15000
+   "value": 15000.0
   },
   "6cd67193": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "6cd92151": {
    "owner": "Luke",
    "stage": "New Lead",
-   "value": 0
+   "value": 0.0
   },
   "6ce2f53c": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 18000
+   "value": 18000.0
   },
   "717a5c41": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "73558889": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 40000
+   "value": 40000.0
   },
   "740a6e53": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 65000
+   "value": 65000.0
   },
   "7434dd74": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "75f9bc2a": {
    "owner": "Luke",
    "stage": "Qualification",
-   "value": 24000
+   "value": 24000.0
   },
   "795f21b4": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "7a2feca8": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "7b659577": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "7fb8687c": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "7fc74926": {
    "owner": "Rupert",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "8009f9a8": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 18000
+   "value": 18000.0
   },
   "81c87017": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "82201f21": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "82bcaad1": {
    "owner": "James",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "8328ccae": {
    "owner": "Elliott",
    "stage": "Demo",
-   "value": 24000
+   "value": 24000.0
   },
   "834e0337": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "860793a4": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "8679a4fb": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "86932f87": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 28800
+   "value": 28800.0
   },
   "8826de8e": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 180000
+   "value": 180000.0
   },
   "884368fd": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 12800
+   "value": 12800.0
   },
   "89ab167e": {
    "owner": "Jon Pollock",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "8b704ec8": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "8bacdff2": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 75000
+   "value": 75000.0
   },
   "8bcc1250": {
    "owner": "Rupert",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "8cded9e6": {
    "owner": "James",
    "stage": "Qualification",
-   "value": 30000
+   "value": 30000.0
   },
   "8d338a1f": {
    "owner": "Elliott",
    "stage": "Demo",
-   "value": 40000
+   "value": 40000.0
   },
   "8df2d9e7": {
    "owner": "Elliott",
    "stage": "Demo",
-   "value": 50000
+   "value": 50000.0
   },
   "8ff0571f": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "90b51954": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 36000
+   "value": 36000.0
   },
   "90f6095e": {
    "owner": "Elliott",
    "stage": "Churn",
-   "value": 48804
+   "value": 48804.0
   },
   "911c6c4b": {
    "owner": "Chris",
    "stage": "Demo",
-   "value": 35000
+   "value": 35000.0
   },
   "91316c92": {
    "owner": "Luke",
    "stage": "Demo",
-   "value": 40000
+   "value": 40000.0
   },
   "921a8e55": {
    "owner": "Jon Pollock",
    "stage": "Closed Won",
-   "value": 24000
+   "value": 24000.0
   },
   "92580502": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "93f8107f": {
    "owner": "Luke",
    "stage": "New Lead",
-   "value": 0
+   "value": 0.0
   },
   "94f0b301": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "983579cf": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "98576369": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 45000
+   "value": 45000.0
   },
   "99ad1234": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 80000
+   "value": 80000.0
   },
   "9a0ed052": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "9a2ca1c4": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "9aa24821": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 25000
+   "value": 25000.0
   },
   "9c2423c2": {
    "owner": "Rupert",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "9c348104": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "9c4d0f06": {
    "owner": "Bianca",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "9c595ce9": {
    "owner": "Bob O'Reilly",
    "stage": "Trial",
-   "value": 90000
+   "value": 90000.0
   },
   "9cab61d0": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "9e3c4149": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "9f67e368": {
    "owner": "Chris",
    "stage": "New Lead",
-   "value": 14000
+   "value": 14000.0
   },
   "9f85d9c3": {
    "owner": "Chris",
    "stage": "New Lead",
-   "value": 25000
+   "value": 25000.0
   },
   "a02597b8": {
    "owner": "Chris",
    "stage": "New Lead",
-   "value": 20000
+   "value": 20000.0
   },
   "a0c9113f": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 18000
+   "value": 18000.0
   },
   "a12eaaed": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "a1bb94f0": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "a2223c13": {
    "owner": "Chris",
    "stage": "Closed Won",
-   "value": 12000
+   "value": 12000.0
   },
   "a24d8f9c": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 15000
+   "value": 15000.0
   },
   "a33e1ea3": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 48000
+   "value": 48000.0
   },
   "a49ee262": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 12000
+   "value": 12000.0
   },
   "a66cb615": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "a91033b3": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "aa00f212": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "ace6f5f2": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "ad9b8166": {
    "owner": "Luke",
    "stage": "New Lead",
-   "value": 0
+   "value": 0.0
   },
   "af11df70": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "af8dce0a": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "b152f863": {
    "owner": "Chris",
    "stage": "Closed Lost",
-   "value": 36000
+   "value": 36000.0
   },
   "b16a6959": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "b173768b": {
    "owner": "Chris",
    "stage": "Demo",
-   "value": 60000
+   "value": 60000.0
   },
   "b223989e": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "b2258af8": {
    "owner": "Elliott",
    "stage": "Demo",
-   "value": 80000
+   "value": 80000.0
   },
   "b244a118": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "b26a3750": {
    "owner": "Elliott",
    "stage": "Contracts",
-   "value": 48000
+   "value": 48000.0
   },
   "b38030db": {
    "owner": "Chris",
    "stage": "New Lead",
-   "value": 0
+   "value": 0.0
   },
   "b3aa2730": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "b4b58997": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 50000
+   "value": 50000.0
   },
   "b53eb503": {
    "owner": "Luke",
    "stage": "New Lead",
-   "value": 0
+   "value": 0.0
   },
   "b57ad986": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "b5fc7c11": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 10000
+   "value": 10000.0
   },
   "b64b5ce9": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 20000
+   "value": 20000.0
   },
   "b6d26330": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "bcc7e90e": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "bee80e12": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "bfcbee7d": {
    "owner": "Elliott",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "c0b92649": {
    "owner": "Chris",
    "stage": "Proposal",
-   "value": 54000
+   "value": 54000.0
   },
   "c15259da": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 80000
+   "value": 80000.0
   },
   "c1a7a0ae": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "c2634b98": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 60000
+   "value": 60000.0
   },
   "c3c613a7": {
    "owner": "Bianca",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "c6fbe140": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "c77294a0": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 15000
+   "value": 15000.0
   },
   "c793cfc2": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "c7c04d91": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "c9342ed2": {
    "owner": "Chris",
    "stage": "Proposal",
-   "value": 32000
+   "value": 32000.0
   },
   "cb2165dd": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 144000
+   "value": 144000.0
   },
   "cb3a7485": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "cb955547": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "cbc03ab1": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "ccb443c4": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "ce263c25": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "ce85471d": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "cf48e108": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "d0c46c29": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "d138faae": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "d195d445": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "d35e5c44": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "d4d8bfae": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "d6701174": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 25000
+   "value": 25000.0
   },
   "d68a9c92": {
    "owner": "Elliott",
    "stage": "Qualification",
-   "value": 50000
+   "value": 50000.0
   },
   "d6af2ae9": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "d8befa1d": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
-   "value": 36000
+   "value": 36000.0
   },
   "da6c5f36": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "da844db1": {
    "owner": "Chris",
    "stage": "Contracts",
-   "value": 72000
+   "value": 72000.0
   },
   "dca63849": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "de694a6c": {
    "owner": "Elliott",
    "stage": "Demo",
-   "value": 0
+   "value": 0.0
   },
   "de8b8f0e": {
    "owner": "Pierre de Villeplee",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "de98457e": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "e0f27685": {
    "owner": "Chris",
    "stage": "Nurture",
-   "value": 30000
+   "value": 30000.0
   },
   "e168ade4": {
    "owner": "Pierre de Villeplee",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   },
   "e231050e": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "e4735e69": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "e5421eec": {
    "owner": "Rupert",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "e62789e9": {
    "owner": "James",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "e685a0e4": {
    "owner": "Luke",
    "stage": "Non-ICP",
-   "value": 0
+   "value": 0.0
   },
   "e71bc796": {
    "owner": "Bob O'Reilly",
    "stage": "Qualification",
-   "value": 100000
+   "value": 100000.0
   },
   "e7e86ecb": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 45480
+   "value": 45480.0
   },
   "e909edeb": {
    "owner": "Bob O'Reilly",
    "stage": "New Lead",
-   "value": 50000
+   "value": 50000.0
   },
   "e9a737be": {
    "owner": "Chris",
    "stage": "Qualification",
-   "value": 0
+   "value": 0.0
   },
   "eb443fa1": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 20000
+   "value": 20000.0
   },
   "eb4dfe12": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "ecd5f1b0": {
    "owner": "Chris",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "eeabc7f7": {
    "owner": "Rupert",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "f05e16a4": {
    "owner": "Elliott",
    "stage": "Closed Won",
-   "value": 57600
+   "value": 57600.0
   },
   "f177de0c": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "f1b881b5": {
    "owner": "Elliott",
    "stage": "Proposal",
-   "value": 42000
+   "value": 42000.0
   },
   "f25377f0": {
    "owner": "Luke",
    "stage": "Qualification",
-   "value": 24000
+   "value": 24000.0
   },
   "f5cbb219": {
    "owner": "Chris",
    "stage": "Demo",
-   "value": 75000
+   "value": 75000.0
   },
   "f63ad4de": {
    "owner": "Luke",
    "stage": "Buy Signal",
-   "value": 0
+   "value": 0.0
   },
   "f6bcd8ed": {
    "owner": "Luke",
    "stage": "Proposal",
-   "value": 9600
+   "value": 9600.0
   },
   "f7b9d3a1": {
    "owner": "Chris",
    "stage": "Demo",
-   "value": 0
+   "value": 0.0
   },
   "f96150c6": {
    "owner": "Elliott",
    "stage": "Nurture",
-   "value": 100000
+   "value": 100000.0
   },
   "f9809612": {
    "owner": "Luke",
    "stage": "Nurture",
-   "value": 42000
+   "value": 42000.0
   },
   "fad4e30f": {
    "owner": "Rupert",
    "stage": "Nurture",
-   "value": 65000
+   "value": 65000.0
   },
   "fcf5f884": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "fea11459": {
    "owner": "James",
    "stage": "Nurture",
-   "value": 0
+   "value": 0.0
   },
   "fee52202": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0
+   "value": 0.0
   }
  },
  "won_dates": {

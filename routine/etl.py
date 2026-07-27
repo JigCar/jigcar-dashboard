@@ -100,35 +100,37 @@ for m in gran:
         if e in FIRST:
             meetings_daily[m["date"]][IDX[FIRST[e]]] += 1
 
-# ---------- calls (Allo team analytics, per seat) ----------
-# July total 16, confirmed against allo_get_team_analytics for 1-27 Jul:
-# Elliott 7, James 4, Luke 4, Chris 1, Bianca 0. Rupert has no Allo seat.
-# A 24-27 Jul query returned 0 calls, so the book closes at 23 Jul.
-calls_daily = {
-    "2026-07-21": [1, 0, 0, 0, 3, 0],
-    "2026-07-22": [0, 1, 1, 0, 4, 0],
-    "2026-07-23": [0, 3, 3, 0, 0, 0],
-}
+# ---------- calls (Allo, per seat) ----------
+# One row per call record from allo_search_conversation_items, reconciled against
+# allo_get_team_analytics. Rupert has no Allo account, so his column is always 0
+# and his seat renders na rather than a zero that looks like inactivity.
+_calls = json.load(open(f"{SP}/raw/calls.json"))
+calls_daily = _calls["by_day"]
 
 # ---------- emails (Attio multi-mailbox search, de-duped by sender+subject+sent_at) ----------
-# Covered continuously from 2026-07-24 07:53 to the run stamp. Days before that are
-# not covered by this run and are rendered as a labelled floor, never as zero activity.
-emails_daily = {
-    "2026-07-24": [16, 0, 0, 2, 6, 6],
-    "2026-07-25": [1, 0, 0, 0, 1, 0],
-    "2026-07-26": [0, 0, 0, 0, 1, 0],
-    "2026-07-27": [3, 0, 4, 12, 31, 5],
-}
-EMAIL_COVERED_FROM = "2026-07-24"
+# pull_emails.py owns the tally, the deal split and the coverage window. Days it did
+# not page are carried forward from the previous state, never rebuilt as zero.
+_em = json.load(open(f"{SP}/raw/emails.json"))
+emails_daily = _em["by_day"]
+emails_deal = _em["deal"]
+emails_cust = _em["cust"]
+EMAIL_COVERED_FROM = min(emails_daily) if emails_daily else None
+EMAIL_SPLIT_FROM = min(_em["split_by_day"]) if _em["split_by_day"] else None
+EMAIL_SPLIT_TO = max(_em["split_by_day"]) if _em["split_by_day"] else None
 
 # ---------- tasks completed (dated by completed_at from the Attio tasks API) ----------
-tasks_daily = {
-    "2026-07-07": [0, 0, 0, 1, 0, 0],
-    "2026-07-22": [3, 0, 0, 0, 0, 0],
-    "2026-07-23": [0, 0, 0, 1, 0, 0],
-    "2026-07-24": [14, 0, 0, 0, 0, 0],
-    "2026-07-27": [2, 0, 1, 0, 5, 0],
-}
+# completed_at, never created_at. An earlier build dated tasks by creation, which
+# credited the day a task was written rather than the day the work was done.
+_tasks = json.load(open(f"{SP}/raw/tasks.json"))
+tasks_daily = collections.defaultdict(z)
+for _t in _tasks:
+    if not _t.get("is_completed") or not _t.get("completed_at"):
+        continue
+    for _a in _t.get("assignees") or []:
+        if _a in IDX:
+            tasks_daily[_t["completed_at"][:10]][IDX[_a]] += 1
+tasks_daily = dict(sorted(tasks_daily.items()))
+TASKS_UNASSIGNED = sum(1 for _t in _tasks if _t.get("is_completed") and not _t.get("assignees"))
 
 # ---------- LinkedIn (Groovin notes in Attio, rep read from the note body) ----------
 # The rep is NOT in the note title for invitations, which is why an earlier build fell
@@ -150,16 +152,11 @@ li_msg_deal = _msg["deal"]
 LI_NOTE_COVERED_FROM = "2026-07-21"
 LI_ATTRIBUTION = "read from the Groovin note body; no cadence-task proxy is used"
 
-# ---------- email deal split (classify_emails.py) ----------
-# Sent emails split by what the recipient is to us. A raw count says how busy
-# someone looks; this says whether the work touched pipeline. Only covers days
-# whose recipient lists were pulled, and that window is carried through so the
-# dashboard labels it rather than implying the whole period is classified.
-_es = json.load(open(f"{SP}/raw/email_split.json"))
-emails_deal = {d: v["open"] for d, v in _es["by_day"].items()}
-emails_cust = {d: v["won"] for d, v in _es["by_day"].items()}
-EMAIL_SPLIT_FROM = (_es.get("covered_from") or "")[:10]
-EMAIL_SPLIT_TO = (_es.get("covered_to") or "")[:10]
+# ---------- deal-association join coverage (pull_attio.py) ----------
+# (deal) everywhere on the page means the counterparty's company has an OPEN deal.
+# The join depends on Attio's deal <-> company links, so its coverage is reported
+# rather than assumed: an unjoinable deal must not read as "no deal".
+_join = json.load(open(f"{SP}/raw/join_report.json"))
 
 # ---------- deals assigned per day (Attio created_at) ----------
 deals_daily = collections.defaultdict(z)
@@ -403,7 +400,10 @@ coverage = {
     "stage_diff": STAGE_DIFF,
     "stage_moves_accumulated": len(ALL_MOVES),
     "email_covered_from": EMAIL_COVERED_FROM,
-    "email_note": "continuous from 24 Jul 07:53 to the run stamp; earlier July days are not covered by this run and read as a floor",
+    "email_note": (f"sent-email coverage starts {EMAIL_COVERED_FROM} and accumulates a day per run; "
+                   f"this run paged {_em['pulled_from']} to {_em['pulled_to']} and carried forward "
+                   f"{len(_em['carried_days'])} earlier day(s). July days before "
+                   f"{EMAIL_COVERED_FROM} are not covered and read as a floor, never as zero."),
     "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
     "linkedin_notes_covered_from": LI_NOTE_COVERED_FROM,
     "tasks_dated_by": "completed_at from the Attio tasks API",
@@ -412,7 +412,10 @@ coverage = {
                        "note body, deduped across the person and company copies"),
     "li_accepted_note": ("connections made lag the invitation that earned them, often by weeks, so a high "
                          "accepted count reflects earlier outreach rather than work done in the period"),
-    "calls_source": "Allo team analytics per seat; Rupert has no Allo account",
+    "calls_source": (f"Allo per-seat call records ({_calls['total']} calls "
+                     f"{_calls['covered_from']} to {_calls['covered_to']}); Rupert has no Allo account, "
+                     "so his calls are always 0 and his seat reads na"),
+    "tasks_unassigned": TASKS_UNASSIGNED,
     "email_split_from": EMAIL_SPLIT_FROM,
     "email_split_to": EMAIL_SPLIT_TO,
     "email_split_note": (
@@ -420,8 +423,15 @@ coverage = {
         "customer (Closed Won), or neither. Resolved by recipient domain to the Attio company "
         "and its strongest deal state. Only classified for the window above; days outside it "
         "show a total with no split."),
-    "email_split_join": (f"{_es.get('domains_resolving')} domains resolve to a deal; "
-                         "89 of 96 open deals are joinable and 100% by pipeline value"),
+    "email_split_join": (f"{_em['domains_resolving']} domains resolve to a deal; "
+                         f"{_join['joinable']} of {_join['open_deals']} open deals are joinable "
+                         f"and {_join['joinable_pct_by_value']}% by pipeline value"),
+    # Surfaced for repair rather than inferred. Never invent a domain to close the gap.
+    "join_coverage": _join,
+    "join_note": (f"{_join['unjoinable']} open deal(s) cannot be joined to a counterparty: "
+                  "either no company is linked or the company has no domain. All carry £0, so "
+                  f"{_join['joinable_pct_by_value']}% of pipeline value is joinable. Listed for "
+                  "repair on the coverage panel; no domain is ever inferred."),
 }
 
 state = {"schema": 3, "last_run": RUN_DATE, "last_run_stamp": RUN_STAMP,
