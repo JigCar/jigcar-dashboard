@@ -17,13 +17,13 @@
     },
     {
      "created": 4,
-     "name": "James",
-     "value": 0
+     "name": "Bob O'Reilly",
+     "value": 105000
     },
     {
      "created": 4,
-     "name": "Bob",
-     "value": 105000
+     "name": "James",
+     "value": 0
     },
     {
      "created": 4,
@@ -110,7 +110,7 @@
    "Chris": [
     "ok",
     "ok",
-    "ok"
+    "unknown"
    ],
    "Elliott": [
     "ok",
@@ -119,21 +119,21 @@
    ],
    "James": [
     "ok",
-    "unknown",
+    "ok",
     "ok"
    ],
    "Luke": [
     "ok",
-    "unknown",
+    "ok",
     "ok"
    ],
    "Rupert": [
     "na",
-    "ok",
+    "partial",
     "unknown"
    ]
   },
-  "updated": "27 Jul 2026, 14:15",
+  "updated": "27 Jul 2026, 15:45",
   "workspace": [
    {
     "name": "Attio",
@@ -142,7 +142,7 @@
    },
    {
     "name": "Granola",
-    "note": "meetings, 121 in July",
+    "note": "meetings, 124 in July",
     "status": "ok"
    },
    {
@@ -153,16 +153,17 @@
   ]
  },
  "coverage": {
-  "email_covered_from": "2026-07-27",
-  "junk_records": [
-   "6cd92151 (Rupert Wood) - website form naming a Jigcar colleague, counted as created"
-  ],
+  "calls_source": "Allo team analytics per seat; Rupert has no Allo account",
+  "email_covered_from": "2026-07-24",
+  "email_note": "continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor",
+  "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
+  "li_connect_gap": "Groovin logged 14 invitation-sent events 21-27 Jul but the notes carry no rep; 13 are attributed via Touch-1 tasks",
   "li_connects_attributed_by": "cadence Touch-1 completed connect task on the owner's deal",
-  "linkedin_notes_covered_from": "2026-07-22",
+  "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
   "stage_diff": [],
   "stage_moves_accumulated": 1,
-  "tasks_dated_by": "created_at (Attio exposes no completion timestamp)"
+  "tasks_dated_by": "completed_at from the Attio tasks API"
  },
  "daily_metrics": {
   "calls": {
@@ -274,26 +275,42 @@
    ]
   },
   "emails": {
+   "2026-07-24": [
+    16,
+    0,
+    0,
+    2,
+    6,
+    6
+   ],
+   "2026-07-25": [
+    1,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "2026-07-26": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
    "2026-07-27": [
     1,
     0,
     0,
-    4,
+    8,
     10,
     2
    ]
   },
   "liConnAll": {
-   "2026-07-21": [
-    3,
-    0,
-    0,
-    0,
-    0,
-    0
-   ],
    "2026-07-22": [
-    4,
+    1,
     0,
     0,
     0,
@@ -301,7 +318,7 @@
     0
    ],
    "2026-07-23": [
-    2,
+    0,
     0,
     0,
     1,
@@ -309,7 +326,7 @@
     0
    ],
    "2026-07-24": [
-    2,
+    10,
     0,
     0,
     0,
@@ -326,16 +343,8 @@
    ]
   },
   "liConnDeal": {
-   "2026-07-21": [
-    3,
-    0,
-    0,
-    0,
-    0,
-    0
-   ],
    "2026-07-22": [
-    4,
+    1,
     0,
     0,
     0,
@@ -343,7 +352,7 @@
     0
    ],
    "2026-07-23": [
-    2,
+    0,
     0,
     0,
     1,
@@ -351,7 +360,7 @@
     0
    ],
    "2026-07-24": [
-    2,
+    10,
     0,
     0,
     0,
@@ -373,7 +382,7 @@
     0,
     0,
     0,
-    3,
+    5,
     0
    ],
    "2026-07-22": [
@@ -398,6 +407,14 @@
     0,
     0,
     2,
+    0
+   ],
+   "2026-07-27": [
+    0,
+    0,
+    1,
+    0,
+    0,
     0
    ]
   },
@@ -535,9 +552,9 @@
    "2026-07-27": [
     1,
     1,
-    1,
-    0,
     2,
+    0,
+    3,
     2
    ]
   },
@@ -553,16 +570,16 @@
   },
   "shutoff": {},
   "tasks": {
-   "2026-07-21": [
-    4,
+   "2026-07-07": [
     0,
     0,
     0,
+    1,
     0,
     0
    ],
    "2026-07-22": [
-    5,
+    3,
     0,
     0,
     0,
@@ -570,7 +587,7 @@
     0
    ],
    "2026-07-23": [
-    3,
+    0,
     0,
     0,
     1,
@@ -578,7 +595,7 @@
     0
    ],
    "2026-07-24": [
-    5,
+    14,
     0,
     0,
     0,
@@ -596,7 +613,7 @@
   }
  },
  "last_run": "2026-07-27",
- "last_run_stamp": "27 Jul 2026, 14:15",
+ "last_run_stamp": "27 Jul 2026, 15:45",
  "meeting_classification": {
   "excluded": {
    "2026-07-06|Simon / Elliott": "adviser",
@@ -604,16 +621,19 @@
    "2026-07-14|Elliott / Paul - plant hire transport": "exploratory, no deal attached",
    "2026-07-14|Introduction mtg. Jigcar and Thoughtline Digital": "vendor / agency intro",
    "2026-07-16|Jigcar x Automotive Logistics catch up": "media / press",
-   "2026-07-16|Quick catch up with Jonathan Holland on Auction House opportunity": "adviser",
+   "2026-07-16|Quick catch up with Jonathan Holland on Auction Houses": "adviser",
    "2026-07-20|Groupe CAT / Jigcar": "supplier / 3PL carrier",
    "2026-07-21|Jigcar sales team weekly": "internal weekly (external addresses are own contractors)",
    "2026-07-21|TradeBid/Jigcar Potential Strategic Collaboration": "partner / channel exploration, no deal attached",
-   "2026-07-24|Book a 30-min meeting with Elliott at Jigcar (Rita Sharma)": "tooling / vendor",
+   "2026-07-24|Book a 30-min meeting with Elliott at Jigcar (Rita Schmidt)": "tooling / vendor (HERE maps)",
    "2026-07-24|Jig Car chat": "investor"
   },
   "excluded_count": 11,
-  "included_count": 41,
+  "included_count": 42,
   "internal_only_count": 64
+ },
+ "perf_flags": {
+  "2026-07-27": "Luke"
  },
  "pre_2026_won": [
   "12f2dbef",
@@ -628,7 +648,7 @@
   "f05e16a4"
  ],
  "quarter_target": 400000,
- "schema": 2,
+ "schema": 3,
  "stage_moves": [
   {
    "date": "2026-07-27",
@@ -648,17 +668,17 @@
    "value": 0
   },
   "00ca65fa": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 36000
   },
   "024e1ee8": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 25000
   },
   "03cf687c": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 60000
   },
@@ -678,7 +698,7 @@
    "value": 0
   },
   "07ed98b3": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 0
   },
@@ -688,7 +708,7 @@
    "value": 30000
   },
   "096631be": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "New Lead",
    "value": 30000
   },
@@ -728,7 +748,7 @@
    "value": 0
   },
   "11060c52": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 0
   },
@@ -773,7 +793,7 @@
    "value": 40000
   },
   "18dafab6": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Proposal",
    "value": 36000
   },
@@ -818,7 +838,7 @@
    "value": 36000
   },
   "227ceccf": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 0
   },
@@ -828,7 +848,7 @@
    "value": 0
   },
   "29477d84": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Proposal",
    "value": 100000
   },
@@ -843,12 +863,12 @@
    "value": 0
   },
   "2c0e0107": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 40000
   },
   "2c146b83": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 24000
   },
@@ -868,7 +888,7 @@
    "value": 88320
   },
   "30de2274": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 0
   },
@@ -888,12 +908,12 @@
    "value": 0
   },
   "33224ee3": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 0
   },
   "35f9a982": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "New Lead",
    "value": 29480
   },
@@ -923,7 +943,7 @@
    "value": 57600
   },
   "3bf92673": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Proposal",
    "value": 120000
   },
@@ -973,12 +993,12 @@
    "value": 17820
   },
   "46cda5a2": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Closed Lost",
    "value": 0
   },
   "477eba00": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 30000
   },
@@ -988,7 +1008,7 @@
    "value": 0
   },
   "4f7c177d": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 0
   },
@@ -1013,7 +1033,7 @@
    "value": 0
   },
   "56e9edc1": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1023,7 +1043,7 @@
    "value": 132000
   },
   "57ba950c": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1033,7 +1053,7 @@
    "value": 8400
   },
   "5a8fdb4e": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 45000
   },
@@ -1053,7 +1073,7 @@
    "value": 0
   },
   "5e25e605": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1093,7 +1113,7 @@
    "value": 24840
   },
   "620aff54": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Qualification",
    "value": 80000
   },
@@ -1123,7 +1143,7 @@
    "value": 75600
   },
   "686df339": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 0
   },
@@ -1188,7 +1208,7 @@
    "value": 0
   },
   "7a2feca8": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1213,7 +1233,7 @@
    "value": 18000
   },
   "81c87017": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1248,7 +1268,7 @@
    "value": 0
   },
   "86932f87": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 28800
   },
@@ -1263,7 +1283,7 @@
    "value": 12800
   },
   "89ab167e": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Qualification",
    "value": 0
   },
@@ -1303,7 +1323,7 @@
    "value": 0
   },
   "90b51954": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 36000
   },
@@ -1323,7 +1343,7 @@
    "value": 40000
   },
   "921a8e55": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Closed Won",
    "value": 24000
   },
@@ -1353,7 +1373,7 @@
    "value": 45000
   },
   "99ad1234": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 80000
   },
@@ -1368,7 +1388,7 @@
    "value": 0
   },
   "9aa24821": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 25000
   },
@@ -1388,7 +1408,7 @@
    "value": 0
   },
   "9c595ce9": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Trial",
    "value": 90000
   },
@@ -1423,7 +1443,7 @@
    "value": 18000
   },
   "a12eaaed": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1438,7 +1458,7 @@
    "value": 12000
   },
   "a24d8f9c": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 15000
   },
@@ -1468,7 +1488,7 @@
    "value": 0
   },
   "ace6f5f2": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1513,7 +1533,7 @@
    "value": 80000
   },
   "b244a118": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1553,7 +1573,7 @@
    "value": 10000
   },
   "b64b5ce9": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 20000
   },
@@ -1583,7 +1603,7 @@
    "value": 80000
   },
   "c1a7a0ae": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 30000
   },
@@ -1603,12 +1623,12 @@
    "value": 0
   },
   "c77294a0": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 15000
   },
   "c793cfc2": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 0
   },
@@ -1623,7 +1643,7 @@
    "value": 32000
   },
   "cb2165dd": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 144000
   },
@@ -1638,7 +1658,7 @@
    "value": 0
   },
   "cbc03ab1": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1663,7 +1683,7 @@
    "value": 0
   },
   "d0c46c29": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1683,7 +1703,7 @@
    "value": 0
   },
   "d4d8bfae": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 0
   },
@@ -1698,17 +1718,17 @@
    "value": 50000
   },
   "d6af2ae9": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 30000
   },
   "d8befa1d": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 36000
   },
   "da6c5f36": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 0
   },
@@ -1728,12 +1748,12 @@
    "value": 0
   },
   "de8b8f0e": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Closed Lost",
    "value": 0
   },
   "de98457e": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },
@@ -1743,7 +1763,7 @@
    "value": 30000
   },
   "e168ade4": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Closed Lost",
    "value": 0
   },
@@ -1773,7 +1793,7 @@
    "value": 0
   },
   "e71bc796": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "Qualification",
    "value": 100000
   },
@@ -1783,7 +1803,7 @@
    "value": 45480
   },
   "e909edeb": {
-   "owner": "Bob",
+   "owner": "Bob O'Reilly",
    "stage": "New Lead",
    "value": 50000
   },
@@ -1798,7 +1818,7 @@
    "value": 20000
   },
   "eb4dfe12": {
-   "owner": "Jon",
+   "owner": "Jon Pollock",
    "stage": "Nurture",
    "value": 0
   },
@@ -1868,7 +1888,7 @@
    "value": 65000
   },
   "fcf5f884": {
-   "owner": "UNKNOWN-5c0f0e89",
+   "owner": "Pierre de Villeplee",
    "stage": "Nurture",
    "value": 0
   },

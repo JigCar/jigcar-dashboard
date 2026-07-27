@@ -12,6 +12,12 @@ https://jigcar.github.io/jigcar-dashboard/index-18.html
    `dashboard_state.json` plus `payload.json`.
 3. `render.py` - injects the payload into the canonical template and writes
    `index-18.html`.
+4. `qa.py` - the two output checks below. The build is not committed if either fails.
+5. `slack_messages.py` - builds the two per-channel messages and prints them for
+   review before anything is posted.
+
+All of these read `JIGCAR_SP` for the working directory, so a run is reproducible
+from any checkout.
 
 All metric values are computed in plain code so they are reproducible run to run.
 The model is used only for the written "Read & actions" narrative and for
@@ -32,13 +38,23 @@ interpreting connectivity status. It never invents a metric value.
 
 - Progressed / shut off need two snapshots. The first run seeds the baseline and
   both read 0 by construction; they are never backfilled.
-- Attio exposes no task completion timestamp, so tasks are dated by creation.
-- LinkedIn connections carry no rep in Attio. They are attributed via the cadence
-  Touch-1 completed connect task on the owner's deal until Groovin per-seat data
-  is wired.
-- Email is a de-duped multi-mailbox sent count. Attio's email search cannot be
-  filtered to the company's own domain, so the routine pulls the period and filters
-  by sender itself; history accumulates one day per run.
+- Tasks are dated by `completed_at` from the Attio tasks REST endpoint, which does
+  expose a completion timestamp. An earlier build dated them by creation; that was
+  wrong and has been corrected.
+- LinkedIn connections carry no rep in Attio: the "LinkedIn invitation sent" note has
+  no author and no owner. They are attributed via the cadence Touch-1 completed
+  connect task on the owner's deal until Groovin per-seat data is wired, and the
+  residual gap between Groovin's event count and the attributed count is recorded in
+  `coverage.li_connect_gap`.
+- LinkedIn messages are rep-attributed from the chat-note title and counted once per
+  person/company note pair. The deal split is a real company -> deal join in code.
+- Email is a de-duped multi-mailbox sent count keyed on (sender, subject, sent_at).
+  Attio has no public emails REST endpoint, so the period is paged through the MCP
+  search and filtered by sender. Coverage starts at `coverage.email_covered_from`;
+  earlier days in the period are a labelled floor, never a zero.
+- Rupert's own mailbox is not connected, so his sends are only visible where a
+  teammate was a recipient. His email figure is a floor and his Email seat reads
+  `partial`. Rupert has no Allo account either, so his Allo seat reads `na`.
 
 ## Output QA (both must pass before committing)
 

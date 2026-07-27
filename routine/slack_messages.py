@@ -3,24 +3,29 @@
 
 The two channels get DIFFERENT messages and must never receive identical text.
 
-#operation-foot-down  - internal performance channel. Four emoji-led lines plus the
-                        link. Line 3 is a named performance risk: this channel exists
-                        to name who is off pace.
-#deal-updates         - wider team channel. Two lines plus the link. Nobody is named
-                        unless a close, a contract movement or a genuine activity spike
-                        fires. Deal names are not people and are always allowed.
+#operation-foot-down  leadership. Up to four emoji-led lines plus the link:
+                      revenue, what moved, deal risk, performance risk. Lines 3
+                      and 4 are omitted entirely when nothing qualifies.
+#deal-updates         whole team. Two lines plus the link, three when a
+                      celebration trigger fires. Nobody is named unless a close,
+                      a contract movement or a genuine activity spike fires.
+                      Deal names are not people and are always allowed.
 
 Every number here is read from payload.json / dashboard_state.json. This module
 does no pulling and invents no figures.
 """
-import json, sys, datetime
+import json, sys, os, datetime
 
-SP = sys.argv[1] if len(sys.argv) > 1 else "."
+SP = os.environ.get("JIGCAR_SP") or (sys.argv[1] if len(sys.argv) > 1 else ".")
 DASHBOARD_URL = "https://jigcar.github.io/jigcar-dashboard/index-18.html"
 REPS = ["Chris", "Luke", "James", "Bianca", "Elliott", "Rupert"]
+# Only these seats carry outbound. James is Transport Director and Bianca runs
+# onboarding, so low outbound activity is expected and is never flagged.
+OUTBOUND_SEATS = ["Chris", "Luke", "Elliott"]
+CORE_METRICS = ["meetings", "emails", "tasks"]
 
-payload = json.load(open(f"{SP}/payload.json"))
-state = json.load(open(f"{SP}/dashboard_state.json"))
+payload = json.load(open(f"{SP}/build/payload.json"))
+state = json.load(open(f"{SP}/build/dashboard_state.json"))
 daily = payload["daily"]
 RUN_DATE = state["last_run"]
 TARGET = payload["QUARTER_TARGET"]
@@ -40,6 +45,24 @@ def money(n):
     return "£" + format(int(n), ",")
 
 
+def short_money(n):
+    return f"£{int(n) // 1000}k" if n >= 1000 and n % 1000 == 0 else money(n)
+
+
+def ucfirst(s):
+    """Capitalise the first character only, so deal and people names keep their case."""
+    return s[:1].upper() + s[1:] if s else s
+
+
+NUM = {0: "no", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six",
+       7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten"}
+
+
+def word(n, lower=False):
+    w = NUM.get(n, str(n))
+    return w.lower() if lower else w
+
+
 # ---------- revenue ----------
 won = sum(d["arr"] for d in payload["closedWonDeals"])
 oc = sum(d["arr"] for d in payload["contractDeals"])
@@ -52,100 +75,170 @@ progressed = [m for m in moves_today if m["kind"] == "progressed"]
 shut = [m for m in moves_today if m["kind"] == "shutoff"]
 won_today = [m for m in moves_today if m["to"] == "Closed Won"]
 contract_today = [m for m in moves_today if m["to"] == "Contracts"]
+new_deals_today = sum(agg("deals", "today"))
 
 
-def move_phrase(with_names):
-    """Describe today's stage movement. Deal names always; person names optional."""
-    if not moves_today:
-        return "No deal changed stage today."
+def moved_leadership():
+    """Named, deal-level. Real changes only."""
+    if not moves_today and not new_deals_today:
+        return "Nothing moved since yesterday."
     bits = []
-    for m in progressed + shut:
-        who = f" ({m['owner']})" if with_names else ""
+    for m in progressed:
         val = f" {money(m['value'])}" if m.get("value") else ""
-        verb = "moved to" if m["kind"] == "progressed" else "shut off to"
-        bits.append(f"{m['name']}{val}{who} {verb} {m['to']}")
-    tail = "" if shut else " Nothing won or shut off."
-    return "; ".join(bits) + "." + tail
+        bits.append(f"{m['name']}{val} ({m['owner']}) into {m['to']}")
+    for m in shut:
+        val = f" {money(m['value'])}" if m.get("value") else ""
+        bits.append(f"{m['name']}{val} ({m['owner']}) shut off to {m['to']}")
+    if new_deals_today:
+        bits.append(f"{word(new_deals_today, lower=True)} new deals in")
+    tail = "" if (won_today or shut) else " Nothing won or lost."
+    return ucfirst(", ".join(bits)) + "." + tail
 
 
-# ---------- named performance risk (foot-down only) ----------
-# Deterministic: rank the six on quarter sales meetings, then break ties on completed
-# cadence tasks. The bottom-ranked person with a genuine gap is named, with the numbers
-# that justify it. No judgement call is made in prose that the figures do not support.
-q_mtg, q_task, q_call = agg("meetings", "quarter"), agg("tasks", "quarter"), agg("calls", "quarter")
-w_mtg = agg("meetings", "week")
-cands = sorted(range(6), key=lambda i: (q_mtg[i], q_task[i]))
-r = cands[0]
-risk = (f"{REPS[r]} is bottom of the quarter on sales meetings, {q_mtg[r]} in 27 days "
-        f"({w_mtg[r]} in the last seven) with {q_task[r]} completed cadence tasks "
-        f"and {q_call[r]} calls.")
+def moved_team():
+    """Counts only, nobody named."""
+    if not moves_today and not new_deals_today:
+        return "Nothing moved since yesterday."
+    bits = []
+    if progressed:
+        bits.append(f"{word(len(progressed))} deal{'' if len(progressed) == 1 else 's'} progressed")
+    if shut:
+        bits.append(f"{word(len(shut), lower=True)} shut off")
+    if new_deals_today:
+        bits.append(f"{word(new_deals_today, lower=True)} new deals in")
+    tail = "" if (won_today or shut) else " Nothing won or lost."
+    return ucfirst(", ".join(bits)) + "." + tail
 
-# ---------- contract risk ----------
-stalled = [d for d in payload["contractDeals"] if "passed" in d["date"]]
-stalled_val = sum(d["arr"] for d in stalled)
+
+# ---------- deal risk: the single highest-value concern ----------
+stalled = sorted([d for d in payload["contractDeals"] if d.get("passed")], key=lambda d: -d["arr"])
+deal_risk = None
 if stalled:
+    ref = datetime.date(*[int(x) for x in RUN_DATE.split("-")])
     names = " and ".join(f"{d['name']} {money(d['arr'])}" for d in stalled)
-    contract_line = (f"{names} are past their estimated close, {money(stalled_val)} of the "
-                     f"{money(oc)} contract book sitting unsigned.")
-else:
-    contract_line = f"{money(oc)} in Contracts, none past its estimated close date."
+    days = None
+    for d in stalled:
+        if d.get("est_iso"):
+            days = (ref - datetime.date(*[int(x) for x in d["est_iso"].split("-")])).days
+    daytxt = f"{days} days" if days else "several days"
+    joiner = "both past est close by" if len(stalled) == 2 else "past est close by"
+    deal_risk = f"{names} {joiner} {daytxt}."
+
+# ---------- performance risk: one person, role-aware, real threshold ----------
+# Threshold, never a ranking: zero on at least two of the three core outbound
+# metrics across the full week. A ranking always flags someone; this does not.
+wk = {m: agg(m, "week") for m in CORE_METRICS}
+qt = {m: agg(m, "quarter") for m in CORE_METRICS}
+cands = []
+for name in OUTBOUND_SEATS:
+    i = REPS.index(name)
+    zeros = [m for m in CORE_METRICS if wk[m][i] == 0]
+    if len(zeros) >= 2:
+        cands.append({"name": name, "i": i, "zeros": zeros, "nz": len(zeros),
+                      "q_mtg": qt["meetings"][i]})
+cands.sort(key=lambda c: (-c["nz"], c["q_mtg"]))
+
+# escalate, do not repeat: count consecutive prior days this person was flagged
+prior_flags = state.get("perf_flags", {})
+perf_risk = None
+flagged_name = None
+if cands:
+    c = cands[0]
+    flagged_name = c["name"]
+    streak, probe = 1, datetime.date(*[int(x) for x in RUN_DATE.split("-")])
+    while True:
+        probe -= datetime.timedelta(days=1)
+        if prior_flags.get(str(probe)) == flagged_name:
+            streak += 1
+        else:
+            break
+    i = c["i"]
+    lbl = {"meetings": "sales meeting", "emails": "sent email", "tasks": "completed task"}
+    zero_txt = " or ".join(lbl[m] for m in c["zeros"])
+    extras = [m for m in CORE_METRICS if m not in c["zeros"]]
+    extra_txt = ""
+    if extras:
+        m = extras[0]
+        extra_txt = f", {word(wk[m][i], lower=True)} {lbl[m]}{'' if wk[m][i] == 1 else 's'}"
+    mq = qt["meetings"][i]
+    covered = c["zeros"] + ([extras[0]] if extras else [])
+    tail = f" {word(mq)} all quarter." if "meetings" in covered else f" {word(mq)} sales meetings all quarter."
+    if streak >= 3:
+        tail += " Third day running."
+    perf_risk = f"{flagged_name}: no {zero_txt} all week{extra_txt}.{tail}"
+
+# record today's flag so tomorrow can escalate rather than repeat
+state.setdefault("perf_flags", {})[RUN_DATE] = flagged_name
+json.dump(state, open(f"{SP}/build/dashboard_state.json", "w"), indent=1, sort_keys=True)
 
 # ---------- does #deal-updates get to name anyone? ----------
 # Only a close, a contract movement, or a genuine activity spike unlocks names.
-#
-# A spike compares today against the rest of the week, so a metric may only take part
-# if its coverage spans that whole window. Email coverage begins on the day the routine
-# first ran, which makes today's email count look like a huge jump against six days of
-# zeroes that are missing data, not inactivity. Including it would name someone for a
-# coverage artefact, so any metric whose coverage starts after the window opens is
-# excluded until it has the history to support the comparison.
-SPIKE_FLOOR, SPIKE_MULT = 10, 3.0
-window_start = payload["ranges"]["week"][0]
-COVERAGE_FROM = {
-    "emails": state["coverage"].get("email_covered_from", "0000-00-00"),
-    "liConnAll": state["coverage"].get("linkedin_notes_covered_from", "0000-00-00"),
-    "liMsgAll": state["coverage"].get("linkedin_notes_covered_from", "0000-00-00"),
-}
-spike_basis = [m for m in ("meetings", "calls", "emails")
-               if COVERAGE_FROM.get(m, "0000-00-00") <= window_start]
-excluded_basis = [m for m in ("meetings", "calls", "emails") if m not in spike_basis]
-
+# A spike is at least double that person's trailing four-week daily average on the
+# metric and above a floor of three. Until the store holds four weeks of history,
+# fire only on a same-day team record, so a coverage artefact can never name anyone.
+SPIKE_FLOOR = 3
+hist_days = sorted({d for m in CORE_METRICS for d in daily.get(m, {})})
+have_4_weeks = len(hist_days) >= 28
 spikes = []
-for i in range(6):
-    today = sum(agg(m, "today")[i] for m in spike_basis)
-    weekly = sum(agg(m, "week")[i] for m in spike_basis)
-    mean = (weekly - today) / 6 if weekly else 0
-    if today >= SPIKE_FLOOR and today >= SPIKE_MULT * max(mean, 1):
-        spikes.append((REPS[i], today))
-name_trigger = bool(won_today or contract_today or spikes)
+if have_4_weeks:
+    for i, name in enumerate(REPS):
+        for m in CORE_METRICS:
+            today_v = agg(m, "today")[i]
+            past = [v[i] for d, v in daily.get(m, {}).items() if d < RUN_DATE]
+            avg = sum(past) / len(past) if past else 0
+            if today_v >= SPIKE_FLOOR and avg and today_v >= 2 * avg:
+                spikes.append((name, m, today_v))
+else:
+    for m in CORE_METRICS:
+        series = {d: sum(v) for d, v in daily.get(m, {}).items()}
+        if not series:
+            continue
+        today_v = series.get(RUN_DATE, 0)
+        others = [v for d, v in series.items() if d != RUN_DATE]
+        if today_v >= SPIKE_FLOOR and others and today_v > max(others):
+            top_i = max(range(6), key=lambda i: agg(m, "today")[i])
+            spikes.append((REPS[top_i], m, agg(m, "today")[top_i]))
+
+celebration = None
+if won_today:
+    m = max(won_today, key=lambda x: x["value"])
+    celebration = f"🏆 {m['owner']} closed {m['name']}, {money(m['value'])}."
+elif contract_today:
+    m = max(contract_today, key=lambda x: x["value"])
+    celebration = f"📄 {m['name']} {money(m['value'])} out for contract, {m['owner']}."
+elif spikes:
+    name, metric, v = spikes[0]
+    lbl = {"meetings": "sales meetings", "emails": "emails", "tasks": "completed tasks"}[metric]
+    celebration = f"🔥 {name} ran {v} {lbl} today, a team record for a single day."
 
 # ---------- assemble ----------
-foot_down = "\n".join([
-    f":dart: {money(won)} won this quarter, {pct}% of the {money(TARGET)} target. "
+foot_lines = [
+    f"🎯 {money(won)} won this quarter, {pct}% of {short_money(TARGET)}. "
     f"{money(oc)} out for contract, {money(gap_if_land)} short if all three land.",
-    f":arrows_counterclockwise: {move_phrase(with_names=True)}",
-    f":warning: {risk}",
-    f":hourglass: {contract_line}",
-    DASHBOARD_URL,
-])
+    f"🔄 {moved_leadership()}",
+]
+if deal_risk:
+    foot_lines.append(f"⚠️ {deal_risk}")
+if perf_risk:
+    foot_lines.append(f"🚩 {perf_risk}")
+foot_lines.append(f"🔗 {DASHBOARD_URL}")
+foot_down = "\n".join(foot_lines)
 
-if name_trigger:
-    line2 = move_phrase(with_names=True)
-    if spikes:
-        line2 += " " + "; ".join(f"{n} ran {c} touches today" for n, c in spikes) + "."
-else:
-    line2 = move_phrase(with_names=False)
-
-deal_updates = "\n".join([
-    f"{money(won)} won this quarter, {pct}% of the {money(TARGET)} target. "
-    f"{money(oc)} out for contract across {len(payload['contractDeals'])} deals.",
-    line2,
-    DASHBOARD_URL,
-])
+team_lines = []
+if celebration:
+    team_lines.append(celebration)
+team_lines.append(f"🎯 {money(won)} won this quarter, {pct}% of {short_money(TARGET)}. "
+                  f"{money(oc)} out for contract.")
+team_lines.append(f"🔄 {moved_team()}")
+team_lines.append(f"🔗 {DASHBOARD_URL}")
+deal_updates = "\n".join(team_lines)
 
 if __name__ == "__main__":
     if foot_down == deal_updates:
         raise SystemExit("ABORT: identical text for both channels")
+    for name in REPS:
+        if name in deal_updates and not celebration:
+            raise SystemExit(f"ABORT: {name} named in #deal-updates with no celebration trigger")
     print("=" * 78)
     print("#operation-foot-down")
     print("=" * 78)
@@ -158,8 +251,9 @@ if __name__ == "__main__":
     print()
     print("=" * 78)
     print(f"identical? {foot_down == deal_updates}")
-    print(f"foot-down content lines: {len(foot_down.splitlines()) - 1} + link")
-    print(f"deal-updates content lines: {len(deal_updates.splitlines()) - 1} + link")
-    print(f"names unlocked in #deal-updates? {name_trigger} "
-          f"(won today {len(won_today)}, contract moves {len(contract_today)}, spikes {spikes})")
-    print(f"spike basis: {spike_basis}; excluded for insufficient coverage: {excluded_basis}")
+    print(f"foot-down content lines: {len(foot_lines) - 1} + link (max 4 + link)")
+    print(f"deal-updates content lines: {len(team_lines) - 1} + link")
+    print(f"deal risk fired: {bool(deal_risk)} | perf risk fired: {bool(perf_risk)} -> {flagged_name}")
+    print(f"celebration trigger: {celebration!r}")
+    print(f"spike basis: {'trailing 4wk avg' if have_4_weeks else 'same-day team record (under 4 weeks of history)'}")
+    print(f"perf candidates: {[(c['name'], c['zeros']) for c in cands]}")
