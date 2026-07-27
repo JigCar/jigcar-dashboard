@@ -729,26 +729,27 @@ cov.update({"mtg_included":mc["included_count"],"mtg_excluded":mc["excluded_coun
 READ_OVERALL = J(
  "<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> "
  "\u00a326,400 is won, 6.6% of the \u00a3400,000 target, both deals Chris. \u00a3195,600 sits in Contracts, which still "
- "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 40 "
- "external meetings in July, 74 attendee-credits across the six. Elliott carries 30 of those credits, Rupert and James "
- "12 each, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts "
- "what he touches, both Q3 closes and \u00a3147,600 of the \u00a3195,600 out for contract, on six external meetings.")
+ "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 41 "
+ "external meetings in July, 78 attendee-credits across the six. Elliott carries 30 of those credits, James and Rupert 13 "
+ "each, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what "
+ "he touches, both Q3 closes and \u00a3147,600 of the \u00a3195,600 out for contract, on seven external meetings.")
 
 READ_LIST = J(
  '<li><span class="pill red">Flag</span> <strong>Citygate \u00a375,600 and West Herr \u00a372,000</strong> both passed '
  'their 20 July estimated close and have sat in Contracts for seven days. That is \u00a3147,600, three quarters of the '
  'contract book, with no stage movement logged. Chris owns both.</li>'
- '<li><span class="pill green">First measured move</span> <strong>Bianca</strong> advanced <strong>Nelson Automotive '
- 'Group</strong> from Buy Signal to Qualification. This is the first progression the stage diff has observed rather than '
- 'inferred, and it is exactly the Buy-Signal-to-Qualification step the team was asked to record so the creation cap '
- 'releases.</li>'
+ '<li><span class="pill green">Measured move</span> <strong>Bianca</strong> advanced <strong>Nelson Automotive Group'
+ '</strong> from Buy Signal to Qualification. This is the first progression the stage diff has observed rather than '
+ 'inferred, and it is the Buy-Signal-to-Qualification step the team was asked to record so the creation cap releases.</li>'
  '<li><span class="pill green">Working it</span> <strong>Chris</strong>: 19 completed cadence tasks and 12 LinkedIn '
- 'connects this week, 16 deals created this month, both closed-won deals. Gap is calls, one all month.</li>'
- '<li><span class="pill red">Flag</span> <strong>Luke</strong>: three sales meetings all quarter and none in the last '
- 'seven days, no completed cadence tasks, and none of his 12 Buy Signal deals shows recorded outreach. He created 16 '
- 'deals this month, so the top of the funnel is moving while the conversation end has gone quiet.</li>'
- '<li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 30 meeting credits, <strong>Rupert</strong> '
- 'and <strong>James</strong> at 12 each. Worth asking which of those a rep could be running instead.</li>'
+ 'connects this week, 16 deals created this month, both closed-won deals, and he ran today\u2019s Ecomotive value-case '
+ 'present back. Gap is calls, one all month.</li>'
+ '<li><span class="pill amber">Watch</span> <strong>Luke</strong>: four sales meetings all quarter, but the Ecomotive '
+ 'present back today is his first in seven days. Still no completed cadence tasks, and none of his 12 Buy Signal deals '
+ 'shows recorded outreach. He created 16 deals this month, so the top of the funnel is moving faster than the '
+ 'conversations behind it.</li>'
+ '<li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 30 meeting credits, <strong>James</strong> '
+ 'and <strong>Rupert</strong> at 13 each. Worth asking which of those a rep could be running instead.</li>'
  '<li><span class="pill grey">Account side</span> <strong>Bianca</strong>: 11 meeting credits, nearly all existing '
  'accounts (Citygate, Vindis, RH Car Transport, Big Motoring World, LSH). Right shape for onboarding and CS, thin on new '
  'business by design.</li>'

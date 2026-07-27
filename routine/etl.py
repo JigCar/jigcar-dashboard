@@ -4,7 +4,7 @@ import json, collections, datetime, os
 
 SP="/tmp/claude-0/-home-user-jigcar-dashboard/b183b5d1-3506-53f2-a1fc-bfac32d1ea9e/scratchpad"
 RUN_DATE="2026-07-27"
-RUN_STAMP="27 Jul 2026, 14:05"
+RUN_STAMP="27 Jul 2026, 14:15"
 QUARTER_TARGET=400000
 REPS=["Chris","Luke","James","Bianca","Elliott","Rupert"]
 IDX={r:i for i,r in enumerate(REPS)}
@@ -82,7 +82,7 @@ calls_daily={
 # ---------- emails (Attio multi-mailbox, de-duped by sender+subject+sent_at) ----------
 # Complete for the run date only. Earlier days in the period have no coverage this run
 # (first run, no accumulated history) and are rendered as a labelled floor.
-emails_daily={ "2026-07-27":[1,0,0,3,10,1] }
+emails_daily={ "2026-07-27":[1,0,0,4,10,2] }
 EMAIL_COVERED_FROM="2026-07-27"
 # ---------- tasks completed (dated by created_at: Attio exposes no completion timestamp) ----------
 tasks_daily={
@@ -153,17 +153,34 @@ for d in deals:
                        "from":old_stage,"to":new_stage,"kind":kind,"date":RUN_DATE,
                        "value":d["value"]})
 
+# Observed moves accumulate. A second run on the same day sees no new diff (it already
+# applied the change to its own baseline), so today's row must be rebuilt from the union of
+# everything observed, not from this run's diff alone. Deduped by record/from/to/date.
+prior_moves=[]
+try:
+    with open(PREV_STATE) as fh:
+        _ps=json.load(fh)
+        prior_moves=_ps.get("stage_moves") or _ps.get("coverage",{}).get("stage_diff",[])
+except FileNotFoundError:
+    pass
+def _key(m): return (m["record_id"],m["from"],m["to"],m["date"])
+seen_moves={_key(m) for m in prior_moves}
+ALL_MOVES=list(prior_moves)
+for m in STAGE_DIFF:
+    if _key(m) not in seen_moves:
+        seen_moves.add(_key(m)); ALL_MOVES.append(m)
+
 progressed_daily=collections.defaultdict(lambda:[0]*6)
 shutoff_daily=collections.defaultdict(lambda:[0]*6)
 newly_won=[]
-for m in STAGE_DIFF:
+for m in ALL_MOVES:
     if m["kind"]=="progressed": progressed_daily[m["date"]][IDX[m["owner"]]]+=1
     elif m["kind"]=="shutoff":  shutoff_daily[m["date"]][IDX[m["owner"]]]+=1
     if m["to"]=="Closed Won" and m["record_id"] not in WON_DATES:
         WON_DATES[m["record_id"]]=RUN_DATE       # stamp the real won date on first entry
         newly_won.append(m)
 progressed_daily=dict(progressed_daily); shutoff_daily=dict(shutoff_daily)
-print("stage diff:",len(STAGE_DIFF),"move(s)",[(m["name"],m["from"],"->",m["to"],m["kind"]) for m in STAGE_DIFF])
+print("new moves this run:",len(STAGE_DIFF),"| accumulated:",len(ALL_MOVES),"move(s)",[(m["name"],m["from"],"->",m["to"],m["kind"]) for m in STAGE_DIFF])
 print("newly won stamped:",[m["name"] for m in newly_won])
 
 daily={"meetings":dict(meetings_daily),"calls":calls_daily,"emails":emails_daily,
@@ -257,12 +274,13 @@ state={"schema":2,"last_run":RUN_DATE,"last_run_stamp":RUN_STAMP,
   "won_dates_quarter_only":sorted(WON_DATE_QUARTER_ONLY),
   "pre_2026_won":sorted(PRE_2026_WON),
   "daily_metrics":daily,
+  "stage_moves":ALL_MOVES,
   "connectivity":connectivity,
   "archive":archives,
   "meeting_classification":{"excluded":{f"{d}|{t}":r for (d,t),r in EXCLUDED_MEETINGS.items()},
                             "included_count":inc_count,"excluded_count":exc_count,
                             "internal_only_count":internal_count},
-  "coverage":{"progressed_shutoff":"measured by diffing this run's stage snapshot against the previous run's","stage_diff":STAGE_DIFF,
+  "coverage":{"progressed_shutoff":"measured by diffing this run's stage snapshot against the previous run's","stage_diff":STAGE_DIFF,"stage_moves_accumulated":len(ALL_MOVES),
               "email_covered_from":EMAIL_COVERED_FROM,
               "linkedin_notes_covered_from":LI_NOTE_COVERED_FROM,
               "tasks_dated_by":"created_at (Attio exposes no completion timestamp)",
