@@ -130,35 +130,25 @@ tasks_daily = {
     "2026-07-27": [2, 0, 1, 0, 5, 0],
 }
 
-# ---------- LinkedIn ----------
-# Connects: Attio's "LinkedIn invitation sent" notes carry no rep and no owner, so they
-# are not per-person attributable from Attio alone. Attributed here via the cadence
-# Touch-1 (a completed connect task on the owner's deal), which is the spec's fallback
-# until Groovin per-seat data is wired. Every such task is linked to a deal, so the
-# deal-associated figure equals the total.
-li_conn_all = {
-    "2026-07-22": [1, 0, 0, 0, 0, 0],
-    "2026-07-23": [0, 0, 0, 1, 0, 0],
-    "2026-07-24": [10, 0, 0, 0, 0, 0],
-    "2026-07-27": [1, 0, 1, 0, 5, 0],
-}
-li_conn_deal = {k: list(v) for k, v in li_conn_all.items()}
-LI_CONN_SENT_EVENTS = 39      # Groovin "invitation sent" notes, 21-27 Jul, rep unknown
-LI_CONN_ATTRIBUTED = 19       # attributed via Touch-1; the gap is stated in coverage
-
-# Messages: the rep is named in the chat-note title, so these are attributable.
-# Counted once per person/company note pair.
-li_msg_all = {
-    "2026-07-21": [0, 0, 0, 0, 5, 0],
-    "2026-07-22": [0, 0, 1, 0, 2, 0],
-    "2026-07-23": [0, 0, 0, 0, 1, 0],
-    "2026-07-24": [0, 1, 0, 0, 2, 0],
-    "2026-07-27": [0, 0, 2, 0, 2, 0],
-}
+# ---------- LinkedIn (Groovin notes in Attio, rep read from the note body) ----------
+# The rep is NOT in the note title for invitations, which is why an earlier build fell
+# back to cadence tasks and mis-attributed. It is in the body:
+#   sent      "from <Rep> to <Contact>"
+#   accepted  "<Rep> is now connected with <Contact>."
+# Chat notes carry the rep in the title instead. Every event writes a person-side and a
+# company-side note, so events are deduped on (date, rep, contact, kind) and the company
+# side supplies the deal join. Deal-associated means an OPEN deal, New Lead through
+# Contracts, the same test the email split uses.
+_inv = json.load(open(f"{SP}/raw/li_invites.json"))
+_msg = json.load(open(f"{SP}/raw/li_msgs.json"))
+li_conn_all = _inv["sentAll"]        # invitations sent
+li_conn_deal = _inv["sentDeal"]
+li_acc_all = _inv["accAll"]          # invitations accepted, i.e. connections made
+li_acc_deal = _inv["accDeal"]
+li_msg_all = _msg["all"]
+li_msg_deal = _msg["deal"]
 LI_NOTE_COVERED_FROM = "2026-07-21"
-
-# deal-associated messages: resolved in code from the chat note's company -> deal join.
-li_msg_deal = json.load(open(f"{SP}/raw/li_msg_deal.json"))
+LI_ATTRIBUTION = "read from the Groovin note body; no cadence-task proxy is used"
 
 # ---------- email deal split (classify_emails.py) ----------
 # Sent emails split by what the recipient is to us. A raw count says how busy
@@ -244,6 +234,7 @@ daily = {"meetings": dict(meetings_daily), "calls": calls_daily, "emails": email
          "tasks": tasks_daily, "deals": dict(deals_daily), "progressed": dict(progressed_daily),
          "shutoff": dict(shutoff_daily), "liConnAll": li_conn_all, "liConnDeal": li_conn_deal,
          "liMsgAll": li_msg_all, "liMsgDeal": li_msg_deal,
+         "liAccAll": li_acc_all, "liAccDeal": li_acc_deal,
          "emailsDeal": emails_deal, "emailsCust": emails_cust}
 
 # ---------- revenue ----------
@@ -416,9 +407,11 @@ coverage = {
     "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
     "linkedin_notes_covered_from": LI_NOTE_COVERED_FROM,
     "tasks_dated_by": "completed_at from the Attio tasks API",
-    "li_connects_attributed_by": "cadence Touch-1 completed connect task on the owner's deal",
-    "li_connect_gap": (f"Groovin logged {LI_CONN_SENT_EVENTS} invitation-sent events 21-27 Jul but the notes carry "
-                       f"no rep; {LI_CONN_ATTRIBUTED} are attributed via Touch-1 tasks"),
+    "li_connects_attributed_by": LI_ATTRIBUTION,
+    "li_connect_gap": ("none: every invitation sent and accepted is attributed to a named rep from the "
+                       "note body, deduped across the person and company copies"),
+    "li_accepted_note": ("connections made lag the invitation that earned them, often by weeks, so a high "
+                         "accepted count reflects earlier outreach rather than work done in the period"),
     "calls_source": "Allo team analytics per seat; Rupert has no Allo account",
     "email_split_from": EMAIL_SPLIT_FROM,
     "email_split_to": EMAIL_SPLIT_TO,

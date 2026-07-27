@@ -232,7 +232,7 @@ HEAD = r'''<!DOCTYPE html>
     <p class="lead">Sales meetings count external meetings that move a deal forward (see the definition in coverage notes). Emails are sent emails from Attio across all connected mailboxes. LI connects / LI msgs show LinkedIn connections and messages as <strong>all (deal-associated)</strong>. Progressed / shut off attributed by deal owner. Closed won and contract out are quarter-level and do not move with the filter.</p>
     <table id="summary">
       <thead><tr>
-        <th>Person</th><th>Sales mtgs</th><th>Calls</th><th>Emails (deal)</th><th>LI conn</th><th>LI msgs</th><th>Tasks</th><th>Deals</th><th>Progressed</th><th>Shut off</th><th>Contract out (£)</th><th>Closed won (£)</th>
+        <th>Person</th><th>Sales mtgs</th><th>Calls</th><th>Emails (deal)</th><th>LI sent</th><th>LI conn</th><th>LI msgs</th><th>Tasks</th><th>Deals</th><th>Progressed</th><th>Shut off</th><th>Contract out (£)</th><th>Closed won (£)</th>
       </tr></thead>
       <tbody id="summaryBody"></tbody>
     </table>
@@ -256,7 +256,7 @@ HEAD = r'''<!DOCTYPE html>
       <br><br>
       <strong>Excluded:</strong> internal-only meetings (all attendees on a jigcar.com address), including dailies, weeklies, all-hands, one-to-ones, prep and deck reviews; advisers and the chairman; investors; media and press; suppliers and 3PL carriers; tooling and vendor demos; partner or channel exploration not attached to a deal; recruitment and personal appointments. <span id="mtgAudit"></span>
       <br><br>
-      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. The <strong>(live deal)</strong> figure beside each email count is the recipient join: the email went to a company with an open deal, New Lead through Contracts, with Closed Won accounts counted separately on the customer line. It is resolved by recipient domain to the Attio company and its strongest deal state, and is classified only for <span id="splitWindow"></span>; email totals outside that window carry no split and show 0 deal-associated, which means unclassified rather than unrelated. Join coverage: <span id="splitJoin"></span>. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; connections carry no rep in Attio, so they are attributed via the cadence Touch-1 completed connect task on the owner's deal, which is why every connection also counts as deal-associated. Groovin per-seat attribution is not yet wired, so the connection split is a method proxy, not a per-seat measurement. Message deal-association is a floor: only pairs whose company record is confirmed to carry a deal are counted. <strong>Tasks</strong> are dated by their actual completion timestamp from the Attio tasks endpoint. <strong>Progressed / shut off:</strong> measured by diffing this run's stage snapshot of all <span id="dealCount"></span> deals against the previous run's. Today's diff found four forward moves, all Buy Signal to Qualification: Nelson Automotive Group (Bianca), Hendrick Automotive Group and Sonic Automotive / EchoPark (Elliott) and Cardinale Automotive Group (James). Nothing was shut off. Moves that happened before the routine existed are never backfilled, so these columns count only what the routine has actually observed between two runs.
+      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. The <strong>(live deal)</strong> figure beside each email count is the recipient join: the email went to a company with an open deal, New Lead through Contracts, with Closed Won accounts counted separately on the customer line. It is resolved by recipient domain to the Attio company and its strongest deal state, and is classified only for <span id="splitWindow"></span>; email totals outside that window carry no split and show 0 deal-associated, which means unclassified rather than unrelated. Join coverage: <span id="splitJoin"></span>. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; invitations carry the rep in the note <em>body</em> rather than the title ("from Elliott Perks to David Farner", "James Griffin is now connected with …"), so requests sent and connections made are both attributed to a named person from Attio alone. An earlier build read only the title, found no rep, and fell back to counting cadence tasks, which credited the task assignee rather than the sender; that proxy has been removed. Each event writes a person-side and a company-side note, so events are deduped on date, rep, contact and kind. <strong>(deal)</strong> throughout means the contact's company has an open deal, New Lead through Contracts, the same test the email split uses. <strong>Connections made lag</strong> the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period. <strong>Tasks</strong> are dated by their actual completion timestamp from the Attio tasks endpoint. <strong>Progressed / shut off:</strong> measured by diffing this run's stage snapshot of all <span id="dealCount"></span> deals against the previous run's. Today's diff found four forward moves, all Buy Signal to Qualification: Nelson Automotive Group (Bianca), Hendrick Automotive Group and Sonic Automotive / EchoPark (Elliott) and Cardinale Automotive Group (James). Nothing was shut off. Moves that happened before the routine existed are never backfilled, so these columns count only what the routine has actually observed between two runs.
     </div>
 
     <h2><span class="bar">4.</span> Read &amp; actions</h2>
@@ -388,6 +388,7 @@ function render(){
   const mtgs=agg('meetings',v),calls=agg('calls',v),emails=agg('emails',v),tasks=agg('tasks',v),deals=agg('deals',v),prog=agg('progressed',v),shut=agg('shutoff',v);
   const liCa=agg('liConnAll',v),liCd=agg('liConnDeal',v),liMa=agg('liMsgAll',v),liMd=agg('liMsgDeal',v);
   const emDeal=agg('emailsDeal',v),emCust=agg('emailsCust',v);
+  const liAa=agg('liAccAll',v),liAd=agg('liAccDeal',v);
   const cwByRep=reps.map(r=>closedWonDeals.filter(d=>d.owner===r).reduce((a,d)=>a+d.arr,0));
   const ocByRep=reps.map(r=>contractDeals.filter(d=>d.owner===r).reduce((a,d)=>a+d.arr,0));
 
@@ -408,7 +409,8 @@ function render(){
       <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${connectivity.seats[r][0]==='na'?'n/a':calls[i]}</span></div>
       <div class="stat"><span>Emails <span class="m" style="font-weight:600">(live deal)</span></span><span class="v ${emails[i]?'g':'m'}">${emails[i]} <span class="m" style="font-weight:600">(${emDeal[i]})</span></span></div>
       <div class="stat"><span>… to customers</span><span class="v ${emCust[i]?'g':'m'}">${emCust[i]}</span></div>
-      <div class="stat"><span>LI connects (deal)</span><span class="v ${liCa[i]?'g':'m'}">${liCa[i]} <span class="m" style="font-weight:600">(${liCd[i]})</span></span></div>
+      <div class="stat"><span>LI requests sent <span class="m" style="font-weight:600">(deal)</span></span><span class="v ${liCa[i]?'g':'m'}">${liCa[i]} <span class="m" style="font-weight:600">(${liCd[i]})</span></span></div>
+      <div class="stat"><span>LI connections made <span class="m" style="font-weight:600">(deal)</span></span><span class="v ${liAa[i]?'g':'m'}">${liAa[i]} <span class="m" style="font-weight:600">(${liAd[i]})</span></span></div>
       <div class="stat"><span>LI messages (deal)</span><span class="v ${liMa[i]?'g':'m'}">${liMa[i]} <span class="m" style="font-weight:600">(${liMd[i]})</span></span></div>
       <div class="stat"><span>Tasks done</span><span class="v ${tasks[i]?'g':'m'}">${tasks[i]}</span></div>
       <div class="stat"><span>Deals assigned</span><span class="v">${deals[i]}</span></div>
@@ -420,21 +422,22 @@ function render(){
   });
 
   const tb=document.getElementById('summaryBody'); tb.innerHTML='';
-  const tot=[0,0,0,0,0,0,0,0,0,0,0];
+  const tot=[0,0,0,0,0,0,0,0,0,0,0,0];
   reps.forEach((r,i)=>{
     tb.innerHTML+=`<tr><td>${r}</td>
       <td class="${mtgs[i]?'g':'m'}">${mtgs[i]}</td>
       <td>${connectivity.seats[r][0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
       <td class="${emails[i]?'g':'m'}">${emails[i]} <span class="m">(${emDeal[i]})</span></td>
       <td class="${liCa[i]?'':'m'}">${liCa[i]} <span class="m">(${liCd[i]})</span></td>
+      <td class="${liAa[i]?'':'m'}">${liAa[i]} <span class="m">(${liAd[i]})</span></td>
       <td class="${liMa[i]?'':'m'}">${liMa[i]} <span class="m">(${liMd[i]})</span></td>
       <td>${tasks[i]}</td><td>${deals[i]}</td>
       <td class="${prog[i]?'g':'m'}">${prog[i]}</td><td class="${shut[i]?'r':'m'}">${shut[i]}</td>
       <td class="${ocByRep[i]?'a':'m'}">${ocByRep[i]?'£'+ocByRep[i].toLocaleString():'£0'}</td>
       <td class="${cwByRep[i]?'g':'m'}">${cwByRep[i]?'£'+cwByRep[i].toLocaleString():'£0'}</td></tr>`;
-    tot[0]+=mtgs[i];tot[1]+=calls[i];tot[2]+=emails[i];tot[3]+=liCa[i];tot[4]+=liMa[i];tot[5]+=tasks[i];tot[6]+=deals[i];tot[7]+=prog[i];tot[8]+=shut[i];tot[9]+=ocByRep[i];tot[10]+=cwByRep[i];
+    tot[0]+=mtgs[i];tot[1]+=calls[i];tot[2]+=emails[i];tot[3]+=liCa[i];tot[11]+=liAa[i];tot[4]+=liMa[i];tot[5]+=tasks[i];tot[6]+=deals[i];tot[7]+=prog[i];tot[8]+=shut[i];tot[9]+=ocByRep[i];tot[10]+=cwByRep[i];
   });
-  tb.innerHTML+=`<tr><td class="total">Team</td><td class="total">${tot[0]}</td><td class="total">${tot[1]}</td><td class="total">${tot[2]}</td><td class="total">${tot[3]}</td><td class="total">${tot[4]}</td><td class="total">${tot[5]}</td><td class="total">${tot[6]}</td><td class="total">${tot[7]}</td><td class="total">${tot[8]}</td><td class="total">£${tot[9].toLocaleString()}</td><td class="total">£${tot[10].toLocaleString()}</td></tr>`;
+  tb.innerHTML+=`<tr><td class="total">Team</td><td class="total">${tot[0]}</td><td class="total">${tot[1]}</td><td class="total">${tot[2]}</td><td class="total">${tot[3]}</td><td class="total">${tot[11]}</td><td class="total">${tot[4]}</td><td class="total">${tot[5]}</td><td class="total">${tot[6]}</td><td class="total">${tot[7]}</td><td class="total">${tot[8]}</td><td class="total">£${tot[9].toLocaleString()}</td><td class="total">£${tot[10].toLocaleString()}</td></tr>`;
 
   document.getElementById('cmpTitle').textContent='Outreach comparison ('+viewLabel[v]+')';
   if(cmpChart)cmpChart.destroy();
