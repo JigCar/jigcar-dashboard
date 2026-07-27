@@ -16,6 +16,13 @@ reverts every improvement made since that snapshot was taken.
 
 If you need to change the page, change `render.py` and commit it.
 
+**"The code wins" covers layout and markup, never facts.** A sentence in the template that asserts
+something about the data — how many deals moved today, which ones, what a total is — is data wearing
+markup's clothes, and this rule would otherwise protect it forever. One had already been written in
+as prose about "today's diff" naming four specific deals, and it would have gone stale by the next
+morning while reading as authoritative. Any narrative that states a number or a name must be built
+from the payload at render time. If you find one hardcoded, replace it with a span the render fills.
+
 ## This prompt is the specification for behaviour. The committed code must follow it.
 
 The routine's source lives in `routine/`. That code is what executes, so **when this prompt and the
@@ -102,8 +109,14 @@ expired token. Never print `GH_TOKEN` anywhere.
 
 ## Architecture and run order
 
-`parse_granola.py` → `parse_leave.py` → `classify_emails.py` → `etl.py` → `render.py` → `qa.py` →
-`slack_messages.py`. All read `JIGCAR_SP` for the working directory.
+`pull_attio.py` → `pull_linkedin.py` → `parse_granola.py` → `parse_leave.py` → `classify_emails.py`
+→ `etl.py` → `render.py` → `qa.py` → `qa_browser.mjs` → `slack_messages.py`. All read `JIGCAR_SP`
+for the working directory.
+
+The `pull_*` and `parse_*` steps write only to `raw/`, so a transform never calls an API and a rerun
+is reproducible from the same checkout. `etl.py` holds no metric values of its own: every figure it
+writes comes from `raw/` or from the previous state. If you find a tally hardcoded in `etl.py`, that
+is a bug to fix, not data to trust — it was true on the day it was written and silently wrong after.
 
 1. **Pull** every connector. Record per-connector and per-seat success or failure.
 2. **Load** the previous state from `dashboard_state.json`.
@@ -136,6 +149,12 @@ Attio objects: deals slug `deals`; companies `4a58e655-0c97-44f5-b57b-5ed4e14e37
 and notes: `POST /v2/objects/<slug>/records/query` (limit 500), `GET /v2/tasks`, `GET /v2/notes`
 (limit 50, paginate). Credentials are injected by the proxy. There is **no** public emails endpoint;
 `/v2/emails` 404s, so email must go through the MCP search.
+
+**Two deal attributes look like the estimated close date and only one is one.** `est_closed_date` is
+a real date attribute. `est_close_date` is free text and holds values like `July`. Read the text one
+as a date and the build crashes; worse, inferring a day from `July` would promote an estimate to a
+fact, which this routine must never do. Prefer `est_closed_date`, accept a value only if it is a
+valid ISO date, and render anything else as `est TBC`.
 
 Deal stages: New Lead, Buy Signal, Qualification, Demo, Proposal, Trial, Contracts, Closed Won
 (progression, in order) and Nurture, Closed Lost, Churn, Non-ICP (shut-off states).
@@ -290,6 +309,18 @@ person and penalises whoever is sending today.
 Per workspace connector (Attio, Granola, Apollo) and per seat (Allo, Email, Groovin): `ok`,
 `partial`, `unknown`, `down`, `na`. Set from the run's actual results.
 
+**The shape is a contract with the template, and getting it wrong blanks most of the page rather
+than just this panel:**
+
+- `workspace` is an **array** of `{name, status, note}`. The template calls `.map()` on it.
+- `seats` is keyed by **person**, each value a three-item list in the order
+  `[Allo, Email, Groovin]`.
+
+The scorecard reads `connectivity.seats[<person>][0]` for the Calls cell, so a dict where a list
+belongs, or seats keyed by connector instead of by person, takes out the metric cards and the
+summary table as well as the connector panel. `etl.py` validates both and must exit non-zero on a
+mismatch. This has happened, it published a blank dashboard, and no static check caught it.
+
 ## Revenue, bonus and archive
 
 **Revenue banner:** target, closed won (£ and % of target), out for contract, remaining if contracts
@@ -425,6 +456,12 @@ fires:
    the metric, above a floor of three. Until the store holds four weeks, fire only on a same-day team
    record — and **only on a metric with at least five days of history**, or thin coverage names
    someone for an artefact rather than an achievement.
+   **History depth is judged per metric, never pooled across them.** Pooling the dates made sixteen
+   days of meetings plus twenty of tasks look like four weeks of both, fired the average branch, and
+   printed "a team record for a single day" about a figure that was not a record. A record must be
+   **strictly greater** than every other day, and the wording must state whichever basis actually
+   fired. Equalling the previous best is not a record, and naming someone for it is a false claim
+   about a real person.
 
 **Never** put performance concern, deal risk, aged contracts or anyone's shortfall in this channel,
 and never name a person in a neutral or negative context here. Named credit goes to the team; named
@@ -459,14 +496,34 @@ Run `qa.py` every time and do not commit if it fails:
    matching `id="..."`. One mismatch throws on first render and blanks the whole page.
 2. **Renders are isolated.** Each top-level render call sits in its own try/catch.
 3. **The run stamp is embedded** in the built file.
+4. **Syntax-check the built JavaScript** (`node --check`). A parse error blanks the page and static
+   inspection does not catch it.
+5. **The summary table's header, body and totals rows have equal column counts.**
+
+**Then run `qa_browser.mjs`, and do not commit if it fails. This is the check that matters.**
+Checks 1 to 5 are necessary and nowhere near sufficient: a build once passed all of them while the
+published page was completely blank. Static QA cannot see a script that dies before its render
+functions are defined, and it cannot see a malformed data shape at all.
+
+Load the built file in headless Chromium and assert the **data** is on the page, not merely that the
+markup parsed:
+
+- the scorecard has one row per person plus the team totals row, and the first row is not empty
+- the run stamp, the coverage panel, the stage-move note and the connector panel are all populated
+- no uncaught page error, and no render reported a failure into the console
+
+Run it **twice: once with the chart CDN blocked and once with it served.** The blocked pass is the
+real test, because that is the failure that reached the team: a print taken where the CDN is
+unreachable. Every number must survive it. Simulate the served pass with a stub rather than relying
+on the network, or the check silently never runs.
+
+The browser check needs the `playwright` package and the pre-installed Chromium. If it cannot run,
+**say so and do not publish on the strength of the static checks alone** — they have already been
+proven to pass on a blank page. Never treat "the CDN was unreachable from the sandbox" as a build
+failure; treat it as the condition to test against.
 
 Also:
 
-- **Syntax-check the built JavaScript** (`node --check`) before committing. QA does not catch a
-  parse error, and a parse error blanks the page.
-- Where practical, execute a render function against stubs to confirm it produces markup, rather
-  than trusting that it parses.
-- Check the summary table's header, body and totals rows have equal column counts.
 - A chart drawn inside a hidden tab renders at zero height, so re-render a tab's charts when it
   becomes visible.
 
@@ -483,6 +540,12 @@ daily read state a conclusion, not a topic label. Keep hard numbers separate fro
 - Never promote an estimate to a fact. The only real close dates are stamped by the stage diff or
   the confirmed back-book list.
 - The written read must reconcile with the tables.
+- **No unguarded reference to an external library at the top of the script.** Chart.js is fetched
+  from a CDN, and a bare `Chart.defaults` assignment at script top-level threw a ReferenceError
+  before a single render function was defined, so the entire dashboard published blank. Guard it,
+  stub `new Chart()` and `.destroy()` when the library is absent, and show a visible notice that the
+  graphs are blank while the tables are correct. **A missing chart library may cost the charts, never
+  the numbers**, and a blank graph must never be readable as zero data.
 - The page is a static build. It carries a **data-as-at stamp**, not a refresh control. Do not add a
   button that appears to fetch live data: it cannot, because the page has no credentials and the
   repo is public. If you add any control that re-fetches, it must compare the published build stamp
@@ -491,6 +554,9 @@ daily read state a conclusion, not a topic label. Keep hard numbers separate fro
 ## Definition of done
 
 - `index-18.html` renders from `render.py` with live data, and QA plus the JS syntax check pass.
+- **The browser check passes with the chart CDN blocked**, proving the scorecard, the connector panel
+  and every figure are actually on the published page. A build that only passes static QA is not
+  done: that combination has shipped a blank dashboard.
 - Every scorecard number traces to a pull or the state store.
 - Progressed, shut off and closed won come from the stage diff, attributed by owner.
 - Emails are the de-duped multi-mailbox count with a labelled live-deal / customer split.
@@ -516,6 +582,10 @@ daily read state a conclusion, not a topic label. Keep hard numbers separate fro
 - Keep the run idempotent: re-running the same day overwrites that day's metric row.
 - Dependencies: Attio, Allo, Granola, Groovin, Apollo, Google Calendar (Zelt), the Slack connection
   being a member of both private channels, and egress to `api.github.com`.
+- The browser check also needs the `playwright` package and the pre-installed Chromium at
+  `/opt/pw-browsers/chromium`. Never run `playwright install`; `PLAYWRIGHT_BROWSERS_PATH` already
+  points at it. `playwright` resolves from the directory it is installed in, so run the check from
+  there rather than relying on `NODE_PATH`.
 
 ## Known gaps, carried forward
 
