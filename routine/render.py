@@ -182,6 +182,13 @@ HEAD = r'''<!DOCTYPE html>
     <div class="askmsg" id="askmsg"></div>
   </div>
 
+  <div id="chartWarn" style="display:none;margin:0 0 16px;padding:11px 15px;background:rgba(224,169,59,.13);
+    border:1px solid #5c4a1f;border-radius:10px;color:#E0A93B;font-size:13px">
+    Charts could not load, so the graphs on this page are blank. Every figure in the
+    tables is unaffected and correct. The chart library is fetched from a CDN, which
+    this network or this print did not reach.
+  </div>
+
   <div class="tabs" id="tabs">
     <button data-t="momentum" class="on">Momentum</button>
     <button data-t="board">Leaderboard &amp; bonus</button>
@@ -325,7 +332,21 @@ const reps=['Chris','Luke','James','Bianca','Elliott','Rupert'];
 const roles=['Commercial Lead','Outbound / sales','Transport Director','Outbound / onboarding','Founder & CEO','Co-founder & CPO'];
 const repColors=['#088E4D','#E0A93B','#A06AD9','#6AD98E','#4B9FE0','#d0d0d0'];
 const green='#088E4D',bright='#6AD98E',amber='#E0A93B',red='#E05B5B',blue='#4B9FE0',grid='#2e2e2e',tick='#9a9a9a';
-Chart.defaults.color=tick;Chart.defaults.font.family="Inter,-apple-system,sans-serif";Chart.defaults.font.size=12;
+// Chart.js is loaded from a CDN. If it does not arrive - blocked network, offline,
+// a corporate proxy, or a print that fires before the script resolves - every NUMBER
+// on this page must still render. This was previously a bare Chart.defaults
+// assignment here at the top of the script, which threw a ReferenceError before a
+// single render function had even been defined: the scorecard, the metrics and the
+// connector panel all came out empty. A missing chart library may cost the charts,
+// never the data. Do not reintroduce an unguarded reference to Chart.
+const CHART_OK = typeof Chart !== 'undefined';
+if(CHART_OK){
+  Chart.defaults.color=tick;Chart.defaults.font.family="Inter,-apple-system,sans-serif";Chart.defaults.font.size=12;
+}else{
+  // Stub that satisfies `new Chart(...)` and the `.destroy()` calls, so no render
+  // function throws and only the canvases stay blank.
+  window.Chart=function(){return {destroy(){},update(){},resize(){}};};
+}
 
 // ===== QUARTER REVENUE TARGET - update at the start of each quarter =====
 const QUARTER_TARGET=__QT__; // Q3 2026
@@ -408,7 +429,7 @@ function render(){
         return o?'<span class="leavetag">'+(o.half?'off '+o.half:'on leave')+'</span>':'';})()}</div>
       <div class="role">${roles[i]}</div>
       <div class="stat"><span>Sales meetings</span><span class="v ${mtgs[i]?'g':'m'}">${mtgs[i]}</span></div>
-      <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${connectivity.seats[r][0]==='na'?'n/a':calls[i]}</span></div>
+      <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${(connectivity.seats[r]||[])[0]==='na'?'n/a':calls[i]}</span></div>
       <div class="stat"><span>Emails <span class="m" style="font-weight:600">(live deal)</span></span><span class="v ${emails[i]?'g':'m'}">${emails[i]} <span class="m" style="font-weight:600">(${emDeal[i]})</span></span></div>
       <div class="stat"><span>… to customers</span><span class="v ${emCust[i]?'g':'m'}">${emCust[i]}</span></div>
       <div class="stat"><span>LI requests sent <span class="m" style="font-weight:600">(deal)</span></span><span class="v ${liCa[i]?'g':'m'}">${liCa[i]} <span class="m" style="font-weight:600">(${liCd[i]})</span></span></div>
@@ -428,7 +449,7 @@ function render(){
   reps.forEach((r,i)=>{
     tb.innerHTML+=`<tr><td>${r}</td>
       <td class="${mtgs[i]?'g':'m'}">${mtgs[i]}</td>
-      <td>${connectivity.seats[r][0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
+      <td>${(connectivity.seats[r]||[])[0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
       <td class="${emails[i]?'g':'m'}">${emails[i]} <span class="m">(${emDeal[i]})</span></td>
       <td class="${liCa[i]?'':'m'}">${liCa[i]} <span class="m">(${liCd[i]})</span></td>
       <td class="${liAa[i]?'':'m'}">${liAa[i]} <span class="m">(${liAd[i]})</span></td>
@@ -598,7 +619,7 @@ function renderConn(){
   const ws=connectivity.workspace.map(t=>`<span class="chip"><span class="cdot ${t.status}"></span><b>${t.name}</b> <small>${t.note}</small></span>`).join('');
   const cols=['Allo','Email','Groovin'];
   let head='<tr><th>Person</th>'+cols.map(c=>`<th>${c}</th>`).join('')+'</tr>';
-  let rows=reps.map(r=>{ const s=connectivity.seats[r]||['unknown','unknown','unknown'];
+  let rows=reps.map(r=>{ const s=(Array.isArray(connectivity.seats[r])?connectivity.seats[r]:['unknown','unknown','unknown']);
     return `<tr><td>${r}</td>`+s.map(x=>`<td><span class="cdot ${x}" title="${statusLabel(x)}"></span></td>`).join('')+'</tr>';
   }).join('');
   document.getElementById('conn').innerHTML=`
@@ -856,6 +877,7 @@ document.querySelectorAll('#tabs button').forEach(b=>{
     b.classList.add('on'); state.tab=b.dataset.t; applyView(); };
 });
 
+if(!CHART_OK){ try{ document.getElementById('chartWarn').style.display='block'; }catch(e){} }
 [['connectivity',renderConn]].forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
 try{ applyView(); }catch(e){ console.error('applyView failed',e); }
 </script>

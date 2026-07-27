@@ -25,7 +25,13 @@ Pull steps first. Each writes only to `raw/`, so a transform never calls an API.
    no metric values of its own.
 3. `render.py` - injects the payload into the canonical template and writes
    `index-18.html`.
-4. `qa.py` - the output checks below. The build is not committed if any fails.
+4. `qa.py` - the static output checks below. The build is not committed if any fails.
+4b. `qa_browser.mjs` - loads the built file in headless Chromium and asserts the DATA
+   renders, once with the chart CDN blocked and once with it served. **This is the
+   check that matters.** The static QA once passed on a page that was completely
+   blank, because it verified each render call sat in its own try/catch while the
+   script was dying before those functions were even defined.
+   Run: `node routine/qa_browser.mjs <path>/index-18.html` (needs `playwright`).
 5. `slack_messages.py` - builds the two per-channel messages and prints them for
    review before anything is posted.
 
@@ -87,3 +93,19 @@ interpreting connectivity status. It never invents a metric value.
 
 Charts are (re)built when a tab becomes visible, because a chart drawn inside a
 hidden tab renders at zero height.
+
+## Two ways this page has come out blank. Do not reintroduce either.
+
+1. **An unguarded `Chart` reference at the top of the script.** Chart.js is fetched
+   from a CDN. When it did not arrive, `Chart.defaults.color=...` threw a
+   ReferenceError before any render function was defined, so the entire page was
+   empty. `CHART_OK` now guards it and a stub satisfies `new Chart()` / `.destroy()`,
+   so a missing library costs the graphs and never the numbers. A visible amber
+   notice says so, because a blank graph must not read as zero data.
+2. **A wrong `connectivity` shape.** `workspace` must be an ARRAY of
+   `{name,status,note}` and `seats` must be keyed by PERSON with a 3-item
+   `[Allo, Email, Groovin]` list. The scorecard reads `connectivity.seats[r][0]` for
+   the Calls cell, so a wrong shape blanks the metric cards and the summary table as
+   well as the connector panel. `etl.py` now validates this and exits non-zero.
+
+Neither was caught by static QA. Both are caught by `qa_browser.mjs`.

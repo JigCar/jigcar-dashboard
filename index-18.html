@@ -176,6 +176,13 @@
     <div class="askmsg" id="askmsg"></div>
   </div>
 
+  <div id="chartWarn" style="display:none;margin:0 0 16px;padding:11px 15px;background:rgba(224,169,59,.13);
+    border:1px solid #5c4a1f;border-radius:10px;color:#E0A93B;font-size:13px">
+    Charts could not load, so the graphs on this page are blank. Every figure in the
+    tables is unaffected and correct. The chart library is fetched from a CDN, which
+    this network or this print did not reach.
+  </div>
+
   <div class="tabs" id="tabs">
     <button data-t="momentum" class="on">Momentum</button>
     <button data-t="board">Leaderboard &amp; bonus</button>
@@ -319,11 +326,25 @@ const reps=['Chris','Luke','James','Bianca','Elliott','Rupert'];
 const roles=['Commercial Lead','Outbound / sales','Transport Director','Outbound / onboarding','Founder & CEO','Co-founder & CPO'];
 const repColors=['#088E4D','#E0A93B','#A06AD9','#6AD98E','#4B9FE0','#d0d0d0'];
 const green='#088E4D',bright='#6AD98E',amber='#E0A93B',red='#E05B5B',blue='#4B9FE0',grid='#2e2e2e',tick='#9a9a9a';
-Chart.defaults.color=tick;Chart.defaults.font.family="Inter,-apple-system,sans-serif";Chart.defaults.font.size=12;
+// Chart.js is loaded from a CDN. If it does not arrive - blocked network, offline,
+// a corporate proxy, or a print that fires before the script resolves - every NUMBER
+// on this page must still render. This was previously a bare Chart.defaults
+// assignment here at the top of the script, which threw a ReferenceError before a
+// single render function had even been defined: the scorecard, the metrics and the
+// connector panel all came out empty. A missing chart library may cost the charts,
+// never the data. Do not reintroduce an unguarded reference to Chart.
+const CHART_OK = typeof Chart !== 'undefined';
+if(CHART_OK){
+  Chart.defaults.color=tick;Chart.defaults.font.family="Inter,-apple-system,sans-serif";Chart.defaults.font.size=12;
+}else{
+  // Stub that satisfies `new Chart(...)` and the `.destroy()` calls, so no render
+  // function throws and only the canvases stay blank.
+  window.Chart=function(){return {destroy(){},update(){},resize(){}};};
+}
 
 // ===== QUARTER REVENUE TARGET - update at the start of each quarter =====
 const QUARTER_TARGET=400000; // Q3 2026
-const RUN_STAMP="27 Jul 2026, 22:20";
+const RUN_STAMP="27 Jul 2026, 23:10";
 const RUN_DATE="2026-07-27";
 const STAGE_MOVES=[{"date": "2026-07-27", "from": "Buy Signal", "kind": "progressed", "name": "Nelson Automotive Group", "owner": "Bianca", "record_id": "9c4d0f06", "to": "Qualification", "value": 0}, {"date": "2026-07-27", "from": "Buy Signal", "kind": "progressed", "name": "Hendrick Automotive Group", "owner": "Elliott", "record_id": "41b75c36", "to": "Qualification", "value": 0}, {"date": "2026-07-27", "from": "Buy Signal", "kind": "progressed", "name": "Sonic Automotive / EchoPark", "owner": "Elliott", "record_id": "6285799c", "to": "Qualification", "value": 0}, {"date": "2026-07-27", "from": "Buy Signal", "kind": "progressed", "name": "Cardinale Automotive Group", "owner": "James", "record_id": "e62789e9", "to": "Qualification", "value": 0}];
 const WON_BOOK_COUNT=16;
@@ -350,7 +371,7 @@ function bonusFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.pay:
 function bandFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.label:'-'; }
 const contractDeals=[{"name": "Citygate group", "arr": 75600.0, "owner": "Chris", "date": "20 Jul (est, passed)", "est_iso": "2026-07-20", "passed": true}, {"name": "West Herr", "arr": 72000.0, "owner": "Chris", "date": "20 Jul (est, passed)", "est_iso": "2026-07-20", "passed": true}, {"name": "Endeavour Automotive", "arr": 48000.0, "owner": "Elliott", "date": "est TBC", "est_iso": null, "passed": false}];
 const wonYTD=[{"name": "Focus VM", "arr": 24840.0, "owner": "Rupert", "quarter": "Q1", "channel": "Inbound - referral"}, {"name": "Monmotors", "arr": 43200.0, "owner": "Elliott", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "Premier Travel Logistics", "arr": 17820.0, "owner": "Luke", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "RH Car Transport", "arr": 8400.0, "owner": "Luke", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "Peter Cooper Group", "arr": 14400.0, "owner": "Chris", "quarter": "Q3", "channel": "Inbound - website"}, {"name": "Hilton Coachworks Group", "arr": 12000.0, "owner": "Chris", "quarter": "Q3", "channel": "Inbound - referral"}];
-const connectivity={"workspace": {"Attio": {"status": "ok", "note": "252 deals, 193 tasks, 2172 notes via REST"}, "Granola": {"status": "ok", "note": "128 meetings parsed, 1-27 Jul"}, "Apollo": {"status": "unknown", "note": "not queried; Apollo sends route through the Attio mailboxes and are counted there"}}, "seats": {"Allo": {"Chris": "ok", "Luke": "ok", "James": "ok", "Bianca": "ok", "Elliott": "ok", "Rupert": "na"}, "Email": {"Chris": "ok", "Luke": "ok", "James": "ok", "Bianca": "ok", "Elliott": "ok", "Rupert": "partial"}, "Groovin": {"Chris": "ok", "Luke": "ok", "James": "ok", "Bianca": "ok", "Elliott": "ok", "Rupert": "unknown"}}, "notes": {"Rupert_email": "own mailbox not connected; sends visible only where a teammate was a recipient, so his figure is a floor", "Rupert_allo": "no Allo account", "Rupert_groovin": "no LinkedIn events attributed to Rupert in the covered window; cannot distinguish no activity from no seat", "Luke_allo": "seat active, 4 calls 22-23 Jul"}, "updated": "27 Jul 2026, 22:20"};
+const connectivity={"workspace": [{"name": "Attio", "status": "ok", "note": "252 deals, 193 tasks, 2172 notes via REST"}, {"name": "Granola", "status": "ok", "note": "128 meetings parsed, 1-27 Jul"}, {"name": "Apollo", "status": "unknown", "note": "sends route via mailboxes, counted there"}], "seats": {"Chris": ["ok", "ok", "ok"], "Luke": ["ok", "ok", "ok"], "James": ["ok", "ok", "ok"], "Bianca": ["ok", "ok", "ok"], "Elliott": ["ok", "ok", "ok"], "Rupert": ["na", "partial", "unknown"]}, "notes": {"Rupert_email": "own mailbox not connected; sends visible only where a teammate was a recipient, so his figure is a floor", "Rupert_allo": "no Allo account", "Rupert_groovin": "no LinkedIn events attributed in the covered window; cannot tell no activity from no seat", "Bianca_allo": "seat active in allo_list_users, 0 calls in the period"}, "updated": "27 Jul 2026, 23:10"};
 const offToday=[{"person": "Bianca", "half": "AM"}, {"person": "Krzysztof Burka", "half": null}, {"person": "Luke", "half": null}];
 const attendance={"Chris": {"today": 1, "yesterday": 0, "week": 1, "month": 19, "quarter": 19, "trailing7": 5}, "Luke": {"today": 0, "yesterday": 0, "week": 0, "month": 17, "quarter": 17, "trailing7": 3}, "James": {"today": 1, "yesterday": 0, "week": 1, "month": 17, "quarter": 17, "trailing7": 4}, "Bianca": {"today": 1, "yesterday": 0, "week": 1, "month": 19, "quarter": 19, "trailing7": 5}, "Elliott": {"today": 1, "yesterday": 0, "week": 1, "month": 19, "quarter": 19, "trailing7": 5}, "Rupert": {"today": 1, "yesterday": 0, "week": 1, "month": 19, "quarter": 19, "trailing7": 5}};
 const ranges={"today": ["2026-07-27", "2026-07-27"], "yesterday": ["2026-07-26", "2026-07-26"], "week": ["2026-07-27", "2026-07-27"], "month": ["2026-07-01", "2026-07-27"], "quarter": ["2026-07-01", "2026-07-27"], "trailing7": ["2026-07-21", "2026-07-27"]};
@@ -402,7 +423,7 @@ function render(){
         return o?'<span class="leavetag">'+(o.half?'off '+o.half:'on leave')+'</span>':'';})()}</div>
       <div class="role">${roles[i]}</div>
       <div class="stat"><span>Sales meetings</span><span class="v ${mtgs[i]?'g':'m'}">${mtgs[i]}</span></div>
-      <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${connectivity.seats[r][0]==='na'?'n/a':calls[i]}</span></div>
+      <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${(connectivity.seats[r]||[])[0]==='na'?'n/a':calls[i]}</span></div>
       <div class="stat"><span>Emails <span class="m" style="font-weight:600">(live deal)</span></span><span class="v ${emails[i]?'g':'m'}">${emails[i]} <span class="m" style="font-weight:600">(${emDeal[i]})</span></span></div>
       <div class="stat"><span>… to customers</span><span class="v ${emCust[i]?'g':'m'}">${emCust[i]}</span></div>
       <div class="stat"><span>LI requests sent <span class="m" style="font-weight:600">(deal)</span></span><span class="v ${liCa[i]?'g':'m'}">${liCa[i]} <span class="m" style="font-weight:600">(${liCd[i]})</span></span></div>
@@ -422,7 +443,7 @@ function render(){
   reps.forEach((r,i)=>{
     tb.innerHTML+=`<tr><td>${r}</td>
       <td class="${mtgs[i]?'g':'m'}">${mtgs[i]}</td>
-      <td>${connectivity.seats[r][0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
+      <td>${(connectivity.seats[r]||[])[0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
       <td class="${emails[i]?'g':'m'}">${emails[i]} <span class="m">(${emDeal[i]})</span></td>
       <td class="${liCa[i]?'':'m'}">${liCa[i]} <span class="m">(${liCd[i]})</span></td>
       <td class="${liAa[i]?'':'m'}">${liAa[i]} <span class="m">(${liAd[i]})</span></td>
@@ -592,7 +613,7 @@ function renderConn(){
   const ws=connectivity.workspace.map(t=>`<span class="chip"><span class="cdot ${t.status}"></span><b>${t.name}</b> <small>${t.note}</small></span>`).join('');
   const cols=['Allo','Email','Groovin'];
   let head='<tr><th>Person</th>'+cols.map(c=>`<th>${c}</th>`).join('')+'</tr>';
-  let rows=reps.map(r=>{ const s=connectivity.seats[r]||['unknown','unknown','unknown'];
+  let rows=reps.map(r=>{ const s=(Array.isArray(connectivity.seats[r])?connectivity.seats[r]:['unknown','unknown','unknown']);
     return `<tr><td>${r}</td>`+s.map(x=>`<td><span class="cdot ${x}" title="${statusLabel(x)}"></span></td>`).join('')+'</tr>';
   }).join('');
   document.getElementById('conn').innerHTML=`
@@ -850,6 +871,7 @@ document.querySelectorAll('#tabs button').forEach(b=>{
     b.classList.add('on'); state.tab=b.dataset.t; applyView(); };
 });
 
+if(!CHART_OK){ try{ document.getElementById('chartWarn').style.display='block'; }catch(e){} }
 [['connectivity',renderConn]].forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
 try{ applyView(); }catch(e){ console.error('applyView failed',e); }
 </script>

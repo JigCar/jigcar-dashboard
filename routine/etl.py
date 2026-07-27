@@ -314,7 +314,36 @@ archives = {
 }
 
 # ---------- connectivity, from this run's actual results ----------
+# The SHAPE here is a contract with render.py, and getting it wrong does not fail
+# loudly, it ships a blank dashboard:
+#   workspace : ARRAY of {name,status,note}  - renderConn calls workspace.map(...)
+#   seats     : keyed by PERSON -> [Allo, Email, Groovin]  - the scorecard reads
+#               connectivity.seats[r][0] for the Calls cell, so a wrong key or a
+#               non-array takes out the metric cards and the summary table too.
+# A run once wrote workspace as a dict and seats keyed by connector. Every render
+# threw inside its own try/catch, so QA passed and the published page was empty.
+# Validate here rather than discover it in a screenshot.
 connectivity = json.load(open(f"{SP}/raw/connectivity.json"))
+VALID_STATUS = {"ok", "partial", "unknown", "down", "na"}
+if not isinstance(connectivity.get("workspace"), list):
+    raise SystemExit("connectivity.workspace must be a LIST of {name,status,note}; "
+                     f"got {type(connectivity.get('workspace')).__name__}")
+for _w in connectivity["workspace"]:
+    if not {"name", "status", "note"} <= set(_w):
+        raise SystemExit(f"connectivity.workspace entry missing name/status/note: {_w}")
+    if _w["status"] not in VALID_STATUS:
+        raise SystemExit(f"connectivity.workspace bad status {_w['status']!r} for {_w['name']}")
+_seats = connectivity.get("seats")
+if not isinstance(_seats, dict) or set(_seats) != set(REPS):
+    raise SystemExit("connectivity.seats must be keyed by person, exactly "
+                     f"{REPS}; got {sorted(_seats) if isinstance(_seats, dict) else type(_seats).__name__}")
+for _r, _v in _seats.items():
+    if not isinstance(_v, list) or len(_v) != 3:
+        raise SystemExit(f"connectivity.seats[{_r!r}] must be a 3-item list "
+                         f"[Allo, Email, Groovin]; got {_v!r}")
+    for _s in _v:
+        if _s not in VALID_STATUS:
+            raise SystemExit(f"connectivity.seats[{_r!r}] bad status {_s!r}")
 connectivity["updated"] = RUN_STAMP
 
 # ---------- time ranges ----------
