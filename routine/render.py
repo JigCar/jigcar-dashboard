@@ -31,10 +31,13 @@ HEAD = r'''<!DOCTYPE html>
   select{background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-family:var(--font);font-size:13.5px}
   .refresh{display:flex;align-items:center;gap:10px}
   .refresh .ts{color:var(--muted);font-size:11.5px}
-  .refreshmsg{font-size:11.5px;color:var(--bright);max-width:340px}
-  .refreshmsg.stale{color:var(--amber)}
-  .rbtn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-family:var(--font);font-size:12.5px;font-weight:700;cursor:pointer}
-  .rbtn:hover{background:#0aa159}
+  .stamp{display:inline-flex;align-items:center;gap:9px;background:rgba(8,142,77,.14);
+    border:1px solid #1f5c3a;border-radius:999px;padding:8px 15px}
+  .stamp .dotlive{width:8px;height:8px;border-radius:50%;background:var(--bright);flex:none}
+  .stamp .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+  .stamp .val{font-size:13px;font-weight:700;color:var(--bright);letter-spacing:-.1px}
+  .stamp .cad{font-size:11px;color:var(--muted)}
+  @media(max-width:560px){.stamp{flex-wrap:wrap;gap:5px}.stamp .cad{width:100%}}
   .conn{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 20px}
   .conn .ttl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;margin-bottom:10px}
   .conn .ws{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
@@ -142,9 +145,12 @@ HEAD = r'''<!DOCTYPE html>
       </select>
     </div>
     <div class="refresh">
-      <span class="ts" id="lastRefresh"></span>
-      <button class="rbtn" onclick="refreshData()">Reload latest</button>
-      <span class="refreshmsg" id="refreshMsg"></span>
+      <span class="stamp">
+        <span class="dotlive"></span>
+        <span class="lbl">Data as at</span>
+        <span class="val" id="lastRefresh"></span>
+        <span class="cad">rebuilt each weekday 08:00</span>
+      </span>
     </div>
   </div>
 
@@ -303,7 +309,7 @@ HEAD = r'''<!DOCTYPE html>
   </div>
 
   <div class="foot">
-    Live quarter: Q3 2026 (1 Jul - 30 Sep). Target £400,000 (edit QUARTER_TARGET in the script). Sources: Granola (sales meetings), Allo (calls), Attio (emails, tasks, deals, stages), Groovin to Attio (LinkedIn). ARR = Attio deal value (GBP). Data as at the timestamp above. This page is rebuilt automatically each weekday at 08:00 and published to GitHub Pages; it does not update live in the browser, so "Reload latest" fetches the most recent build. Prepared for Elliott Perks.
+    Live quarter: Q3 2026 (1 Jul - 30 Sep). Target £400,000 (edit QUARTER_TARGET in the script). Sources: Granola (sales meetings), Allo (calls), Attio (emails, tasks, deals, stages), Groovin to Attio (LinkedIn). ARR = Attio deal value (GBP). Data as at the timestamp above. This page is rebuilt automatically each weekday at 08:00 and published to GitHub Pages. It does not update live in the browser, so the figures are those of the build stamped at the top. Ask Claude to rebuild if you need them sooner. Prepared for Elliott Perks.
   </div>
 </div>
 
@@ -588,7 +594,7 @@ function renderConn(){
       <span><span class="cdot down"></span> down</span>
       <span><span class="cdot na"></span> no account</span>
     </div>`;
-  document.getElementById('lastRefresh').textContent='Last refreshed '+RUN_STAMP;
+  document.getElementById('lastRefresh').textContent=RUN_STAMP;
 }
 
 function renderCoverage(){
@@ -681,40 +687,6 @@ function fallback(text,done,msg){
   }catch(e){ msg.textContent='Could not copy automatically. Try again, or use a browser that allows clipboard access.'; }
 }
 
-async function refreshData(){
-  // The page is a static build: numbers are written in by the 08:00 routine, so "reload"
-  // means fetch the newest published file, never re-stamp what is already on screen.
-  //
-  // A plain navigation was indistinguishable from a no-op. GitHub's CDN can serve a stale
-  // copy for a minute or so even with a cache-busting query string, and when the page is
-  // already current nothing visibly changes either. So fetch first, compare the published
-  // build stamp against this one, and say which of the two actually happened.
-  const btn=document.querySelector('.rbtn');
-  const msg=document.getElementById('refreshMsg');
-  const here=connectivity.updated;
-  btn.textContent='Checking...'; btn.disabled=true;
-  msg.className='refreshmsg'; msg.textContent='';
-  const url=location.pathname+'?t='+Date.now();
-  try{
-    const res=await fetch(url,{cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const txt=await res.text();
-    const m=txt.match(/"updated":\s*"([^"]*)"/);
-    const latest=m?m[1]:null;
-    if(latest&&latest!==here){
-      msg.textContent='New build found ('+latest+'). Loading...';
-      location.replace(url);
-      return;
-    }
-    btn.textContent='Reload latest'; btn.disabled=false;
-    msg.textContent='Already the latest published build ('+here+'). Rebuilt each weekday at 08:00.';
-    setTimeout(()=>{msg.textContent='';},9000);
-  }catch(e){
-    btn.textContent='Reload latest'; btn.disabled=false;
-    msg.className='refreshmsg stale';
-    msg.textContent='Could not reach the published file, so this page may be stale. Try again shortly.';
-  }
-}
 
 function buildTrend(){
   const days=__TREND_DAYS__;
