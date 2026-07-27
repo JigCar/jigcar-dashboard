@@ -386,7 +386,7 @@ function render(){
     ? '<strong>'+viewLabel[v]+' ('+rangeText[v]+').</strong> Single-day snapshot. Revenue, leaderboard and contract-out stay at quarter level.'
     : (v==='month'||v==='quarter'
         ? '<strong>'+viewLabel[v]+'.</strong> Sales meetings and deals cover the full month. Calls and tasks began 21-22 Jul (Allo and cadence switch-on) and email coverage starts '+COVERAGE.email_covered_from+', so those match the week for now.'
-        : '<strong>This week ('+rangeText[v]+').</strong> The seven-day operating view.');
+        : '<strong>This week ('+rangeText[v]+').</strong> The calendar week, Monday to Sunday, counted to date. On a Monday that is a single day, so the month and quarter views carry the fuller picture.');
 
   const cards=document.getElementById('cards'); cards.innerHTML='';
   reps.forEach((r,i)=>{

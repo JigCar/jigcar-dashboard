@@ -328,17 +328,41 @@ def dlabel(d):
     return f"{DAYS[d.weekday()]} {d.day} {MONTHS[d.month - 1]}"
 
 
-wk_start = d0 - datetime.timedelta(days=6)
+# "This week" is the calendar week, Monday to Sunday, capped at the run date because
+# there is no data for days that have not happened. On a Monday that is a single day.
+wk_start = d0 - datetime.timedelta(days=d0.weekday())
+wk_days = (d0 - wk_start).days + 1
+complete_week = d0.weekday() == 6          # only a Sunday run sees the full Mon-Sun week
+
+
+def dm(d):
+    return f"{d.day} {MONTHS[d.month - 1]}"
+
+
+if wk_start == d0:
+    wk_text = f"{dlabel(d0)} (week to date, 1 day)"
+else:
+    span = (f"{wk_start.day}-{d0.day} {MONTHS[d0.month - 1]}"
+            if wk_start.month == d0.month else f"{dm(wk_start)} - {dm(d0)}")
+    wk_text = f"{span} ({wk_days} days)" if complete_week else f"{span} (week to date, {wk_days} days)"
+
+# Trailing seven days. Not shown in the UI toggle: this is the basis for the Slack
+# performance threshold, which the spec defines over a full week. Reusing the calendar
+# week there would flag someone for a quiet Monday morning.
+t7_start = d0 - datetime.timedelta(days=6)
+
 ranges = {"today": [RUN_DATE, RUN_DATE],
           "yesterday": [str(d0 - datetime.timedelta(days=1))] * 2,
           "week": [str(wk_start), RUN_DATE],
           "month": [f"{RUN_DATE[:7]}-01", RUN_DATE],
-          "quarter": ["2026-07-01", RUN_DATE]}
+          "quarter": ["2026-07-01", RUN_DATE],
+          "trailing7": [str(t7_start), RUN_DATE]}
 rangeText = {"today": dlabel(d0),
              "yesterday": dlabel(d0 - datetime.timedelta(days=1)),
-             "week": f"{wk_start.day}-{d0.day} {MONTHS[d0.month - 1]} (7 days)",
+             "week": wk_text,
              "month": f"{MONTHS_FULL[d0.month - 1]}, 1-{d0.day}",
-             "quarter": f"Q3 to date, 1-{d0.day} {MONTHS[d0.month - 1]}"}
+             "quarter": f"Q3 to date, 1-{d0.day} {MONTHS[d0.month - 1]}",
+             "trailing7": f"{dm(t7_start)} - {dm(d0)} (7 days)"}
 
 coverage = {
     "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",

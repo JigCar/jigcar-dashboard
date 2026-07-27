@@ -126,8 +126,13 @@ if stalled:
 
 # ---------- performance risk: one person, role-aware, real threshold ----------
 # Threshold, never a ranking: zero on at least two of the three core outbound
-# metrics across the full week. A ranking always flags someone; this does not.
-wk = {m: agg(m, "week") for m in CORE_METRICS}
+# metrics across a full week. A ranking always flags someone; this does not.
+#
+# Measured over the trailing seven days, NOT the dashboard's "This week" filter.
+# That filter is the calendar week Monday to Sunday, so on a Monday it covers a
+# single morning and would flag almost the whole team for having done nothing yet.
+WEEK_BASIS = "trailing7" if "trailing7" in payload["ranges"] else "week"
+wk = {m: agg(m, WEEK_BASIS) for m in CORE_METRICS}
 qt = {m: agg(m, "quarter") for m in CORE_METRICS}
 cands = []
 for name in OUTBOUND_SEATS:
@@ -165,7 +170,8 @@ if cands:
     tail = f" {word(mq)} all quarter." if "meetings" in covered else f" {word(mq)} sales meetings all quarter."
     if streak >= 3:
         tail += " Third day running."
-    perf_risk = f"{flagged_name}: no {zero_txt} all week{extra_txt}.{tail}"
+    span = "in the last seven days" if WEEK_BASIS == "trailing7" else "all week"
+    perf_risk = f"{flagged_name}: no {zero_txt} {span}{extra_txt}.{tail}"
 
 # record today's flag so tomorrow can escalate rather than repeat
 state.setdefault("perf_flags", {})[RUN_DATE] = flagged_name
