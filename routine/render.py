@@ -209,7 +209,7 @@ HEAD = r'''<!DOCTYPE html>
       <br><br>
       <strong>Excluded:</strong> internal-only meetings (all attendees on a jigcar.com address), including dailies, weeklies, all-hands, one-to-ones, prep and deck reviews; advisers and the chairman; investors; media and press; suppliers and 3PL carriers; tooling and vendor demos; partner or channel exploration not attached to a deal; recruitment and personal appointments. <span id="mtgAudit"></span>
       <br><br>
-      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; connections carry no rep in Attio, so they are attributed via the cadence Touch-1 completed connect task on the owner's deal, which is why every connection also counts as deal-associated. Groovin per-seat attribution is not yet wired, so the connection split is a method proxy, not a per-seat measurement. Message deal-association is a floor: only pairs whose company record is confirmed to carry a deal are counted. <strong>Tasks</strong> are dated by creation, because Attio exposes no completion timestamp. <strong>Progressed / shut off:</strong> this run seeds the baseline stage snapshot for all <span id="dealCount"></span> deals, so both read 0 today by construction and are measured from the next run onward by diffing stages. They are not backfilled.
+      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; connections carry no rep in Attio, so they are attributed via the cadence Touch-1 completed connect task on the owner's deal, which is why every connection also counts as deal-associated. Groovin per-seat attribution is not yet wired, so the connection split is a method proxy, not a per-seat measurement. Message deal-association is a floor: only pairs whose company record is confirmed to carry a deal are counted. <strong>Tasks</strong> are dated by creation, because Attio exposes no completion timestamp. <strong>Progressed / shut off:</strong> measured by diffing this run's stage snapshot of all <span id="dealCount"></span> deals against the previous run's. Today's diff found one forward move, Nelson Automotive Group from Buy Signal to Qualification, credited to its owner Bianca. Nothing was shut off. Moves that happened before the routine existed are never backfilled, so these columns count only what the routine has actually observed between two runs.
     </div>
 
     <h2><span class="bar">4.</span> Read &amp; actions</h2>
@@ -561,10 +561,11 @@ function renderCoverage(){
   document.getElementById('emailFrom').textContent=COVERAGE.email_covered_from;
   document.getElementById('liFrom').textContent=COVERAGE.linkedin_notes_covered_from;
   document.getElementById('dealCount').textContent=DEAL_COUNT;
-  document.getElementById('mtgAudit').innerHTML='This run read '+COVERAGE.mtg_total+
-    ' Granola meetings for the quarter to date: '+COVERAGE.mtg_internal+' internal-only, '+
-    COVERAGE.mtg_excluded+' external but excluded by the rules above, '+COVERAGE.mtg_included+
-    ' counted as sales meetings and credited to every Jigcar attendee.';
+  document.getElementById('mtgAudit').innerHTML='This run read '+COVERAGE.mtg_notes+
+    ' Granola notes for the quarter to date, which dedupe to '+COVERAGE.mtg_total+
+    ' distinct meetings: '+COVERAGE.mtg_internal+' internal-only, '+
+    COVERAGE.mtg_excluded+' external but excluded by the rules above, and '+COVERAGE.mtg_included+
+    ' counted as sales meetings, each credited to every Jigcar attendee.';
   document.getElementById('acqTitle').textContent='Acquisition channel . all '+WON_BOOK_COUNT+' closed won deals (full won book, not just Q3)';
 }
 
@@ -719,15 +720,17 @@ while cur<=d2:
 cov=dict(p["coverage"])
 st=json.load(open(f"{SP}/build/dashboard_state.json"))
 mc=st["meeting_classification"]
+_gran=json.load(open(f"{SP}/raw/granola.json"))
 cov.update({"mtg_included":mc["included_count"],"mtg_excluded":mc["excluded_count"],
             "mtg_internal":mc["internal_only_count"],
-            "mtg_total":mc["included_count"]+mc["excluded_count"]+mc["internal_only_count"]})
+            "mtg_total":mc["included_count"]+mc["excluded_count"]+mc["internal_only_count"],
+            "mtg_notes":len(_gran)})
 
 READ_OVERALL = J(
  "<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> "
  "\u00a326,400 is won, 6.6% of the \u00a3400,000 target, both deals Chris. \u00a3195,600 sits in Contracts, which still "
- "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 39 "
- "external meetings in July, 73 attendee-credits across the six. Elliott carries 29 of those credits, Rupert and James "
+ "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 40 "
+ "external meetings in July, 74 attendee-credits across the six. Elliott carries 30 of those credits, Rupert and James "
  "12 each, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts "
  "what he touches, both Q3 closes and \u00a3147,600 of the \u00a3195,600 out for contract, on six external meetings.")
 
@@ -735,12 +738,16 @@ READ_LIST = J(
  '<li><span class="pill red">Flag</span> <strong>Citygate \u00a375,600 and West Herr \u00a372,000</strong> both passed '
  'their 20 July estimated close and have sat in Contracts for seven days. That is \u00a3147,600, three quarters of the '
  'contract book, with no stage movement logged. Chris owns both.</li>'
- '<li><span class="pill green">Working it</span> <strong>Chris</strong>: 18 completed cadence tasks and 11 LinkedIn '
+ '<li><span class="pill green">First measured move</span> <strong>Bianca</strong> advanced <strong>Nelson Automotive '
+ 'Group</strong> from Buy Signal to Qualification. This is the first progression the stage diff has observed rather than '
+ 'inferred, and it is exactly the Buy-Signal-to-Qualification step the team was asked to record so the creation cap '
+ 'releases.</li>'
+ '<li><span class="pill green">Working it</span> <strong>Chris</strong>: 19 completed cadence tasks and 12 LinkedIn '
  'connects this week, 16 deals created this month, both closed-won deals. Gap is calls, one all month.</li>'
  '<li><span class="pill red">Flag</span> <strong>Luke</strong>: three sales meetings all quarter and none in the last '
- 'seven days, no completed cadence tasks. He created 16 deals this month, so the top of the funnel is moving, but the '
- 'conversation end has gone quiet.</li>'
- '<li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 29 meeting credits, <strong>Rupert</strong> '
+ 'seven days, no completed cadence tasks, and none of his 12 Buy Signal deals shows recorded outreach. He created 16 '
+ 'deals this month, so the top of the funnel is moving while the conversation end has gone quiet.</li>'
+ '<li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 30 meeting credits, <strong>Rupert</strong> '
  'and <strong>James</strong> at 12 each. Worth asking which of those a rep could be running instead.</li>'
  '<li><span class="pill grey">Account side</span> <strong>Bianca</strong>: 11 meeting credits, nearly all existing '
  'accounts (Citygate, Vindis, RH Car Transport, Big Motoring World, LSH). Right shape for onboarding and CS, thin on new '

@@ -4,7 +4,7 @@ import json, collections, datetime, os
 
 SP="/tmp/claude-0/-home-user-jigcar-dashboard/b183b5d1-3506-53f2-a1fc-bfac32d1ea9e/scratchpad"
 RUN_DATE="2026-07-27"
-RUN_STAMP="27 Jul 2026, 08:00"
+RUN_STAMP="27 Jul 2026, 14:05"
 QUARTER_TARGET=400000
 REPS=["Chris","Luke","James","Bianca","Elliott","Rupert"]
 IDX={r:i for i,r in enumerate(REPS)}
@@ -82,7 +82,7 @@ calls_daily={
 # ---------- emails (Attio multi-mailbox, de-duped by sender+subject+sent_at) ----------
 # Complete for the run date only. Earlier days in the period have no coverage this run
 # (first run, no accumulated history) and are rendered as a labelled floor.
-emails_daily={ "2026-07-27":[1,0,0,1,9,1] }
+emails_daily={ "2026-07-27":[1,0,0,3,10,1] }
 EMAIL_COVERED_FROM="2026-07-27"
 # ---------- tasks completed (dated by created_at: Attio exposes no completion timestamp) ----------
 tasks_daily={
@@ -90,7 +90,7 @@ tasks_daily={
  "2026-07-22":[5,0,0,0,0,0],
  "2026-07-23":[3,0,0,1,0,0],
  "2026-07-24":[5,0,0,0,0,0],
- "2026-07-27":[1,0,0,0,0,0],
+ "2026-07-27":[2,0,0,0,0,0],
 }
 # ---------- LinkedIn ----------
 # connects: attributed via cadence Touch-1 (completed connect task on the owner's deal).
@@ -100,6 +100,7 @@ li_conn_all={
  "2026-07-22":[4,0,0,0,0,0],
  "2026-07-23":[2,0,0,1,0,0],
  "2026-07-24":[2,0,0,0,0,0],
+ "2026-07-27":[1,0,0,0,0,0],
 }
 li_conn_deal={k:list(v) for k,v in li_conn_all.items()}
 # messages: rep parsed from Groovin chat-note titles, de-duped to one event per pair
@@ -120,8 +121,50 @@ for d in deals:
     if d["created"]>="2026-07-01" and d["owner"] in IDX:
         deals_daily[d["created"]][IDX[d["owner"]]]+=1
 
-# ---------- progressed / shut off: first run seeds the baseline, no diff available ----------
-progressed_daily={}; shutoff_daily={}
+# ---------- progressed / shut off: computed from the previous run's snapshot ----------
+# The routine owns its own history: it diffs today's stage snapshot against the one the
+# previous run committed. A forward move on the progression ladder is "progressed"; a move
+# into a non-progression state is "shut off". Both are attributed to the current deal owner
+# and dated the run date. Moves predating the routine are never backfilled.
+PREV_STATE=f"{SP}/raw/prev_state.json"
+prev={}
+try:
+    with open(PREV_STATE) as fh: prev=json.load(fh).get("stage_snapshot",{})
+except FileNotFoundError:
+    print("NOTE: no previous snapshot; this run seeds the baseline and the diff is empty")
+
+STAGE_DIFF=[]
+for d in deals:
+    before=prev.get(d["id"])
+    if not before: continue                      # new deal: counted as assigned, not progressed
+    old_stage, new_stage = before["stage"], d["stage"]
+    if old_stage==new_stage or not new_stage: continue
+    owner=d["owner"]
+    if owner not in IDX: continue                # non-scorecard owner: revenue only
+    if new_stage in SHUT:
+        kind="shutoff"
+    elif old_stage in PROG and new_stage in PROG and PROG.index(new_stage)>PROG.index(old_stage):
+        kind="progressed"
+    elif old_stage in SHUT and new_stage in PROG:
+        kind="progressed"                        # reopened out of a shut-off state
+    else:
+        kind="regressed"                         # backward move: recorded, not counted either way
+    STAGE_DIFF.append({"record_id":d["id"],"name":d["name"],"owner":owner,
+                       "from":old_stage,"to":new_stage,"kind":kind,"date":RUN_DATE,
+                       "value":d["value"]})
+
+progressed_daily=collections.defaultdict(lambda:[0]*6)
+shutoff_daily=collections.defaultdict(lambda:[0]*6)
+newly_won=[]
+for m in STAGE_DIFF:
+    if m["kind"]=="progressed": progressed_daily[m["date"]][IDX[m["owner"]]]+=1
+    elif m["kind"]=="shutoff":  shutoff_daily[m["date"]][IDX[m["owner"]]]+=1
+    if m["to"]=="Closed Won" and m["record_id"] not in WON_DATES:
+        WON_DATES[m["record_id"]]=RUN_DATE       # stamp the real won date on first entry
+        newly_won.append(m)
+progressed_daily=dict(progressed_daily); shutoff_daily=dict(shutoff_daily)
+print("stage diff:",len(STAGE_DIFF),"move(s)",[(m["name"],m["from"],"->",m["to"],m["kind"]) for m in STAGE_DIFF])
+print("newly won stamped:",[m["name"] for m in newly_won])
 
 daily={"meetings":dict(meetings_daily),"calls":calls_daily,"emails":emails_daily,
        "tasks":tasks_daily,"deals":dict(deals_daily),"progressed":progressed_daily,
@@ -219,7 +262,7 @@ state={"schema":2,"last_run":RUN_DATE,"last_run_stamp":RUN_STAMP,
   "meeting_classification":{"excluded":{f"{d}|{t}":r for (d,t),r in EXCLUDED_MEETINGS.items()},
                             "included_count":inc_count,"excluded_count":exc_count,
                             "internal_only_count":internal_count},
-  "coverage":{"progressed_shutoff":"first run seeds the baseline stage snapshot; diffs are accurate from the next run",
+  "coverage":{"progressed_shutoff":"measured by diffing this run's stage snapshot against the previous run's","stage_diff":STAGE_DIFF,
               "email_covered_from":EMAIL_COVERED_FROM,
               "linkedin_notes_covered_from":LI_NOTE_COVERED_FROM,
               "tasks_dated_by":"created_at (Attio exposes no completion timestamp)",
