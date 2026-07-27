@@ -132,7 +132,7 @@
     "unknown"
    ]
   },
-  "updated": "27 Jul 2026, 16:35",
+  "updated": "27 Jul 2026, 16:55",
   "workspace": [
    {
     "name": "Attio",
@@ -612,7 +612,7 @@
   }
  },
  "last_run": "2026-07-27",
- "last_run_stamp": "27 Jul 2026, 16:35",
+ "last_run_stamp": "27 Jul 2026, 16:55",
  "meeting_classification": {
   "excluded": {
    "2026-07-06|Simon / Elliott": "adviser",

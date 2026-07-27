@@ -31,6 +31,8 @@ HEAD = r'''<!DOCTYPE html>
   select{background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-family:var(--font);font-size:13.5px}
   .refresh{display:flex;align-items:center;gap:10px}
   .refresh .ts{color:var(--muted);font-size:11.5px}
+  .refreshmsg{font-size:11.5px;color:var(--bright);max-width:340px}
+  .refreshmsg.stale{color:var(--amber)}
   .rbtn{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-family:var(--font);font-size:12.5px;font-weight:700;cursor:pointer}
   .rbtn:hover{background:#0aa159}
   .conn{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 20px}
@@ -142,6 +144,7 @@ HEAD = r'''<!DOCTYPE html>
     <div class="refresh">
       <span class="ts" id="lastRefresh"></span>
       <button class="rbtn" onclick="refreshData()">Reload latest</button>
+      <span class="refreshmsg" id="refreshMsg"></span>
     </div>
   </div>
 
@@ -678,10 +681,39 @@ function fallback(text,done,msg){
   }catch(e){ msg.textContent='Could not copy automatically. Try again, or use a browser that allows clipboard access.'; }
 }
 
-function refreshData(){
+async function refreshData(){
+  // The page is a static build: numbers are written in by the 08:00 routine, so "reload"
+  // means fetch the newest published file, never re-stamp what is already on screen.
+  //
+  // A plain navigation was indistinguishable from a no-op. GitHub's CDN can serve a stale
+  // copy for a minute or so even with a cache-busting query string, and when the page is
+  // already current nothing visibly changes either. So fetch first, compare the published
+  // build stamp against this one, and say which of the two actually happened.
   const btn=document.querySelector('.rbtn');
-  btn.textContent='Loading...'; btn.disabled=true;
-  location.href=location.pathname+'?t='+Date.now();
+  const msg=document.getElementById('refreshMsg');
+  const here=connectivity.updated;
+  btn.textContent='Checking...'; btn.disabled=true;
+  msg.className='refreshmsg'; msg.textContent='';
+  const url=location.pathname+'?t='+Date.now();
+  try{
+    const res=await fetch(url,{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const txt=await res.text();
+    const m=txt.match(/"updated":\s*"([^"]*)"/);
+    const latest=m?m[1]:null;
+    if(latest&&latest!==here){
+      msg.textContent='New build found ('+latest+'). Loading...';
+      location.replace(url);
+      return;
+    }
+    btn.textContent='Reload latest'; btn.disabled=false;
+    msg.textContent='Already the latest published build ('+here+'). Rebuilt each weekday at 08:00.';
+    setTimeout(()=>{msg.textContent='';},9000);
+  }catch(e){
+    btn.textContent='Reload latest'; btn.disabled=false;
+    msg.className='refreshmsg stale';
+    msg.textContent='Could not reach the published file, so this page may be stale. Try again shortly.';
+  }
 }
 
 function buildTrend(){
