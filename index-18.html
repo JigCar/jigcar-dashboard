@@ -57,6 +57,18 @@
   .revpanel .rlab{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
   .revpanel .rbig{font-size:30px;font-weight:800;letter-spacing:-.5px;margin:2px 0}
   .revpanel .rsub{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .ask{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+  .ask .ttl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .ask p{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
+  .ask .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .agentbtn{text-decoration:none;display:inline-flex;align-items:center;gap:9px;background:#fff;color:#4C1D95;
+    border:2px solid #7C3AED;border-radius:999px;padding:11px 20px;font-family:var(--font);
+    font-size:14px;font-weight:700;cursor:pointer;letter-spacing:-.1px;
+    box-shadow:0 0 0 4px rgba(124,58,237,.20), 0 0 18px rgba(124,58,237,.35);transition:.18s}
+  .agentbtn:hover{box-shadow:0 0 0 5px rgba(124,58,237,.28), 0 0 26px rgba(124,58,237,.5);transform:translateY(-1px)}
+  .agentbtn:active{transform:translateY(0)}
+  .agentbtn svg{flex:none}
+  .askmsg{font-size:12px;color:var(--bright);margin-top:10px;min-height:16px}
   .tabs{display:flex;gap:6px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:5px;margin:0 0 6px}
   .tabs button{flex:1;background:transparent;border:none;color:var(--muted);padding:11px 14px;border-radius:9px;cursor:pointer;font-family:var(--font);font-size:13.5px;font-weight:700;transition:.15s}
   .tabs button:hover{color:var(--text)}
@@ -129,6 +141,25 @@
 
   <div class="conn" id="conn"></div>
 
+  <div class="ask">
+    <div class="ttl">Query this data with Claude</div>
+    <p>No numbers leave this page. The button copies this dashboard's full dataset to your clipboard and opens Claude. Paste it into the chat, then ask whatever you like.</p>
+    <div class="row">
+      <a class="agentbtn" id="agentLink" href="https://claude.ai/project/019a0656-1927-7642-abca-4885887fcf6a" target="_blank" rel="noopener" onclick="copyPayload()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4C1D95" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v2.5"/><circle cx="12" cy="2" r="1" fill="#4C1D95" stroke="none"/>
+          <rect x="3.5" y="4.5" width="17" height="13" rx="3.5"/>
+          <path d="M8 21l2.2-3.5h3.6L16 21"/>
+          <circle cx="9" cy="10.5" r="1.35" fill="#4C1D95" stroke="none"/>
+          <circle cx="15" cy="10.5" r="1.35" fill="#4C1D95" stroke="none"/>
+          <path d="M9.5 14h5"/>
+        </svg>
+        Copy data &amp; open Claude
+      </a>
+    </div>
+    <div class="askmsg" id="askmsg"></div>
+  </div>
+
   <div class="tabs" id="tabs">
     <button data-t="momentum" class="on">Momentum</button>
     <button data-t="board">Leaderboard &amp; bonus</button>
@@ -139,6 +170,7 @@
     <h2 style="margin-top:6px"><span class="bar"></span>Revenue against the Q3 target</h2>
     <div class="target" id="targetBanner"></div>
 
+    
     <h2><span class="bar"></span>Closed won &amp; out for contract</h2>
     <p class="lead">Total, deal list and split by owner, across every owner. Quarter-level, so these do not change with the time filter.</p>
     <div class="two">
@@ -158,11 +190,13 @@
       </div>
     </div>
 
+    
     <div class="chartbox">
-      <h3 id="acqTitle"></h3>
+      <h3>Acquisition channel . all 16 closed won deals (full won book, not just Q3)</h3>
       <canvas id="acqChart" height="90"></canvas>
     </div>
 
+    
     <div class="filterbar">
       <div class="toggle" id="toggle">
         <button data-v="today">Today</button>
@@ -201,14 +235,20 @@
     <div class="note warn" style="font-size:13px">
       <strong>What counts as a sales meeting.</strong> A scheduled conversation with at least one participant from outside Jigcar, at a prospect or customer organisation, whose purpose is to move an opportunity or account forward: discovery, intro, demo, commercials, tender, negotiation, rollout, go-live, or a recurring account or site review. Every attendee from the team is credited, since these are worked jointly.
       <br><br>
-      <strong>Excluded:</strong> internal-only meetings (all attendees on a jigcar.com address), including dailies, weeklies, all-hands, one-to-ones, prep and deck reviews; advisers and the chairman; investors; media and press; suppliers and 3PL carriers; tooling and vendor demos; partner or channel exploration not attached to a deal; recruitment and personal appointments. <span id="mtgAudit"></span>
+      <strong>Excluded:</strong> internal-only meetings (all attendees on a jigcar.com address), including dailies, weeklies, all-hands, one-to-ones, prep and deck reviews; advisers and the chairman; investors; media and press; suppliers and 3PL carriers; tooling and vendor demos; partner or channel exploration not attached to a deal; recruitment and personal appointments.
       <br><br>
-      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; connections carry no rep in Attio, so they are attributed via the cadence Touch-1 completed connect task on the owner's deal, which is why every connection also counts as deal-associated. Groovin per-seat attribution is not yet wired, so the connection split is a method proxy, not a per-seat measurement. Message deal-association is a floor: only pairs whose company record is confirmed to carry a deal are counted. <strong>Tasks</strong> are dated by creation, because Attio exposes no completion timestamp. <strong>Progressed / shut off:</strong> measured by diffing this run's stage snapshot of all <span id="dealCount"></span> deals against the previous run's. Today's diff found one forward move, Nelson Automotive Group from Buy Signal to Qualification, credited to its owner Bianca. Nothing was shut off. Moves that happened before the routine existed are never backfilled, so these columns count only what the routine has actually observed between two runs.
+      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> before today is a floor in this build; the routine backfills the full period. <strong>LinkedIn:</strong> messages are rep-attributed from chat-note titles, connections come from the cadence and are not yet split per person by Groovin. <strong>Progressed / shut off:</strong> a baseline from evidence; the routine computes them by diffing each deal's stage between runs.
     </div>
 
     <h2><span class="bar">4.</span> Read &amp; actions</h2>
-    <div class="note" id="readOverall"></div>
-    <ul id="readList"></ul>
+    <div class="note"><strong>Overall.</strong> Sales meetings are where the quarter is really being worked: 74 external meetings across the team in July. Elliott carries 28 of them and James 13, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what he touches (both Q3 closes, £147,600 of the £195,600 out for contract) on only six external meetings.</div>
+    <ul>
+      <li><span class="pill green">Working it</span> <strong>Chris</strong>: top of the activity table, six sales meetings, both closed-won deals, two of the three contracts out. Gap is calls, one all month.</li>
+      <li><span class="pill red">Flag</span> <strong>Luke</strong>: three sales meetings all quarter and none in the last week, no email, no completed cadence tasks. He built pipeline earlier in the month (FSG, Vmoves, ACV) so the capability is there; the front end has gone quiet.</li>
+      <li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 28 external meetings and <strong>James</strong> at 13. Worth asking which of those a rep could be running instead.</li>
+      <li><span class="pill grey">Account side</span> <strong>Bianca</strong>: 12 sales meetings, nearly all existing accounts (Citygate, Vindis, RH, BMW, LSH). Right shape for onboarding and CS, thin on new business by design.</li>
+      <li><span class="pill green">Year view</span> The leaderboard tells a different story from the quarter: Elliott leads 2026 on £43,200, then Chris £26,400 and Luke £26,220 (both on two deals), Rupert £24,840. Six deals won across the year, spread across four people.</li>
+    </ul>
   </div>
 
   <div id="liveBoard">
@@ -220,12 +260,13 @@
       <div class="chartbox"><h3>Deals won . Q3 and 2026 to date</h3><canvas id="lbCntChart" height="170"></canvas></div>
     </div>
 
+    
     <h2><span class="bar"></span>Outbound bonus <span class="pill amber">payout basis</span></h2>
-    <div class="note warn" style="font-size:12.5px" id="bonusLimits"></div>
-    <div id="bonusWarn"></div>
     <table id="bonusChanTable"><tbody></tbody></table>
     <h2 style="font-size:16px;margin-top:24px"><span class="bar"></span>Outbound bonus earned this quarter</h2>
     <table class="lb" id="bonusBonusTable"><tbody></tbody></table>
+
+    
   </div>
 
   <div id="archMomentum">
@@ -233,10 +274,11 @@
       <strong>Reconstructed archive, aligned to close-won date.</strong> Closed won is counted in the quarter the deal was won, the same logic as Q3. Attio has no won-date field and does not expose stage-entry timing through its API, so these close quarters were confirmed manually. From Q3 onward the routine stamps the real won date automatically. Leaderboard, owner split and acquisition channel all come from the real won records for those deals. Deals created is shown separately as context. Sales meetings, calls, emails, tasks and LinkedIn did not exist as tracked data pre-Q3, so they are not shown.
     </div>
     <div class="cards" id="archCards" style="grid-template-columns:repeat(3,1fr)"></div>
-
+    
     <h2 style="font-size:16px"><span class="bar"></span>Closed won this quarter (by close date)</h2>
     <table id="archCwTable"><tbody></tbody></table>
 
+    
     <h2 style="font-size:16px;margin-top:26px"><span class="bar"></span>Context: pipeline created this quarter <span class="pill grey">by creation date</span></h2>
     <table id="archOwnerTable"><tbody></tbody></table>
     <div class="two" style="margin-top:16px">
@@ -254,12 +296,13 @@
       <div class="chartbox"><h3>Acquisition channel . this quarter's closed won</h3><canvas id="archAcqChart" height="150"></canvas></div>
     </div>
 
+    
     <h2 style="font-size:16px;margin-top:26px"><span class="bar"></span>Outbound bonus <span class="pill amber">payout basis</span></h2>
-    <div class="note warn" style="font-size:12.5px" id="archBonusLimits"></div>
-    <div id="archBonusWarn"></div>
     <table id="archBonusChanTable"><tbody></tbody></table>
     <h2 style="font-size:16px;margin-top:24px"><span class="bar"></span>Outbound bonus earned this quarter</h2>
     <table class="lb" id="archBonusBonusTable"><tbody></tbody></table>
+
+    
   </div>
 
   <div class="foot">
@@ -276,17 +319,39 @@ Chart.defaults.color=tick;Chart.defaults.font.family="Inter,-apple-system,sans-s
 
 // ===== QUARTER REVENUE TARGET - update at the start of each quarter =====
 const QUARTER_TARGET=400000; // Q3 2026
-const RUN_STAMP="27 Jul 2026, 15:45";
-const WON_BOOK_COUNT=16;
-const DEAL_COUNT=248;
-const COVERAGE={"progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's", "stage_diff": [], "stage_moves_accumulated": 1, "email_covered_from": "2026-07-24", "email_note": "continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor", "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient", "linkedin_notes_covered_from": "2026-07-21", "tasks_dated_by": "completed_at from the Attio tasks API", "li_connects_attributed_by": "cadence Touch-1 completed connect task on the owner's deal", "li_connect_gap": "Groovin logged 14 invitation-sent events 21-27 Jul but the notes carry no rep; 13 are attributed via Touch-1 tasks", "calls_source": "Allo team analytics per seat; Rupert has no Allo account", "mtg_included": 42, "mtg_excluded": 11, "mtg_internal": 64, "mtg_total": 117, "mtg_notes": 124};
 
 // ---- daily data: metric -> { 'YYYY-MM-DD': [Chris,Luke,James,Bianca,Elliott,Rupert] } ----
-const daily={"meetings": {"2026-07-27": [1, 1, 2, 0, 3, 2], "2026-07-24": [0, 0, 0, 0, 1, 0], "2026-07-22": [1, 0, 0, 0, 3, 1], "2026-07-20": [0, 0, 1, 1, 3, 1], "2026-07-17": [1, 0, 1, 2, 3, 2], "2026-07-16": [1, 0, 1, 1, 0, 0], "2026-07-15": [0, 0, 0, 0, 2, 1], "2026-07-14": [0, 1, 1, 2, 0, 0], "2026-07-13": [0, 0, 1, 0, 1, 0], "2026-07-10": [1, 1, 0, 0, 4, 1], "2026-07-09": [0, 0, 1, 1, 1, 0], "2026-07-08": [1, 0, 1, 0, 1, 0], "2026-07-07": [0, 0, 2, 2, 5, 3], "2026-07-06": [0, 0, 0, 0, 1, 0], "2026-07-03": [0, 1, 2, 2, 2, 1], "2026-07-02": [1, 0, 1, 0, 1, 1]}, "calls": {"2026-07-21": [1, 0, 0, 0, 3, 0], "2026-07-22": [0, 1, 1, 0, 4, 0], "2026-07-23": [0, 3, 3, 0, 0, 0]}, "emails": {"2026-07-24": [16, 0, 0, 2, 6, 6], "2026-07-25": [1, 0, 0, 0, 1, 0], "2026-07-26": [0, 0, 0, 0, 1, 0], "2026-07-27": [1, 0, 0, 8, 10, 2]}, "tasks": {"2026-07-07": [0, 0, 0, 1, 0, 0], "2026-07-22": [3, 0, 0, 0, 0, 0], "2026-07-23": [0, 0, 0, 1, 0, 0], "2026-07-24": [14, 0, 0, 0, 0, 0], "2026-07-27": [2, 0, 0, 0, 0, 0]}, "deals": {"2026-07-22": [5, 4, 0, 0, 1, 0], "2026-07-21": [3, 4, 0, 0, 1, 0], "2026-07-23": [4, 4, 1, 1, 0, 0], "2026-07-10": [0, 1, 0, 0, 0, 0], "2026-07-27": [1, 0, 0, 1, 2, 2], "2026-07-14": [0, 1, 0, 0, 0, 0], "2026-07-24": [2, 1, 0, 0, 0, 0], "2026-07-17": [0, 0, 0, 0, 2, 0], "2026-07-13": [1, 0, 0, 0, 0, 0], "2026-07-20": [0, 1, 0, 0, 0, 0]}, "progressed": {"2026-07-27": [0, 0, 0, 1, 0, 0]}, "shutoff": {}, "liConnAll": {"2026-07-22": [1, 0, 0, 0, 0, 0], "2026-07-23": [0, 0, 0, 1, 0, 0], "2026-07-24": [10, 0, 0, 0, 0, 0], "2026-07-27": [1, 0, 0, 0, 0, 0]}, "liConnDeal": {"2026-07-22": [1, 0, 0, 0, 0, 0], "2026-07-23": [0, 0, 0, 1, 0, 0], "2026-07-24": [10, 0, 0, 0, 0, 0], "2026-07-27": [1, 0, 0, 0, 0, 0]}, "liMsgAll": {"2026-07-21": [0, 0, 0, 0, 5, 0], "2026-07-22": [0, 0, 1, 0, 2, 0], "2026-07-23": [0, 0, 0, 0, 1, 0], "2026-07-24": [0, 1, 0, 0, 2, 0], "2026-07-27": [0, 0, 1, 0, 0, 0]}, "liMsgDeal": {"2026-07-22": [0, 0, 1, 0, 1, 0]}};
+const daily={
+  // sales meetings: external, deal-advancing meetings from Granola, every team attendee credited
+  meetings:{
+    '2026-07-02':[1,0,1,0,1,1], '2026-07-03':[0,1,2,2,2,1], '2026-07-06':[0,0,0,0,1,0],
+    '2026-07-07':[0,0,2,2,4,3], '2026-07-08':[1,0,1,0,1,0], '2026-07-09':[0,0,1,1,1,0],
+    '2026-07-10':[1,1,0,0,3,0], '2026-07-13':[0,0,1,0,1,0], '2026-07-14':[0,1,1,2,1,1],
+    '2026-07-15':[0,0,0,1,1,1], '2026-07-16':[1,0,1,1,0,0], '2026-07-17':[1,0,1,2,3,2],
+    '2026-07-20':[0,0,2,1,4,1], '2026-07-22':[1,0,0,0,3,1], '2026-07-24':[0,0,0,0,2,1]
+  },
+  calls:{ '2026-07-21':[1,0,0,0,3,0], '2026-07-22':[0,1,1,0,4,0], '2026-07-23':[0,3,3,0,0,0] },
+  emails:{ '2026-07-23':[1,0,0,0,0,1], '2026-07-24':[9,0,1,2,6,6] },
+  tasks:{ '2026-07-21':[4,0,0,0,0,0], '2026-07-22':[2,0,0,0,0,0], '2026-07-23':[0,0,0,1,0,0], '2026-07-24':[1,0,0,0,0,0] },
+  deals:{ '2026-07-10':[0,1,0,0,0,0], '2026-07-13':[1,0,0,0,0,0], '2026-07-14':[0,1,0,0,0,0], '2026-07-17':[0,0,0,0,2,0],
+          '2026-07-20':[0,1,0,0,0,0], '2026-07-21':[3,3,0,0,1,0], '2026-07-22':[5,4,0,0,1,0], '2026-07-23':[4,4,1,1,0,0], '2026-07-24':[2,1,0,0,0,0] },
+  progressed:{ '2026-07-10':[0,1,0,0,0,0], '2026-07-14':[1,1,0,0,0,0], '2026-07-17':[0,0,0,0,2,0], '2026-07-20':[0,1,0,0,0,0], '2026-07-21':[0,0,0,0,1,0], '2026-07-22':[1,0,0,0,1,0], '2026-07-23':[1,0,0,0,0,0] },
+  shutoff:{ },
+  liConnAll:{  '2026-07-21':[3,0,0,0,0,0], '2026-07-22':[1,0,0,0,0,0], '2026-07-23':[0,0,0,1,0,0] },
+  liConnDeal:{ '2026-07-21':[3,0,0,0,0,0], '2026-07-22':[1,0,0,0,0,0], '2026-07-23':[0,0,0,1,0,0] },
+  liMsgAll:{  '2026-07-23':[0,1,0,0,1,0], '2026-07-24':[0,0,0,0,2,0] },
+  liMsgDeal:{ }
+};
 
 // ===== deal-level detail - ALL owners =====
-const closedWonDeals=[{"name": "Peter Cooper Group", "arr": 14400, "date": "14 Jul 2026", "owner": "Chris", "channel": "Inbound - website"}, {"name": "Hilton Coachworks Group", "arr": 12000, "date": "23 Jul 2026", "owner": "Chris", "channel": "Inbound - referral"}];
+const closedWonDeals=[
+  {name:'Hilton Coachworks Group', arr:12000, date:'23 Jul 2026', owner:'Chris', channel:'Inbound - referral'},
+  {name:'Peter Cooper Group',      arr:14400, date:'14 Jul 2026', owner:'Chris', channel:'Inbound - website'}
+];
+// bonus rule: only this channel qualifies for the direct outbound bonus
 const BONUS_CHANNEL='Outbound - Direct';
+// tiered outbound bonus, effective July 2026. Deal value = ACV on the signed agreement.
+// On a band boundary the higher band applies, so these are inclusive lower bounds.
 const BONUS_BANDS=[
   {min:100000, pay:1000, label:'£100,000 and above'},
   {min:75000,  pay:750,  label:'£75,000 to £100,000'},
@@ -299,19 +364,38 @@ const BONUS_BANDS=[
 ];
 function bonusFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.pay:0; }
 function bandFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.label:'-'; }
-const contractDeals=[{"name": "Citygate group", "arr": 75600, "owner": "Chris", "date": "20 Jul (est, passed)", "est_iso": "2026-07-20", "passed": true}, {"name": "West Herr", "arr": 72000, "owner": "Chris", "date": "20 Jul (est, passed)", "est_iso": "2026-07-20", "passed": true}, {"name": "Endeavour Automotive", "arr": 48000, "owner": "Elliott", "date": "est TBC", "est_iso": null, "passed": false}];
-const wonYTD=[{"name": "Focus VM", "arr": 24840, "owner": "Rupert", "quarter": "Q1", "channel": "Inbound - referral"}, {"name": "Monmotors", "arr": 43200, "owner": "Elliott", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "Premier Travel Logistics", "arr": 17820, "owner": "Luke", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "RH Car Transport", "arr": 8400, "owner": "Luke", "quarter": "Q2", "channel": "Inbound - Campaign"}, {"name": "Peter Cooper Group", "arr": 14400, "owner": "Chris", "quarter": "Q3", "channel": "Inbound - website"}, {"name": "Hilton Coachworks Group", "arr": 12000, "owner": "Chris", "quarter": "Q3", "channel": "Inbound - referral"}];
-const connectivity={"updated": "27 Jul 2026, 15:45", "workspace": [{"name": "Attio", "status": "ok", "note": "deals, tasks, notes, email search"}, {"name": "Granola", "status": "ok", "note": "meetings, 124 in July"}, {"name": "Apollo", "status": "unknown", "note": "sends route via mailboxes"}], "seats": {"Chris": ["ok", "ok", "unknown"], "Luke": ["ok", "ok", "ok"], "James": ["ok", "ok", "ok"], "Bianca": ["unknown", "ok", "unknown"], "Elliott": ["ok", "ok", "ok"], "Rupert": ["na", "partial", "unknown"]}};
-const ranges={"today": ["2026-07-27", "2026-07-27"], "yesterday": ["2026-07-26", "2026-07-26"], "week": ["2026-07-21", "2026-07-27"], "month": ["2026-07-01", "2026-07-27"], "quarter": ["2026-07-01", "2026-07-27"]};
-const rangeText={"today": "Mon 27 Jul", "yesterday": "Sun 26 Jul", "week": "21-27 Jul (7 days)", "month": "July, 1-27", "quarter": "Q3 to date, 1-27 Jul"};
-const viewLabel={today:'Today',yesterday:'Yesterday',week:'This week',month:'This month',quarter:'This quarter'};
-const acqChannels={"Outbound - Direct": 9, "Inbound - referral": 3, "Inbound - website": 2, "Inbound - Campaign": 1, "Inbound - LinkedIn": 1};
-const archives={"Q2-2026": {"label": "Q2 2026 (Apr - Jun) . reconstructed archive", "closedWon": [{"name": "Monmotors", "arr": 43200, "owner": "Elliott", "date": "Q2 2026", "channel": "Outbound - Direct"}, {"name": "Premier Travel Logistics", "arr": 17820, "owner": "Luke", "date": "Q2 2026", "channel": "Outbound - Direct"}, {"name": "RH Car Transport", "arr": 8400, "owner": "Luke", "date": "Q2 2026", "channel": "Inbound - Campaign"}], "acquisition": {"Outbound - Direct": 2, "Inbound - Campaign": 1}, "createdCount": 15, "createdPipeline": 330000, "byOwner": [{"name": "Luke", "created": 8, "value": 144000}, {"name": "Chris", "created": 7, "value": 186000}], "outcomes": {"Nurture": 7, "Live (New Lead to Contracts)": 6, "Non-ICP / Lost": 2}}, "Q1-2026": {"label": "Q1 2026 (Jan - Mar) . reconstructed archive", "closedWon": [{"name": "Focus VM", "arr": 24840, "owner": "Rupert", "date": "Q1 2026", "channel": "Inbound - referral"}], "acquisition": {"Inbound - referral": 1}, "createdCount": 45, "createdPipeline": 652600, "byOwner": [{"name": "Luke", "created": 20, "value": 63200}, {"name": "Chris", "created": 13, "value": 342400}, {"name": "Bob O'Reilly", "created": 4, "value": 105000}, {"name": "James", "created": 4, "value": 0}, {"name": "Elliott", "created": 4, "value": 142000}], "outcomes": {"Nurture": 17, "Live (New Lead to Contracts)": 19, "Now won": 2, "Non-ICP / Lost": 7}}};
+const contractDeals=[
+  {name:'Citygate Group',        arr:75600, date:'20 Jul (est, passed)', owner:'Chris'},
+  {name:'West Herr',             arr:72000, date:'20 Jul (est, passed)', owner:'Chris'},
+  {name:'Endeavour Automotive',  arr:48000, date:'est TBC',              owner:'Elliott'}
+];
 
-const BONUS_LIMITS='<strong>Two limits on this figure, stated every run.</strong> '+
- '1. The policy pays when the <strong>first invoice is sent within the quarter</strong>. Invoicing data is not available to this routine, so deals are placed by close date as a proxy. A deal closed late and invoiced next quarter belongs in the next payment. '+
- '2. The policy test is whether the person made the first move, which is broader than the Attio channel field. An intro they engineered qualifies; an intro that arrived unprompted does not. Where the field and the policy test disagree, the policy decides. '+
- 'This table is therefore a basis for payment, not the final word.';
+// ===== 2026 closed won by close date, for the leaderboard =====
+const wonYTD=[
+  {name:'Focus VM',                 arr:24840, owner:'Rupert',  quarter:'Q1', channel:'Inbound - referral'},
+  {name:'RH Car Transport',         arr:8400,  owner:'Luke',    quarter:'Q2', channel:'Inbound - Campaign'},
+  {name:'Monmotors',                arr:43200, owner:'Elliott', quarter:'Q2', channel:'Outbound - Direct'},
+  {name:'Premier Travel Logistics', arr:17820, owner:'Luke',    quarter:'Q2', channel:'Outbound - Direct'},
+  {name:'Peter Cooper Group',       arr:14400, owner:'Chris',   quarter:'Q3', channel:'Inbound - website'},
+  {name:'Hilton Coachworks Group',  arr:12000, owner:'Chris',   quarter:'Q3', channel:'Inbound - referral'}
+];
+
+const connectivity={
+  updated:'26 Jul 2026, 21:30',
+  workspace:[
+    {name:'Attio',   status:'ok',      note:'CRM, deals, tasks, email sync'},
+    {name:'Granola', status:'ok',      note:'meetings, 116 in July'},
+    {name:'Apollo',  status:'unknown', note:'sends route via mailboxes'}
+  ],
+  seats:{
+    Chris:['ok','ok','ok'], Luke:['ok','ok','ok'], James:['ok','ok','unknown'],
+    Bianca:['unknown','ok','ok'], Elliott:['ok','ok','ok'], Rupert:['na','ok','unknown']
+  }
+};
+
+const ranges={ today:['2026-07-24','2026-07-24'], yesterday:['2026-07-23','2026-07-23'], week:['2026-07-18','2026-07-24'], month:['2026-07-01','2026-07-24'], quarter:['2026-07-01','2026-07-24'] };
+const rangeText={ today:'Fri 24 Jul', yesterday:'Thu 23 Jul', week:'18-24 Jul (7 days)', month:'July, 1-24', quarter:'Q3 to date, 1-24 Jul' };
+const viewLabel={today:'Today',yesterday:'Yesterday',week:'This week',month:'This month',quarter:'This quarter'};
 
 function agg(metric,view){
   const [s,e]=ranges[view]; const out=[0,0,0,0,0,0]; const m=daily[metric]||{};
@@ -321,8 +405,8 @@ function agg(metric,view){
 const fmtk=v=> v>=1000? '£'+(v/1000)+'k' : '£'+v;
 function ownerAgg(list){ const m={}; list.forEach(d=>{m[d.owner]=(m[d.owner]||0)+d.arr}); return {labels:Object.keys(m),data:Object.values(m)}; }
 
-let state={view:'week',tab:'momentum'};
-let cmpChart,trendChart,cwChart,ocChart,lbValChart,lbCntChart,acqChart;
+let state={view:'week'};
+let cmpChart,trendChart,cwChart,ocChart,lbValChart,lbCntChart;
 
 function render(){
   const v=state.view;
@@ -339,7 +423,7 @@ function render(){
   document.getElementById('ctxNote').innerHTML= dailyView
     ? '<strong>'+viewLabel[v]+' ('+rangeText[v]+').</strong> Single-day snapshot. Revenue, leaderboard and contract-out stay at quarter level.'
     : (v==='month'||v==='quarter'
-        ? '<strong>'+viewLabel[v]+'.</strong> Sales meetings and deals cover the full month. Calls and tasks began 21-22 Jul (Allo and cadence switch-on) and email coverage starts '+COVERAGE.email_covered_from+', so those match the week for now.'
+        ? '<strong>'+viewLabel[v]+'.</strong> Sales meetings and deals cover the full month. Calls and tasks began ~21-22 Jul (Allo and cadence switch-on), so those match the week for now.'
         : '<strong>This week ('+rangeText[v]+').</strong> The seven-day operating view.');
 
   const cards=document.getElementById('cards'); cards.innerHTML='';
@@ -347,7 +431,7 @@ function render(){
     cards.innerHTML+=`<div class="card">
       <div class="name">${r}</div><div class="role">${roles[i]}</div>
       <div class="stat"><span>Sales meetings</span><span class="v ${mtgs[i]?'g':'m'}">${mtgs[i]}</span></div>
-      <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${connectivity.seats[r][0]==='na'?'n/a':calls[i]}</span></div>
+      <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${calls[i]}</span></div>
       <div class="stat"><span>Emails</span><span class="v ${emails[i]?'g':'m'}">${emails[i]}</span></div>
       <div class="stat"><span>LI connects (deal)</span><span class="v ${liCa[i]?'g':'m'}">${liCa[i]} <span class="m" style="font-weight:600">(${liCd[i]})</span></span></div>
       <div class="stat"><span>LI messages (deal)</span><span class="v ${liMa[i]?'g':'m'}">${liMa[i]} <span class="m" style="font-weight:600">(${liMd[i]})</span></span></div>
@@ -365,7 +449,7 @@ function render(){
   reps.forEach((r,i)=>{
     tb.innerHTML+=`<tr><td>${r}</td>
       <td class="${mtgs[i]?'g':'m'}">${mtgs[i]}</td>
-      <td>${connectivity.seats[r][0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
+      <td>${calls[i]}</td>
       <td class="${emails[i]?'g':'m'}">${emails[i]}</td>
       <td class="${liCa[i]?'':'m'}">${liCa[i]} <span class="m">(${liCd[i]})</span></td>
       <td class="${liMa[i]?'':'m'}">${liMa[i]} <span class="m">(${liMd[i]})</span></td>
@@ -436,6 +520,7 @@ function renderRevenue(){
   ocChart=new Chart(document.getElementById('ocChart'),{type:'bar',data:{labels:oco.labels,datasets:[{label:'Out for contract',data:oco.data,backgroundColor:amber}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{grid:{color:grid}},y:{grid:{color:grid},beginAtZero:true,ticks:{callback:x=>'£'+(x/1000)+'k'}}}}});
 }
 
+// ===== leaderboard: quarter + 2026 YTD, value and deal count in one view =====
 function renderLeaderboard(){
   const rows=reps.map(r=>{
     const q3=wonYTD.filter(d=>d.owner===r&&d.quarter==='Q3');
@@ -475,19 +560,11 @@ function renderChannels(deals,prefix){
   if(!el(prefix+'ChanTable')||!el(prefix+'BonusTable')){
     console.warn('renderChannels: missing target for prefix '+prefix); return;
   }
-  if(el(prefix+'Limits')) el(prefix+'Limits').innerHTML=BONUS_LIMITS;
   const q=d=>d.channel===BONUS_CHANNEL;
   const isUnset=d=>!d.channel||d.channel==='Unassigned';
   const unassigned=deals.filter(isUnset);
-  if(el(prefix+'Warn')){
-    el(prefix+'Warn').innerHTML = unassigned.length
-      ? '<div class="note flag" style="font-size:13px"><strong>Do not pay yet.</strong> '+unassigned.length+
-        ' closed won deal'+(unassigned.length===1?'':'s')+' in this quarter has no acquisition channel set in Attio, so '+
-        (unassigned.length===1?'it is':'they are')+' excluded from the qualifying total rather than assumed outbound: '+
-        unassigned.map(d=>d.name+' (£'+d.arr.toLocaleString()+', '+d.owner+')').join('; ')+
-        '. Set the channel in Attio, then re-read this table before authorising payment.</div>'
-      : '<div class="note" style="font-size:13px"><strong>Every closed won deal in this quarter has an acquisition channel set.</strong> Nothing is excluded for a missing channel, so the qualifying total below is complete on the field test.</div>';
-  }
+
+  // deal-level table with the band and the bonus it earns
   const rows=deals.map(d=>{
     const pay=bonusFor(d.arr);
     const bonusCell = q(d) ? `<span class="g" style="font-weight:700">£${pay}</span>`
@@ -504,6 +581,7 @@ function renderChannels(deals,prefix){
     +(rows||'<tr><td class="m" style="text-align:left">No closed won deals in this quarter.</td></tr>')
     +`<tr><td class="total">Qualifying</td><td class="total">£${qTot.toLocaleString()}</td><td class="total">${qual.length} deal${qual.length===1?'':'s'}</td><td></td><td></td><td></td><td class="total">£${payTot.toLocaleString()}</td></tr></tbody>`;
 
+  // bonus earned leaderboard
   const owners=[...new Set(deals.map(d=>d.owner))];
   const brows=owners.map(o=>{
     const mine=deals.filter(d=>d.owner===o);
@@ -527,6 +605,7 @@ function renderChannels(deals,prefix){
     '<thead><tr><th></th><th>Person</th><th>Bonus earned</th><th>Deals</th><th>Qualifying ARR</th><th>Breakdown</th><th>Pending channel</th></tr></thead><tbody>'
     +(body||'<tr><td class="m" style="text-align:left">Nothing to pay this quarter.</td></tr>')
     +`<tr><td></td><td class="total">Total</td><td class="total">£${tp.toLocaleString()}</td><td class="total">${tn}</td><td class="total">£${tv.toLocaleString()}</td><td></td><td class="total">${tu?tu+' / £'+tup.toLocaleString():'-'}</td></tr></tbody>`;
+
 }
 
 function statusLabel(s){ return s==='ok'?'connected':s==='partial'?'partial':s==='down'?'down':s==='na'?'n/a':'unknown'; }
@@ -548,37 +627,95 @@ function renderConn(){
       <span><span class="cdot down"></span> down</span>
       <span><span class="cdot na"></span> no account</span>
     </div>`;
-  document.getElementById('lastRefresh').textContent='Last refreshed '+RUN_STAMP;
 }
 
-function renderCoverage(){
-  document.getElementById('emailFrom').textContent=COVERAGE.email_covered_from;
-  document.getElementById('liFrom').textContent=COVERAGE.linkedin_notes_covered_from;
-  document.getElementById('dealCount').textContent=DEAL_COUNT;
-  document.getElementById('mtgAudit').innerHTML='This run read '+COVERAGE.mtg_notes+
-    ' Granola notes for the quarter to date, which dedupe to '+COVERAGE.mtg_total+
-    ' distinct meetings: '+COVERAGE.mtg_internal+' internal-only, '+
-    COVERAGE.mtg_excluded+' external but excluded by the rules above, and '+COVERAGE.mtg_included+
-    ' counted as sales meetings, each credited to every Jigcar attendee.';
-  document.getElementById('acqTitle').textContent='Acquisition channel . all '+WON_BOOK_COUNT+' closed won deals (full won book, not just Q3)';
+// ===== Ask-about-this-data: builds a self-describing payload and copies it =====
+// Jigcar Commercial Team project in Claude
+const CLAUDE_PROJECT_URL='https://claude.ai/project/019a0656-1927-7642-abca-4885887fcf6a';
+
+function buildPayload(){
+  const cwTot=closedWonDeals.reduce((a,d)=>a+d.arr,0);
+  const ocTot=contractDeals.reduce((a,d)=>a+d.arr,0);
+  const perPeriod={};
+  ['today','yesterday','week','month','quarter'].forEach(v=>{
+    perPeriod[v]={range:rangeText[v]};
+    ['meetings','calls','emails','tasks','deals','progressed','shutoff','liConnAll','liConnDeal','liMsgAll','liMsgDeal']
+      .forEach(m=>{ perPeriod[v][m]=Object.fromEntries(reps.map((r,i)=>[r,agg(m,v)[i]])); });
+  });
+  return {
+    what_this_is:"Jigcar Team Momentum dashboard data. All figures in GBP. Answer only from this data; if something is not here, say so rather than estimating.",
+    data_as_at:connectivity.updated,
+    live_quarter:{name:"Q3 2026",runs:"1 Jul - 30 Sep",target:QUARTER_TARGET,
+      closed_won:cwTot,percent_of_target:Math.round(cwTot/QUARTER_TARGET*1000)/10,
+      out_for_contract:ocTot,short_if_all_contracts_land:Math.max(0,QUARTER_TARGET-cwTot-ocTot)},
+    people:reps.map((r,i)=>({name:r,role:roles[i]})),
+    closed_won_this_quarter:closedWonDeals,
+    out_for_contract_now:contractDeals,
+    closed_won_2026_by_close_date:wonYTD,
+    outbound_bonus:{
+      rule:"Only acquisition channel 'Outbound - Direct' qualifies. Bands are inclusive lower bounds; on a boundary the higher band applies.",
+      bands:BONUS_BANDS.map(b=>({from:b.min,pays:b.pay,label:b.label})),
+      caveats:["Policy pays when the first invoice is sent within the quarter; invoicing data is not available here, so deals are placed by close date.",
+               "The policy test is whether the person made the first move, which is broader than the Attio channel. An engineered intro qualifies; an unprompted one does not."],
+      earned_by_quarter:Object.fromEntries(['Q1','Q2','Q3'].map(q=>{
+        const qual=wonYTD.filter(d=>d.quarter===q&&d.channel===BONUS_CHANNEL);
+        return [q,{total:qual.reduce((a,d)=>a+bonusFor(d.arr),0),
+          deals:qual.map(d=>({deal:d.name,owner:d.owner,arr:d.arr,bonus:bonusFor(d.arr)}))}];
+      }))
+    },
+    acquisition_channel_full_won_book:acqChannels,
+    metrics_by_person_by_period:perPeriod,
+    daily_metrics_raw:{note:"arrays are ordered "+reps.join(', '),data:daily},
+    connectivity:{workspace:connectivity.workspace,per_seat_allo_email_groovin:connectivity.seats},
+    archive_quarters:archives,
+    definitions:{
+      sales_meeting:"A scheduled conversation with at least one participant from outside Jigcar, at a prospect or customer, to move an opportunity or account forward. Every Jigcar attendee is credited. Excludes internal-only meetings, advisers, investors, media, suppliers, vendor demos, partner exploration not tied to a deal, recruitment and personal appointments.",
+      progressed:"Deals owned by that person that moved forward a stage in the period, attributed by deal owner rather than by who made the change.",
+      shut_off:"Deals owned by that person moved to Nurture, Closed Lost, Churn or Non-ICP.",
+      contract_out:"ARR of that person's deals currently in Contracts. A live snapshot, not period activity.",
+      known_gaps:["Calls and cadence tasks only began around 21-22 July, so month and quarter figures match the week for those two metrics.",
+                  "LinkedIn connections are attributed via the cadence, not per seat, so the 'all' figure is a floor.",
+                  "Rupert has no Allo account, so his calls are always 0."]
+    }
+  };
 }
 
-function renderRead(){
-  document.getElementById('readOverall').innerHTML="<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> £26,400 is won, 6.6% of the £400,000 target, both deals Chris. £195,600 sits in Contracts, which still leaves £178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 42 external meetings in July, 80 attendee-credits across the six. Elliott carries 31 of those credits, James 14 and Rupert 13, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what he touches, both Q3 closes and £147,600 of the £195,600 out for contract, on seven external meetings.";
-  document.getElementById('readList').innerHTML="<li><span class=\"pill red\">Flag</span> <strong>Citygate £75,600 and West Herr £72,000</strong> both passed their 20 July estimated close and have sat in Contracts for seven days. That is £147,600, three quarters of the contract book, with no stage movement logged. Chris owns both.</li><li><span class=\"pill green\">Measured move</span> <strong>Bianca</strong> advanced <strong>Nelson Automotive Group</strong> from Buy Signal to Qualification. This is the first progression the stage diff has observed rather than inferred, and it is the Buy-Signal-to-Qualification step the team was asked to record so the creation cap releases.</li><li><span class=\"pill green\">Working it</span> <strong>Chris</strong>: 19 completed cadence tasks and 12 LinkedIn connects this week, 16 deals created this month, both closed-won deals, and he ran today’s Ecomotive value-case present back. Gap is calls, one all month.</li><li><span class=\"pill red\">Flag</span> <strong>Luke</strong>: four sales meetings all quarter, and the Ecomotive present back today is his first in seven days. No sent email and no completed cadence task across the whole week, and none of his 12 Buy Signal deals shows recorded outreach. He created 16 deals this month, so the top of the funnel is moving faster than the conversations behind it.</li><li><span class=\"pill amber\">Heavy load</span> <strong>Elliott</strong> at 31 meeting credits, <strong>James</strong> at 14 and <strong>Rupert</strong> at 13. Worth asking which of those a rep could be running instead.</li><li><span class=\"pill grey\">Account side</span> <strong>Bianca</strong>: 11 meeting credits, nearly all existing accounts (Citygate, Vindis, RH Car Transport, Big Motoring World, LSH). Right shape for onboarding and CS, thin on new business by design.</li><li><span class=\"pill green\">Year view</span> The leaderboard tells a different story from the quarter: Elliott leads 2026 on £43,200, then Chris £26,400 and Luke £26,220 (both on two deals), Rupert £24,840. Six deals won across the year, spread across four people.</li><li><span class=\"pill grey\">Bonus</span> Nothing qualifies for the direct outbound bonus in Q3. Both closes are inbound (website and referral), so the earned total is £0 and no deal is pending a channel.</li>";
+function copyPayload(){
+  // The anchor handles opening Claude, so this only copies. Opening a window from inside
+  // the clipboard promise gets popup-blocked, which is why navigation is left to the link.
+  const text = "Here is my sales team dashboard data. Answer questions using only these figures.\n\n"
+    + "```json\n"+JSON.stringify(buildPayload(),null,2)+"\n```";
+  const msg=document.getElementById('askmsg');
+  const done=()=>{
+    msg.textContent='Copied. Paste it into the chat, then ask your question.';
+    setTimeout(()=>{msg.textContent='';},8000);
+  };
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallback(text,done,msg));
+  } else { fallback(text,done,msg); }
+  return true; // let the link navigate
+}
+function fallback(text,done,msg){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }catch(e){ msg.textContent='Could not copy automatically. Try again, or use a browser that allows clipboard access.'; }
 }
 
 function refreshData(){
+  // The page is a static build: numbers are written in by the 08:00 routine.
+  // So "reload" means fetch the newest published build, not re-draw what is already here.
   const btn=document.querySelector('.rbtn');
   btn.textContent='Loading...'; btn.disabled=true;
   location.href=location.pathname+'?t='+Date.now();
 }
 
 function buildTrend(){
-  const days=["2026-07-01", "2026-07-02", "2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-18", "2026-07-19", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-25", "2026-07-26", "2026-07-27"];
-  const labels=["1 Jul", "2 Jul", "3 Jul", "4 Jul", "5 Jul", "6 Jul", "7 Jul", "8 Jul", "9 Jul", "10 Jul", "11 Jul", "12 Jul", "13 Jul", "14 Jul", "15 Jul", "16 Jul", "17 Jul", "18 Jul", "19 Jul", "20 Jul", "21 Jul", "22 Jul", "23 Jul", "24 Jul", "25 Jul", "26 Jul", "27 Jul"];
-  function series(i){ return days.map(d=>{ return daily.deals[d]?daily.deals[d][i]:0; }); }
-  if(trendChart)trendChart.destroy();
+  const days=['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24'];
+  const labels=days.map(d=>d+' Jul');
+  function series(i){ return days.map(d=>{ const k='2026-07-'+d; return daily.deals[k]?daily.deals[k][i]:0; }); }
   trendChart=new Chart(document.getElementById('trend'),{type:'line',data:{labels,datasets:[
     {label:'Chris',data:series(0),borderColor:repColors[0],backgroundColor:repColors[0],tension:.3,pointRadius:2},
     {label:'Luke',data:series(1),borderColor:repColors[1],backgroundColor:repColors[1],tension:.3,pointRadius:2},
@@ -586,9 +723,11 @@ function buildTrend(){
   ]},options:{responsive:true,scales:{x:{grid:{color:grid}},y:{grid:{color:grid},beginAtZero:true}},plugins:{legend:{position:'top'}}}});
 }
 
+// verified against all 16 Closed Won records in Attio, 27 Jul 2026. No deal is unassigned.
+// Big Motoring World is stored as 'Inboud - linkedin' in Attio and normalised here.
+const acqChannels={'Outbound - Direct':9,'Inbound - referral':3,'Inbound - website':2,'Inbound - Campaign':1,'Inbound - LinkedIn':1};
 function buildAcq(){
-  if(acqChart)acqChart.destroy();
-  acqChart=new Chart(document.getElementById('acqChart'),{type:'bar',
+  new Chart(document.getElementById('acqChart'),{type:'bar',
     data:{labels:Object.keys(acqChannels),datasets:[{label:'Closed won deals',data:Object.values(acqChannels),
       backgroundColor:['#088E4D','#6AD98E','#4B9FE0','#7db8e8','#0a72c4','#666']}]},
     options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},
@@ -596,6 +735,23 @@ function buildAcq(){
 }
 
 // ===== ARCHIVE =====
+const archives={
+  'Q2-2026':{ label:'Q2 2026 (Apr - Jun) . reconstructed archive',
+    closedWon:[ {name:'RH Car Transport', arr:8400, owner:'Luke', date:'Q2 2026', channel:'Inbound - Campaign'},
+                {name:'Monmotors', arr:43200, owner:'Elliott', date:'Q2 2026', channel:'Outbound - Direct'},
+                {name:'Premier Travel Logistics', arr:17820, owner:'Luke', date:'Q2 2026', channel:'Outbound - Direct'} ],
+    acquisition:{ 'Outbound - Direct':2, 'Inbound - Campaign':1 },
+    createdCount:15, createdPipeline:330000,
+    byOwner:[ {name:'Chris',created:7,value:186000}, {name:'Luke',created:8,value:144000} ],
+    outcomes:{ 'Now won':0, 'Live (Qual to Contracts)':6, 'Nurture':7, 'Non-ICP / Lost':2 } },
+  'Q1-2026':{ label:'Q1 2026 (Jan - Mar) . reconstructed archive',
+    closedWon:[ {name:'Focus VM', arr:24840, owner:'Rupert', date:'Q1 2026', channel:'Inbound - referral'} ],
+    acquisition:{ 'Inbound - referral':1 },
+    createdCount:45, createdPipeline:652600,
+    byOwner:[ {name:'Chris',created:13,value:342400}, {name:'Luke',created:20,value:63200},
+              {name:'Elliott',created:4,value:142000}, {name:'Bob',created:4,value:105000}, {name:'James',created:4,value:0} ],
+    outcomes:{ 'Now won':2, 'Live (New Lead to Contracts)':20, 'Nurture':17, 'Non-ICP / Lost':6 } }
+};
 let archOwnerChart,archOutcomeChart,archLbChart,archAcqChart;
 const QORDER=['Q1','Q2','Q3'];
 function renderArchive(q){
@@ -612,6 +768,7 @@ function renderArchive(q){
       `<tr><td class="total">Total</td><td class="total">£${cwVal.toLocaleString()}</td><td class="total">${cwN} deal${cwN===1?'':'s'}</td><td></td></tr></tbody>`;
   } else { cw.innerHTML='<tbody><tr><td class="m" style="text-align:left;padding:12px 8px">No deals closed won in this quarter.</td></tr></tbody>'; }
   renderChannels(a.closedWon,'archBonus');
+  // closed won leaderboard for this quarter + 2026 cumulative to end of that quarter
   const qKey=q.split('-')[0];
   const qIdx=QORDER.indexOf(qKey);
   const lbRows=reps.map(r=>{
@@ -633,6 +790,7 @@ function renderArchive(q){
     `<thead><tr><th></th><th>Person</th><th>${qKey} closed won</th><th>${qKey} deals</th><th>2026 to end ${qKey}</th><th>Deals</th></tr></thead><tbody>`
     +lbBody+`<tr><td></td><td class="total">Team</td><td class="total">£${tqv.toLocaleString()}</td><td class="total">${tqn}</td><td class="total">£${tcv.toLocaleString()}</td><td class="total">${tcn}</td></tr></tbody>`;
 
+  // closed won by owner, this quarter only
   const wonOwners=lbRows.filter(o=>o.qv>0);
   if(archLbChart)archLbChart.destroy();
   archLbChart=new Chart(document.getElementById('archLbChart'),{type:'bar',
@@ -641,6 +799,7 @@ function renderArchive(q){
     options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},
       scales:{x:{grid:{color:grid},beginAtZero:true,ticks:{callback:x=>'£'+(x/1000)+'k'}},y:{grid:{display:false}}}}});
 
+  // acquisition channel of this quarter's closed won
   const acq=a.acquisition||{};
   const acqKeys=Object.keys(acq);
   if(archAcqChart)archAcqChart.destroy();
@@ -663,10 +822,9 @@ function renderArchive(q){
 }
 
 document.querySelectorAll('#toggle button').forEach(b=>{
-  b.onclick=()=>{ document.querySelectorAll('#toggle button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); state.view=b.dataset.v;
-    try{ render(); }catch(e){ console.error('render failed: scorecard',e); } };
+  b.onclick=()=>{ document.querySelectorAll('#toggle button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); state.view=b.dataset.v; render(); };
 });
-
+state.tab='momentum';
 function onQuarterChange(){ applyView(); }
 function applyView(){
   const q=document.getElementById('quarter').value;
@@ -675,27 +833,27 @@ function applyView(){
   ['liveMomentum','liveBoard','archMomentum','archBoard'].forEach(id=>{
     document.getElementById(id).style.display = (id===key)?'block':'none';
   });
+  // quarter context line, shared by both tabs
   const label = live ? 'Q3 2026 <b>live</b> . 1 Jul - 30 Sep'
     : (archives[q]? archives[q].label.replace(' . ',' . <b>')+'</b>' : q.replace('-',' '));
   const tabName = state.tab==='momentum' ? 'Momentum' : 'Leaderboard &amp; bonus';
   document.getElementById('ctxTitle').innerHTML=tabName+' &nbsp;.&nbsp; '+label;
-  // A chart drawn inside a hidden tab renders at zero height, so every chart in the
-  // now-visible container is (re)built here rather than once at load.
-  const steps = live
-    ? (state.tab==='momentum'
-        ? [['banner',renderBanner],['revenue',renderRevenue],['acquisition',buildAcq],
-           ['scorecard',render],['trend',buildTrend],['coverage',renderCoverage],['read',renderRead]]
-        : [['leaderboard',renderLeaderboard],['bonus',()=>renderChannels(closedWonDeals,'bonus')]])
-    : [['archive',()=>renderArchive(q)]];
-  steps.forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
+  // render after the container is visible so canvases size correctly
+  try{
+    if(live){ if(state.tab==='board'){ renderLeaderboard(); renderChannels(closedWonDeals,'bonus'); } }
+    else { renderArchive(q); }
+  }catch(e){ console.error('applyView render failed',e); }
 }
 document.querySelectorAll('#tabs button').forEach(b=>{
   b.onclick=()=>{ document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
     b.classList.add('on'); state.tab=b.dataset.t; applyView(); };
 });
 
-[['connectivity',renderConn]].forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
-try{ applyView(); }catch(e){ console.error('applyView failed',e); }
+[['connectivity',renderConn],['banner',renderBanner],['revenue',renderRevenue],
+ ['bonus',()=>renderChannels(closedWonDeals,'bonus')],['leaderboard',renderLeaderboard],
+ ['scorecard',render],['trend',buildTrend],['acquisition',buildAcq]
+].forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
+applyView();
 </script>
 </body>
 </html>
