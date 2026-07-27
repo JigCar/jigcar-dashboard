@@ -123,7 +123,7 @@
     </div>
     <div class="refresh">
       <span class="ts" id="lastRefresh"></span>
-      <button class="rbtn" onclick="refreshData()">Refresh data</button>
+      <button class="rbtn" onclick="refreshData()">Reload latest</button>
     </div>
   </div>
 
@@ -275,7 +275,7 @@
   </div>
 
   <div class="foot">
-    Live quarter: Q3 2026 (1 Jul - 30 Sep). Target £400,000 (edit QUARTER_TARGET in the script). Sources: Granola (sales meetings), Allo (calls), Attio (emails, tasks, deals, stages), Groovin to Attio (LinkedIn). ARR = Attio deal value (GBP). Data to 24 Jul 2026. Prepared for Elliott Perks.
+    Live quarter: Q3 2026 (1 Jul - 30 Sep). Target £400,000 (edit QUARTER_TARGET in the script). Sources: Granola (sales meetings), Allo (calls), Attio (emails, tasks, deals, stages), Groovin to Attio (LinkedIn). ARR = Attio deal value (GBP). Data as at the timestamp above. This page is rebuilt automatically each weekday at 08:00 and published to GitHub Pages; it does not update live in the browser, so "Reload latest" fetches the most recent build. Prepared for Elliott Perks.
   </div>
 </div>
 
@@ -586,7 +586,7 @@ function renderConn(){
     return `<tr><td>${r}</td>`+s.map(x=>`<td><span class="cdot ${x}" title="${statusLabel(x)}"></span></td>`).join('')+'</tr>';
   }).join('');
   document.getElementById('conn').innerHTML=`
-    <div class="ttl">Connectivity . last refreshed ${connectivity.updated}</div>
+    <div class="ttl">Connectivity . data as at ${connectivity.updated} . rebuilt each weekday 08:00</div>
     <div class="ws">${ws}</div>
     <table class="cmatrix"><thead>${head}</thead><tbody>${rows}</tbody></table>
     <div class="legend">
@@ -599,13 +599,11 @@ function renderConn(){
 }
 
 function refreshData(){
-  const now=new Date();
-  const d=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-  const t=now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  connectivity.updated=d+', '+t;
-  const btn=document.querySelector('.rbtn'); const old=btn.textContent;
-  btn.textContent='Refreshing...'; btn.disabled=true;
-  setTimeout(()=>{ renderConn(); render(); renderBanner(); renderRevenue(); renderChannels(closedWonDeals,'bonus'); renderLeaderboard(); btn.textContent='Refreshed'; setTimeout(()=>{btn.textContent=old;btn.disabled=false;},1200); },500);
+  // The page is a static build: numbers are written in by the 08:00 routine.
+  // So "reload" means fetch the newest published build, not re-draw what is already here.
+  const btn=document.querySelector('.rbtn');
+  btn.textContent='Loading...'; btn.disabled=true;
+  location.href=location.pathname+'?t='+Date.now();
 }
 
 function buildTrend(){
