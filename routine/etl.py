@@ -368,6 +368,9 @@ state = {"schema": 3, "last_run": RUN_DATE, "last_run_stamp": RUN_STAMP,
          "meeting_classification": {"excluded": {f"{d}|{t}": r for (d, t), r in EXCLUDED_MEETINGS.items()},
                                     "included_count": inc_count, "excluded_count": exc_count,
                                     "internal_only_count": internal_count},
+         # carried forward, not recomputed: slack_messages.py owns this and needs the
+         # history to escalate on the third consecutive day rather than repeat itself
+         "perf_flags": (_ps.get("perf_flags", {}) if prev else {}),
          "coverage": coverage}
 
 os.makedirs(f"{SP}/build", exist_ok=True)
