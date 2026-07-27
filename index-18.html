@@ -101,6 +101,18 @@
   .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .archive{background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:22px;color:var(--muted);font-size:13.5px}
   .qbadge{display:inline-block;background:rgba(8,142,77,.15);color:var(--bright);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+  .ask{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+  .ask .ttl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .ask p{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
+  .ask .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .agentbtn{text-decoration:none;display:inline-flex;align-items:center;gap:9px;background:#fff;color:#4C1D95;
+    border:2px solid #7C3AED;border-radius:999px;padding:11px 20px;font-family:var(--font);
+    font-size:14px;font-weight:700;cursor:pointer;letter-spacing:-.1px;
+    box-shadow:0 0 0 4px rgba(124,58,237,.20), 0 0 18px rgba(124,58,237,.35);transition:.18s}
+  .agentbtn:hover{box-shadow:0 0 0 5px rgba(124,58,237,.28), 0 0 26px rgba(124,58,237,.5);transform:translateY(-1px)}
+  .agentbtn:active{transform:translateY(0)}
+  .agentbtn svg{flex:none}
+  .askmsg{font-size:12px;color:var(--bright);margin-top:10px;min-height:16px}
   .foot{color:var(--muted);font-size:12px;margin-top:40px;border-top:1px solid var(--line);padding-top:16px}
   #liveMomentum,#liveBoard,#archMomentum,#archBoard{display:none}
   @media(max-width:820px){.cards{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
@@ -128,6 +140,25 @@
   </div>
 
   <div class="conn" id="conn"></div>
+
+  <div class="ask">
+    <div class="ttl">Query this data with Claude</div>
+    <p>No numbers leave this page. The button copies this dashboard's full dataset to your clipboard and opens Claude. Paste it into the chat, then ask whatever you like.</p>
+    <div class="row">
+      <a class="agentbtn" id="agentLink" href="https://claude.ai/project/019a0656-1927-7642-abca-4885887fcf6a" target="_blank" rel="noopener" onclick="copyPayload()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4C1D95" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v2.5"/><circle cx="12" cy="2" r="1" fill="#4C1D95" stroke="none"/>
+          <rect x="3.5" y="4.5" width="17" height="13" rx="3.5"/>
+          <path d="M8 21l2.2-3.5h3.6L16 21"/>
+          <circle cx="9" cy="10.5" r="1.35" fill="#4C1D95" stroke="none"/>
+          <circle cx="15" cy="10.5" r="1.35" fill="#4C1D95" stroke="none"/>
+          <path d="M9.5 14h5"/>
+        </svg>
+        Copy data &amp; open Claude
+      </a>
+    </div>
+    <div class="askmsg" id="askmsg"></div>
+  </div>
 
   <div class="tabs" id="tabs">
     <button data-t="momentum" class="on">Momentum</button>
@@ -276,10 +307,10 @@ Chart.defaults.color=tick;Chart.defaults.font.family="Inter,-apple-system,sans-s
 
 // ===== QUARTER REVENUE TARGET - update at the start of each quarter =====
 const QUARTER_TARGET=400000; // Q3 2026
-const RUN_STAMP="27 Jul 2026, 16:10";
+const RUN_STAMP="27 Jul 2026, 16:35";
 const WON_BOOK_COUNT=16;
 const DEAL_COUNT=248;
-const COVERAGE={"progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's", "stage_diff": [], "stage_moves_accumulated": 1, "email_covered_from": "2026-07-24", "email_note": "continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor", "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient", "linkedin_notes_covered_from": "2026-07-21", "tasks_dated_by": "completed_at from the Attio tasks API", "li_connects_attributed_by": "cadence Touch-1 completed connect task on the owner's deal", "li_connect_gap": "Groovin logged 14 invitation-sent events 21-27 Jul but the notes carry no rep; 13 are attributed via Touch-1 tasks", "calls_source": "Allo team analytics per seat; Rupert has no Allo account", "mtg_included": 42, "mtg_excluded": 11, "mtg_internal": 64, "mtg_total": 117, "mtg_notes": 124};
+const COVERAGE={"progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's", "stage_diff": [], "stage_moves_accumulated": 1, "email_covered_from": "2026-07-24", "email_note": "continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor", "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient", "linkedin_notes_covered_from": "2026-07-21", "tasks_dated_by": "completed_at from the Attio tasks API", "li_connects_attributed_by": "cadence Touch-1 completed connect task on the owner's deal", "li_connect_gap": "Groovin logged 14 invitation-sent events 21-27 Jul but the notes carry no rep; 13 are attributed via Touch-1 tasks", "calls_source": "Allo team analytics per seat; Rupert has no Allo account", "mtg_included": 42, "mtg_excluded": 11, "mtg_internal": 64, "mtg_total": 117, "mtg_notes": 124, "known_gaps": ["Calls began 21 Jul and completed cadence tasks 22 Jul, so month and quarter figures match the week for those two metrics. Source: Allo team analytics per seat; Rupert has no Allo account.", "Email coverage starts 2026-07-24: continuous from 24 Jul 07:53; earlier July days are not covered by this run and read as a floor.", "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient.", "LinkedIn connections are not attributable per seat from Attio. Groovin logged 14 invitation-sent events 21-27 Jul but the notes carry no rep; 13 are attributed via Touch-1 tasks.", "LinkedIn note coverage starts 2026-07-21.", "Progressed and shut off are measured by diffing this run's stage snapshot against the previous run's, so nothing before the routine existed is backfilled.", "Rupert has no Allo account, so his calls are always 0."]};
 
 // ---- daily data: metric -> { 'YYYY-MM-DD': [Chris,Luke,James,Bianca,Elliott,Rupert] } ----
 const daily={"meetings": {"2026-07-27": [1, 1, 2, 0, 3, 2], "2026-07-24": [0, 0, 0, 0, 1, 0], "2026-07-22": [1, 0, 0, 0, 3, 1], "2026-07-20": [0, 0, 1, 1, 3, 1], "2026-07-17": [1, 0, 1, 2, 3, 2], "2026-07-16": [1, 0, 1, 1, 0, 0], "2026-07-15": [0, 0, 0, 0, 2, 1], "2026-07-14": [0, 1, 1, 2, 0, 0], "2026-07-13": [0, 0, 1, 0, 1, 0], "2026-07-10": [1, 1, 0, 0, 4, 1], "2026-07-09": [0, 0, 1, 1, 1, 0], "2026-07-08": [1, 0, 1, 0, 1, 0], "2026-07-07": [0, 0, 2, 2, 5, 3], "2026-07-06": [0, 0, 0, 0, 1, 0], "2026-07-03": [0, 1, 2, 2, 2, 1], "2026-07-02": [1, 0, 1, 0, 1, 1]}, "calls": {"2026-07-21": [1, 0, 0, 0, 3, 0], "2026-07-22": [0, 1, 1, 0, 4, 0], "2026-07-23": [0, 3, 3, 0, 0, 0]}, "emails": {"2026-07-24": [16, 0, 0, 2, 6, 6], "2026-07-25": [1, 0, 0, 0, 1, 0], "2026-07-26": [0, 0, 0, 0, 1, 0], "2026-07-27": [1, 0, 0, 8, 10, 2]}, "tasks": {"2026-07-07": [0, 0, 0, 1, 0, 0], "2026-07-22": [3, 0, 0, 0, 0, 0], "2026-07-23": [0, 0, 0, 1, 0, 0], "2026-07-24": [14, 0, 0, 0, 0, 0], "2026-07-27": [2, 0, 0, 0, 0, 0]}, "deals": {"2026-07-22": [5, 4, 0, 0, 1, 0], "2026-07-21": [3, 4, 0, 0, 1, 0], "2026-07-23": [4, 4, 1, 1, 0, 0], "2026-07-10": [0, 1, 0, 0, 0, 0], "2026-07-27": [1, 0, 0, 1, 2, 2], "2026-07-14": [0, 1, 0, 0, 0, 0], "2026-07-24": [2, 1, 0, 0, 0, 0], "2026-07-17": [0, 0, 0, 0, 2, 0], "2026-07-13": [1, 0, 0, 0, 0, 0], "2026-07-20": [0, 1, 0, 0, 0, 0]}, "progressed": {"2026-07-27": [0, 0, 0, 1, 0, 0]}, "shutoff": {}, "liConnAll": {"2026-07-22": [1, 0, 0, 0, 0, 0], "2026-07-23": [0, 0, 0, 1, 0, 0], "2026-07-24": [10, 0, 0, 0, 0, 0], "2026-07-27": [1, 0, 0, 0, 0, 0]}, "liConnDeal": {"2026-07-22": [1, 0, 0, 0, 0, 0], "2026-07-23": [0, 0, 0, 1, 0, 0], "2026-07-24": [10, 0, 0, 0, 0, 0], "2026-07-27": [1, 0, 0, 0, 0, 0]}, "liMsgAll": {"2026-07-21": [0, 0, 0, 0, 5, 0], "2026-07-22": [0, 0, 1, 0, 2, 0], "2026-07-23": [0, 0, 0, 0, 1, 0], "2026-07-24": [0, 1, 0, 0, 2, 0], "2026-07-27": [0, 0, 1, 0, 0, 0]}, "liMsgDeal": {"2026-07-22": [0, 0, 1, 0, 1, 0]}};
@@ -301,7 +332,7 @@ function bonusFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.pay:
 function bandFor(arr){ const b=BONUS_BANDS.find(x=>arr>=x.min); return b?b.label:'-'; }
 const contractDeals=[{"name": "Citygate group", "arr": 75600, "owner": "Chris", "date": "20 Jul (est, passed)", "est_iso": "2026-07-20", "passed": true}, {"name": "West Herr", "arr": 72000, "owner": "Chris", "date": "20 Jul (est, passed)", "est_iso": "2026-07-20", "passed": true}, {"name": "Endeavour Automotive", "arr": 48000, "owner": "Elliott", "date": "est TBC", "est_iso": null, "passed": false}];
 const wonYTD=[{"name": "Focus VM", "arr": 24840, "owner": "Rupert", "quarter": "Q1", "channel": "Inbound - referral"}, {"name": "Monmotors", "arr": 43200, "owner": "Elliott", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "Premier Travel Logistics", "arr": 17820, "owner": "Luke", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "RH Car Transport", "arr": 8400, "owner": "Luke", "quarter": "Q2", "channel": "Outbound - Direct"}, {"name": "Peter Cooper Group", "arr": 14400, "owner": "Chris", "quarter": "Q3", "channel": "Inbound - website"}, {"name": "Hilton Coachworks Group", "arr": 12000, "owner": "Chris", "quarter": "Q3", "channel": "Inbound - referral"}];
-const connectivity={"updated": "27 Jul 2026, 16:10", "workspace": [{"name": "Attio", "status": "ok", "note": "deals, tasks, notes, email search"}, {"name": "Granola", "status": "ok", "note": "meetings, 124 in July"}, {"name": "Apollo", "status": "unknown", "note": "sends route via mailboxes"}], "seats": {"Chris": ["ok", "ok", "unknown"], "Luke": ["ok", "ok", "ok"], "James": ["ok", "ok", "ok"], "Bianca": ["unknown", "ok", "unknown"], "Elliott": ["ok", "ok", "ok"], "Rupert": ["na", "partial", "unknown"]}};
+const connectivity={"updated": "27 Jul 2026, 16:35", "workspace": [{"name": "Attio", "status": "ok", "note": "deals, tasks, notes, email search"}, {"name": "Granola", "status": "ok", "note": "meetings, 124 in July"}, {"name": "Apollo", "status": "unknown", "note": "sends route via mailboxes"}], "seats": {"Chris": ["ok", "ok", "unknown"], "Luke": ["ok", "ok", "ok"], "James": ["ok", "ok", "ok"], "Bianca": ["unknown", "ok", "unknown"], "Elliott": ["ok", "ok", "ok"], "Rupert": ["na", "partial", "unknown"]}};
 const ranges={"today": ["2026-07-27", "2026-07-27"], "yesterday": ["2026-07-26", "2026-07-26"], "week": ["2026-07-21", "2026-07-27"], "month": ["2026-07-01", "2026-07-27"], "quarter": ["2026-07-01", "2026-07-27"]};
 const rangeText={"today": "Mon 27 Jul", "yesterday": "Sun 26 Jul", "week": "21-27 Jul (7 days)", "month": "July, 1-27", "quarter": "Q3 to date, 1-27 Jul"};
 const viewLabel={today:'Today',yesterday:'Yesterday',week:'This week',month:'This month',quarter:'This quarter'};
@@ -566,6 +597,79 @@ function renderCoverage(){
 function renderRead(){
   document.getElementById('readOverall').innerHTML="<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> £26,400 is won, 6.6% of the £400,000 target, both deals Chris. £195,600 sits in Contracts, which still leaves £178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 42 external meetings in July, 80 attendee-credits across the six. Elliott carries 31 of those credits, James 14 and Rupert 13, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what he touches, both Q3 closes and £147,600 of the £195,600 out for contract, on seven external meetings.";
   document.getElementById('readList').innerHTML="<li><span class=\"pill red\">Flag</span> <strong>Citygate £75,600 and West Herr £72,000</strong> both passed their 20 July estimated close and have sat in Contracts for seven days. That is £147,600, three quarters of the contract book, with no stage movement logged. Chris owns both.</li><li><span class=\"pill green\">Measured move</span> <strong>Bianca</strong> advanced <strong>Nelson Automotive Group</strong> from Buy Signal to Qualification. This is the first progression the stage diff has observed rather than inferred, and it is the Buy-Signal-to-Qualification step the team was asked to record so the creation cap releases.</li><li><span class=\"pill green\">Working it</span> <strong>Chris</strong>: 19 completed cadence tasks and 12 LinkedIn connects this week, 16 deals created this month, both closed-won deals, and he ran today’s Ecomotive value-case present back. Gap is calls, one all month.</li><li><span class=\"pill red\">Flag</span> <strong>Luke</strong>: four sales meetings all quarter, and the Ecomotive present back today is his first in seven days. No sent email and no completed cadence task across the whole week, and none of his 12 Buy Signal deals shows recorded outreach. He created 16 deals this month, so the top of the funnel is moving faster than the conversations behind it.</li><li><span class=\"pill amber\">Heavy load</span> <strong>Elliott</strong> at 31 meeting credits, <strong>James</strong> at 14 and <strong>Rupert</strong> at 13. Worth asking which of those a rep could be running instead.</li><li><span class=\"pill grey\">Account side</span> <strong>Bianca</strong>: 11 meeting credits, nearly all existing accounts (Citygate, Vindis, RH Car Transport, Big Motoring World, LSH). Right shape for onboarding and CS, thin on new business by design.</li><li><span class=\"pill green\">Year view</span> The leaderboard tells a different story from the quarter: Elliott leads 2026 on £43,200, then Chris £26,400 and Luke £26,220 (both on two deals), Rupert £24,840. Six deals won across the year, spread across four people.</li><li><span class=\"pill grey\">Bonus</span> Nothing qualifies for the direct outbound bonus in Q3. Both closes are inbound (website and referral), so the earned total is £0 and no deal is pending a channel.</li>";
+}
+
+// ---- Query this data with Claude ----
+// Serialises the whole build to JSON so it can be pasted into a chat. The known
+// gaps come from the run's own coverage record, so this never claims a limit the
+// routine has since closed.
+function buildPayload(){
+  const cwTot=closedWonDeals.reduce((a,d)=>a+d.arr,0);
+  const ocTot=contractDeals.reduce((a,d)=>a+d.arr,0);
+  const perPeriod={};
+  ['today','yesterday','week','month','quarter'].forEach(v=>{
+    perPeriod[v]={range:rangeText[v]};
+    ['meetings','calls','emails','tasks','deals','progressed','shutoff','liConnAll','liConnDeal','liMsgAll','liMsgDeal']
+      .forEach(m=>{ perPeriod[v][m]=Object.fromEntries(reps.map((r,i)=>[r,agg(m,v)[i]])); });
+  });
+  return {
+    what_this_is:"Jigcar Team Momentum dashboard data. All figures in GBP. Answer only from this data; if something is not here, say so rather than estimating.",
+    data_as_at:connectivity.updated,
+    live_quarter:{name:"Q3 2026",runs:"1 Jul - 30 Sep",target:QUARTER_TARGET,
+      closed_won:cwTot,percent_of_target:Math.round(cwTot/QUARTER_TARGET*1000)/10,
+      out_for_contract:ocTot,short_if_all_contracts_land:Math.max(0,QUARTER_TARGET-cwTot-ocTot)},
+    people:reps.map((r,i)=>({name:r,role:roles[i]})),
+    closed_won_this_quarter:closedWonDeals,
+    out_for_contract_now:contractDeals,
+    closed_won_2026_by_close_date:wonYTD,
+    outbound_bonus:{
+      rule:"Only acquisition channel 'Outbound - Direct' qualifies. Bands are inclusive lower bounds; on a boundary the higher band applies.",
+      bands:BONUS_BANDS.map(b=>({from:b.min,pays:b.pay,label:b.label})),
+      caveats:["Policy pays when the first invoice is sent within the quarter; invoicing data is not available here, so deals are placed by close date.",
+               "The policy test is whether the person made the first move, which is broader than the Attio channel. An engineered intro qualifies; an unprompted one does not."],
+      earned_by_quarter:Object.fromEntries(['Q1','Q2','Q3'].map(q=>{
+        const qual=wonYTD.filter(d=>d.quarter===q&&d.channel===BONUS_CHANNEL);
+        return [q,{total:qual.reduce((a,d)=>a+bonusFor(d.arr),0),
+          deals:qual.map(d=>({deal:d.name,owner:d.owner,arr:d.arr,bonus:bonusFor(d.arr)}))}];
+      }))
+    },
+    acquisition_channel_full_won_book:acqChannels,
+    metrics_by_person_by_period:perPeriod,
+    daily_metrics_raw:{note:"arrays are ordered "+reps.join(', '),data:daily},
+    connectivity:{workspace:connectivity.workspace,per_seat_allo_email_groovin:connectivity.seats},
+    archive_quarters:archives,
+    definitions:{
+      sales_meeting:"A scheduled conversation with at least one participant from outside Jigcar, at a prospect or customer, to move an opportunity or account forward. Every Jigcar attendee is credited. Excludes internal-only meetings, advisers, investors, media, suppliers, vendor demos, partner exploration not tied to a deal, recruitment and personal appointments.",
+      progressed:"Deals owned by that person that moved forward a stage in the period, attributed by deal owner rather than by who made the change.",
+      shut_off:"Deals owned by that person moved to Nurture, Closed Lost, Churn or Non-ICP.",
+      contract_out:"ARR of that person's deals currently in Contracts. A live snapshot, not period activity.",
+      known_gaps:COVERAGE.known_gaps
+    }
+  };
+}
+
+function copyPayload(){
+  // The anchor handles opening Claude, so this only copies. Opening a window from inside
+  // the clipboard promise gets popup-blocked, which is why navigation is left to the link.
+  const text = "Here is my sales team dashboard data. Answer questions using only these figures.\n\n"
+    + "```json\n"+JSON.stringify(buildPayload(),null,2)+"\n```";
+  const msg=document.getElementById('askmsg');
+  const done=()=>{
+    msg.textContent='Copied. Paste it into the chat, then ask your question.';
+    setTimeout(()=>{msg.textContent='';},8000);
+  };
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallback(text,done,msg));
+  } else { fallback(text,done,msg); }
+  return true; // let the link navigate
+}
+function fallback(text,done,msg){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }catch(e){ msg.textContent='Could not copy automatically. Try again, or use a browser that allows clipboard access.'; }
 }
 
 function refreshData(){

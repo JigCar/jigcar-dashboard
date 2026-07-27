@@ -107,6 +107,18 @@ HEAD = r'''<!DOCTYPE html>
   .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .archive{background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:22px;color:var(--muted);font-size:13.5px}
   .qbadge{display:inline-block;background:rgba(8,142,77,.15);color:var(--bright);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+  .ask{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+  .ask .ttl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .ask p{margin:0 0 12px;font-size:12.5px;color:var(--muted)}
+  .ask .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .agentbtn{text-decoration:none;display:inline-flex;align-items:center;gap:9px;background:#fff;color:#4C1D95;
+    border:2px solid #7C3AED;border-radius:999px;padding:11px 20px;font-family:var(--font);
+    font-size:14px;font-weight:700;cursor:pointer;letter-spacing:-.1px;
+    box-shadow:0 0 0 4px rgba(124,58,237,.20), 0 0 18px rgba(124,58,237,.35);transition:.18s}
+  .agentbtn:hover{box-shadow:0 0 0 5px rgba(124,58,237,.28), 0 0 26px rgba(124,58,237,.5);transform:translateY(-1px)}
+  .agentbtn:active{transform:translateY(0)}
+  .agentbtn svg{flex:none}
+  .askmsg{font-size:12px;color:var(--bright);margin-top:10px;min-height:16px}
   .foot{color:var(--muted);font-size:12px;margin-top:40px;border-top:1px solid var(--line);padding-top:16px}
   #liveMomentum,#liveBoard,#archMomentum,#archBoard{display:none}
   @media(max-width:820px){.cards{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
@@ -134,6 +146,25 @@ HEAD = r'''<!DOCTYPE html>
   </div>
 
   <div class="conn" id="conn"></div>
+
+  <div class="ask">
+    <div class="ttl">Query this data with Claude</div>
+    <p>No numbers leave this page. The button copies this dashboard's full dataset to your clipboard and opens Claude. Paste it into the chat, then ask whatever you like.</p>
+    <div class="row">
+      <a class="agentbtn" id="agentLink" href="https://claude.ai/project/019a0656-1927-7642-abca-4885887fcf6a" target="_blank" rel="noopener" onclick="copyPayload()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4C1D95" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v2.5"/><circle cx="12" cy="2" r="1" fill="#4C1D95" stroke="none"/>
+          <rect x="3.5" y="4.5" width="17" height="13" rx="3.5"/>
+          <path d="M8 21l2.2-3.5h3.6L16 21"/>
+          <circle cx="9" cy="10.5" r="1.35" fill="#4C1D95" stroke="none"/>
+          <circle cx="15" cy="10.5" r="1.35" fill="#4C1D95" stroke="none"/>
+          <path d="M9.5 14h5"/>
+        </svg>
+        Copy data &amp; open Claude
+      </a>
+    </div>
+    <div class="askmsg" id="askmsg"></div>
+  </div>
 
   <div class="tabs" id="tabs">
     <button data-t="momentum" class="on">Momentum</button>
@@ -574,6 +605,79 @@ function renderRead(){
   document.getElementById('readList').innerHTML=__READ_LIST__;
 }
 
+// ---- Query this data with Claude ----
+// Serialises the whole build to JSON so it can be pasted into a chat. The known
+// gaps come from the run's own coverage record, so this never claims a limit the
+// routine has since closed.
+function buildPayload(){
+  const cwTot=closedWonDeals.reduce((a,d)=>a+d.arr,0);
+  const ocTot=contractDeals.reduce((a,d)=>a+d.arr,0);
+  const perPeriod={};
+  ['today','yesterday','week','month','quarter'].forEach(v=>{
+    perPeriod[v]={range:rangeText[v]};
+    ['meetings','calls','emails','tasks','deals','progressed','shutoff','liConnAll','liConnDeal','liMsgAll','liMsgDeal']
+      .forEach(m=>{ perPeriod[v][m]=Object.fromEntries(reps.map((r,i)=>[r,agg(m,v)[i]])); });
+  });
+  return {
+    what_this_is:"Jigcar Team Momentum dashboard data. All figures in GBP. Answer only from this data; if something is not here, say so rather than estimating.",
+    data_as_at:connectivity.updated,
+    live_quarter:{name:"Q3 2026",runs:"1 Jul - 30 Sep",target:QUARTER_TARGET,
+      closed_won:cwTot,percent_of_target:Math.round(cwTot/QUARTER_TARGET*1000)/10,
+      out_for_contract:ocTot,short_if_all_contracts_land:Math.max(0,QUARTER_TARGET-cwTot-ocTot)},
+    people:reps.map((r,i)=>({name:r,role:roles[i]})),
+    closed_won_this_quarter:closedWonDeals,
+    out_for_contract_now:contractDeals,
+    closed_won_2026_by_close_date:wonYTD,
+    outbound_bonus:{
+      rule:"Only acquisition channel 'Outbound - Direct' qualifies. Bands are inclusive lower bounds; on a boundary the higher band applies.",
+      bands:BONUS_BANDS.map(b=>({from:b.min,pays:b.pay,label:b.label})),
+      caveats:["Policy pays when the first invoice is sent within the quarter; invoicing data is not available here, so deals are placed by close date.",
+               "The policy test is whether the person made the first move, which is broader than the Attio channel. An engineered intro qualifies; an unprompted one does not."],
+      earned_by_quarter:Object.fromEntries(['Q1','Q2','Q3'].map(q=>{
+        const qual=wonYTD.filter(d=>d.quarter===q&&d.channel===BONUS_CHANNEL);
+        return [q,{total:qual.reduce((a,d)=>a+bonusFor(d.arr),0),
+          deals:qual.map(d=>({deal:d.name,owner:d.owner,arr:d.arr,bonus:bonusFor(d.arr)}))}];
+      }))
+    },
+    acquisition_channel_full_won_book:acqChannels,
+    metrics_by_person_by_period:perPeriod,
+    daily_metrics_raw:{note:"arrays are ordered "+reps.join(', '),data:daily},
+    connectivity:{workspace:connectivity.workspace,per_seat_allo_email_groovin:connectivity.seats},
+    archive_quarters:archives,
+    definitions:{
+      sales_meeting:"A scheduled conversation with at least one participant from outside Jigcar, at a prospect or customer, to move an opportunity or account forward. Every Jigcar attendee is credited. Excludes internal-only meetings, advisers, investors, media, suppliers, vendor demos, partner exploration not tied to a deal, recruitment and personal appointments.",
+      progressed:"Deals owned by that person that moved forward a stage in the period, attributed by deal owner rather than by who made the change.",
+      shut_off:"Deals owned by that person moved to Nurture, Closed Lost, Churn or Non-ICP.",
+      contract_out:"ARR of that person's deals currently in Contracts. A live snapshot, not period activity.",
+      known_gaps:COVERAGE.known_gaps
+    }
+  };
+}
+
+function copyPayload(){
+  // The anchor handles opening Claude, so this only copies. Opening a window from inside
+  // the clipboard promise gets popup-blocked, which is why navigation is left to the link.
+  const text = "Here is my sales team dashboard data. Answer questions using only these figures.\n\n"
+    + "```json\n"+JSON.stringify(buildPayload(),null,2)+"\n```";
+  const msg=document.getElementById('askmsg');
+  const done=()=>{
+    msg.textContent='Copied. Paste it into the chat, then ask your question.';
+    setTimeout(()=>{msg.textContent='';},8000);
+  };
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallback(text,done,msg));
+  } else { fallback(text,done,msg); }
+  return true; // let the link navigate
+}
+function fallback(text,done,msg){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=text; ta.style.position='fixed'; ta.style.left='-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
+  }catch(e){ msg.textContent='Could not copy automatically. Try again, or use a browser that allows clipboard access.'; }
+}
+
 function refreshData(){
   const btn=document.querySelector('.rbtn');
   btn.textContent='Loading...'; btn.disabled=true;
@@ -725,6 +829,19 @@ cov.update({"mtg_included":mc["included_count"],"mtg_excluded":mc["excluded_coun
             "mtg_internal":mc["internal_only_count"],
             "mtg_total":mc["included_count"]+mc["excluded_count"]+mc["internal_only_count"],
             "mtg_notes":len(_gran)})
+# Stated limits for the Claude payload, built from this run's coverage rather than
+# hardcoded, so the export never claims a gap the routine has since closed.
+cov["known_gaps"]=[
+    f"Calls began 21 Jul and completed cadence tasks 22 Jul, so month and quarter figures "
+    f"match the week for those two metrics. Source: {cov['calls_source']}.",
+    f"Email coverage starts {cov['email_covered_from']}: {cov['email_note']}.",
+    cov["email_rupert"].capitalize() + ".",
+    f"LinkedIn connections are not attributable per seat from Attio. {cov['li_connect_gap']}.",
+    f"LinkedIn note coverage starts {cov['linkedin_notes_covered_from']}.",
+    f"Progressed and shut off are {cov['progressed_shutoff']}, so nothing before the "
+    f"routine existed is backfilled.",
+    "Rupert has no Allo account, so his calls are always 0.",
+]
 
 READ_OVERALL = J(
  "<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> "
