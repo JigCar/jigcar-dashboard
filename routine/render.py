@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import json, io, os
+import json, io, os, datetime as _dt
 SP=os.environ.get("JIGCAR_SP") or os.path.dirname(os.path.abspath(__file__))
 p=json.load(open(f"{SP}/build/payload.json"))
 J=lambda o: json.dumps(o,ensure_ascii=False)
@@ -917,40 +917,191 @@ cov["known_gaps"]=[
     "Rupert has no Allo account, so his calls are always 0.",
 ]
 
-READ_OVERALL = J(
- "<strong>Q3 is being carried by two small closes and three contracts that have not landed.</strong> "
- "\u00a326,400 is won, 6.6% of the \u00a3400,000 target, both deals Chris. \u00a3195,600 sits in Contracts, which still "
- "leaves \u00a3178,000 to find if all three sign. Sales meetings are where the quarter is actually being worked: 43 "
- "external meetings in July, 83 attendee-credits across the six. Elliott carries 31 of those credits, James 15 and Rupert "
- "14, so founder and delivery-side presence is still doing the heavy lifting in front of customers. Chris converts what "
- "he touches, both Q3 closes and \u00a3147,600 of the \u00a3195,600 out for contract, on seven external meetings.")
+# ---------------- Read & actions ----------------
+# Every figure and every name in this narrative is computed from the payload at
+# render time. Prose that asserts a number is data wearing markup's clothes: write
+# one in by hand and it still reads as authoritative the morning after it goes
+# stale. Nothing below may be hardcoded except the wording that joins the facts.
+REPS = ["Chris", "Luke", "James", "Bianca", "Elliott", "Rupert"]
+OUTBOUND_SEATS = ["Chris", "Luke", "Elliott"]      # roles carrying outbound; see spec
+_QA, _QB = p["ranges"]["quarter"]
+_TA, _TB = p["ranges"]["trailing7"]
 
-READ_LIST = J(
- '<li><span class="pill red">Flag</span> <strong>Citygate \u00a375,600 and West Herr \u00a372,000</strong> both passed '
- 'their 20 July estimated close and have sat in Contracts for seven days. That is \u00a3147,600, three quarters of the '
- 'contract book, with no stage movement logged. Chris owns both.</li>'
- '<li><span class="pill green">Measured move</span> Four deals advanced Buy Signal to Qualification today, all seen by '
- 'the stage diff rather than inferred: <strong>Nelson Automotive Group</strong> (Bianca), <strong>Hendrick Automotive '
- 'Group</strong> and <strong>Sonic Automotive / EchoPark</strong> (Elliott), <strong>Cardinale Automotive Group</strong> '
- '(James). That is the step the team was asked to record so the creation cap releases, and it is now being recorded.</li>'
- '<li><span class="pill green">Working it</span> <strong>Chris</strong>: 19 completed cadence tasks and 12 LinkedIn '
- 'connects this month, 16 deals created, both closed-won deals, and he ran today\u2019s Ecomotive value-case present '
- 'back. Gap is calls, one all month.</li>'
- '<li><span class="pill amber">Read with care</span> <strong>Luke</strong> shows four sales meetings all quarter and no '
- 'sent email or completed cadence task in the last seven days, but he was on booked leave on Friday and again today, so '
- 'that window holds three working days for him, not seven. He still joined the Ecomotive present back today. The open '
- 'question is his 12 Buy Signal deals with no recorded outreach, not the headline activity count.</li>'
- '<li><span class="pill amber">Heavy load</span> <strong>Elliott</strong> at 31 meeting credits, <strong>James</strong> '
- 'at 15 and <strong>Rupert</strong> at 14. Elliott also sent 18 emails today and opened six new deals, so the top of the '
- 'US dealer-group push is running through the founder. Worth asking which of that a rep could carry.</li>'
- '<li><span class="pill grey">Account side</span> <strong>Bianca</strong>: 12 meeting credits, nearly all existing '
- 'accounts (Citygate, Vindis, RH Car Transport, Big Motoring World, LSH). Right shape for onboarding and CS, thin on new '
- 'business by design.</li>'
- '<li><span class="pill green">Year view</span> The leaderboard tells a different story from the quarter: Elliott leads '
- '2026 on \u00a343,200, then Chris \u00a326,400 and Luke \u00a326,220 (both on two deals), Rupert \u00a324,840. Six '
- 'deals won across the year, spread across four people.</li>'
- '<li><span class="pill grey">Bonus</span> Nothing qualifies for the direct outbound bonus in Q3. Both closes are '
- 'inbound (website and referral), so the earned total is \u00a30 and no deal is pending a channel.</li>')
+
+def _sum(metric, a=_QA, b=_QB):
+    """Per-person totals for a metric over a date range. Nothing else counts."""
+    tot = [0] * 6
+    for d, row in (p["daily"].get(metric) or {}).items():
+        if a <= d <= b:
+            for i in range(6):
+                tot[i] += row[i]
+    return tot
+
+
+def _money(v):
+    return "\u00a3" + format(int(round(v)), ",")
+
+
+def _plural(n, one, many=None):
+    return one if n == 1 else (many or one + "s")
+
+
+def _join(items):
+    items = [x for x in items if x]
+    if not items:
+        return ""
+    if len(items) == 1:
+        return items[0]
+    return ", ".join(items[:-1]) + " and " + items[-1]
+
+
+def _top(vals, n=3):
+    """Top n people on a per-person vector, zeroes dropped, ties in scorecard order."""
+    order = sorted(range(6), key=lambda i: (-vals[i], i))
+    return [(REPS[i], vals[i]) for i in order if vals[i]][:n]
+
+
+_mtg = _sum("meetings")
+_tasks = _sum("tasks")
+_deals = _sum("deals")
+_lisent = _sum("liConnAll")
+_target = p["QUARTER_TARGET"]
+_won_q3 = sum(d["arr"] for d in p["closedWonDeals"])
+_oc_total = sum(d["arr"] for d in p["contractDeals"])
+_gap = max(0.0, _target - _won_q3 - _oc_total)
+_pct = (_won_q3 / _target * 100) if _target else 0.0
+_credits = sum(_mtg)
+
+_won_by, _oc_by = {}, {}
+for _d in p["closedWonDeals"]:
+    _won_by[_d["owner"]] = _won_by.get(_d["owner"], 0) + _d["arr"]
+for _d in p["contractDeals"]:
+    _oc_by[_d["owner"]] = _oc_by.get(_d["owner"], 0) + _d["arr"]
+
+_nwon, _noc = len(p["closedWonDeals"]), len(p["contractDeals"])
+_won_owners = _join(sorted({d["owner"] for d in p["closedWonDeals"] if d["owner"]}))
+
+# --- overall read: a conclusion, then the figures that support it ---
+if _nwon and _noc:
+    _lead = ("Q3 rests on %d small %s and %d %s that have not landed."
+             % (_nwon, _plural(_nwon, "close"), _noc, _plural(_noc, "contract")))
+elif _noc:
+    _lead = "Nothing has closed in Q3 yet; the quarter sits entirely in %d %s." % (_noc, _plural(_noc, "contract"))
+elif _nwon:
+    _lead = "Q3 rests on %d %s with nothing behind it out for contract." % (_nwon, _plural(_nwon, "close"))
+else:
+    _lead = "Q3 has neither a close nor a contract out yet."
+
+_ov = ["<strong>%s</strong> %s is won, %.1f%% of the %s target"
+       % (_lead, _money(_won_q3), _pct, _money(_target))]
+_ov.append((", all of it %s. " % _won_owners) if _won_owners else ". ")
+if _noc:
+    _ov.append("%s sits in Contracts, which still leaves %s to find if all %s sign. "
+               % (_money(_oc_total), _money(_gap),
+                  {1: "one", 2: "two", 3: "three"}.get(_noc, str(_noc))))
+_ov.append("Sales meetings are where the quarter is being worked: %d external %s counted this quarter, "
+           "%d attendee-%s across the six. "
+           % (cov["mtg_included"], _plural(cov["mtg_included"], "meeting"),
+              _credits, _plural(_credits, "credit")))
+if _top(_mtg):
+    _ov.append("%s. " % _join(["%s carries %d" % (n, v) for n, v in _top(_mtg)]))
+if _won_by:
+    _bigwin = max(_won_by, key=lambda k: _won_by[k])
+    _ov.append("%s converts what he touches: %s of the Q3 book"
+               % (_bigwin, _money(_won_by[_bigwin])))
+    if _oc_by.get(_bigwin):
+        _ov.append(", plus %s of the %s out for contract" % (_money(_oc_by[_bigwin]), _money(_oc_total)))
+    _ov.append(", on %d meeting %s." % (_mtg[REPS.index(_bigwin)],
+                                        _plural(_mtg[REPS.index(_bigwin)], "credit")))
+READ_OVERALL = J("".join(_ov))
+
+# --- the itemised read ---
+_li = []
+
+_aged = [d for d in p["contractDeals"] if d.get("passed")]
+if _aged:
+    _v = sum(d["arr"] for d in _aged)
+    _rd = _dt.date(*[int(x) for x in p["RUN_DATE"].split("-")])
+    _days = max((_rd - _dt.date(*[int(x) for x in d["est_iso"].split("-")])).days for d in _aged)
+    _share = (", %.0f%% of the contract book" % (_v / _oc_total * 100)) if _oc_total else ""
+    _li.append('<li><span class="pill red">Flag</span> %s %s the estimated close and %s still in Contracts, '
+               'up to %d %s past. That is %s%s, with no stage movement logged. Owned by %s.</li>'
+               % (_join(["<strong>%s %s</strong>" % (d["name"], _money(d["arr"])) for d in _aged]),
+                  _plural(len(_aged), "passed", "passed"), _plural(len(_aged), "is", "are"),
+                  _days, _plural(_days, "day"), _money(_v), _share,
+                  _join(sorted({d["owner"] for d in _aged}))))
+
+_moves = [m for m in p["stageMoves"] if m["date"] == p["RUN_DATE"]]
+if _moves:
+    _li.append('<li><span class="pill green">Measured move</span> %d %s changed stage today, each seen by the '
+               'stage diff rather than inferred: %s.</li>'
+               % (len(_moves), _plural(len(_moves), "deal"),
+                  _join(["<strong>%s</strong> (%s) %s to %s" % (m["name"], m["owner"], m["from"], m["to"])
+                         for m in _moves])))
+else:
+    _li.append('<li><span class="pill grey">Measured move</span> No stage change was recorded today. '
+               'Progressed and shut off read 0 because nothing moved, not because nothing was measured.</li>')
+
+if _top(_tasks, 1):
+    _n, _v = _top(_tasks, 1)[0]
+    _i = REPS.index(_n)
+    _li.append('<li><span class="pill green">Working it</span> <strong>%s</strong> leads on completed tasks: '
+               '%d this quarter, %d LinkedIn %s sent, %d %s created.</li>'
+               % (_n, _v, _lisent[_i], _plural(_lisent[_i], "request"),
+                  _deals[_i], _plural(_deals[_i], "deal")))
+
+# Attendance-aware caution. This states the working days behind a quiet row and
+# never converts a short week into a judgement about the person.
+_short = [r for r in OUTBOUND_SEATS if p["attendance"][r]["trailing7"] < 4]
+for _r in _short:
+    _i = REPS.index(_r)
+    _days7 = p["attendance"][_r]["trailing7"]
+    _li.append('<li><span class="pill amber">Read with care</span> <strong>%s</strong> shows %d sales meeting %s '
+               'this quarter, but the last seven days hold only %d working %s for %s after booked leave. '
+               'That row is short because of the leave, not despite it, and it carries no performance read.</li>'
+               % (_r, _mtg[_i], _plural(_mtg[_i], "credit"), _days7, _plural(_days7, "day"), _r))
+
+if _top(_mtg, 3):
+    _li.append('<li><span class="pill amber">Heavy load</span> Meeting time is concentrated: %s. '
+               'Worth asking which of that a rep could carry.</li>'
+               % _join(["<strong>%s</strong> on %d" % (n, v) for n, v in _top(_mtg, 3)]))
+
+_year = {}
+for _d in p["wonYTD"]:
+    _e = _year.setdefault(_d["owner"], {"v": 0.0, "n": 0})
+    _e["v"] += _d["arr"]
+    _e["n"] += 1
+if _year:
+    _ranked = sorted(_year.items(), key=lambda kv: -kv[1]["v"])
+    _li.append('<li><span class="pill green">Year view</span> The 2026 leaderboard reads differently from the '
+               'quarter: %s. %d %s won across the year, spread across %d %s.</li>'
+               % (_join(["%s %s" % (k, _money(v["v"])) for k, v in _ranked]),
+                  len(p["wonYTD"]), _plural(len(p["wonYTD"]), "deal"),
+                  len(_year), _plural(len(_year), "person", "people")))
+
+_BONUS = [(100000, 1000), (75000, 750), (50000, 500), (25000, 250),
+          (15000, 200), (10000, 150), (5000, 100), (0, 50)]
+_qual = [d for d in p["closedWonDeals"] if d["channel"] == "Outbound - Direct"]
+_unassigned = [d for d in p["closedWonDeals"] if d["channel"] == "Unassigned"]
+_earned = sum(next(pay for lo, pay in _BONUS if d["arr"] >= lo) for d in _qual)
+_bonus = ("%d Q3 %s %s on channel Outbound - Direct, so the earned total is %s."
+          % (len(_qual), _plural(len(_qual), "close"), _plural(len(_qual), "qualifies", "qualify"),
+             _money(_earned))
+          if _qual else
+          "Nothing qualifies for the direct outbound bonus in Q3. %s, so the earned total is %s."
+          % (("Every close is on another channel: "
+              + _join(sorted({d["channel"] for d in p["closedWonDeals"]}))) if p["closedWonDeals"]
+             else "No deal has closed won this quarter", _money(0)))
+if _unassigned:
+    _bonus += (" Do not pay yet on %s: %s with no channel set, owned by %s."
+               % (_join(["<strong>%s %s</strong>" % (d["name"], _money(d["arr"])) for d in _unassigned]),
+                  _money(sum(d["arr"] for d in _unassigned)),
+                  _join(sorted({d["owner"] for d in _unassigned}))))
+else:
+    _bonus += " No deal is pending a channel."
+_li.append('<li><span class="pill grey">Bonus</span> %s</li>' % _bonus)
+
+READ_LIST = J("".join(_li))
 
 out=HEAD
 subs={

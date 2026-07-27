@@ -76,8 +76,14 @@ split_daily = collections.defaultdict(lambda: {s: [0] * 6 for s in STATES})
 for (s, subj, sent), rc in sends.items():
     if s not in TEAM:
         continue
-    i = REPS.index(TEAM[s])
     day = sent[:10]
+    # Only days this run paged END TO END are recomputed. A page that stops
+    # mid-morning leaves its oldest day partial, and merging that over the
+    # carried-forward full day silently replaces a complete count with a
+    # smaller one. Drop it and let the carry-forward stand.
+    if day < FRESH_FROM:
+        continue
+    i = REPS.index(TEAM[s])
     tot_daily[day][i] += 1
     split_daily[day][classify(rc)][i] += 1
 
