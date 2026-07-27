@@ -263,10 +263,16 @@ elif spikes:
 # On a partial run where a build did publish, the failure replaces deal risk. A
 # reader needs to know a number is missing before they need to know it is bad.
 conn = payload.get("connectivity", {})
-down = [k for k, v in (conn.get("workspace") or {}).items()
-        if (v.get("status") if isinstance(v, dict) else v) == "down"]
+# connectivity.workspace is an ARRAY of {name,status,note} and seats is keyed by
+# person with a 3-item [Allo, Email, Groovin] LIST. That shape is the contract
+# etl.py validates. Reading either as a dict of dicts raised here and took the
+# whole Slack step down after a build had already published, which is the worst
+# possible ordering: the dashboard is live and the team hears nothing.
+down = [w.get("name") for w in (conn.get("workspace") or [])
+        if isinstance(w, dict) and w.get("status") == "down"]
 for seat, per in (conn.get("seats") or {}).items():
-    if isinstance(per, dict) and any(v == "down" for v in per.values()):
+    statuses = per.values() if isinstance(per, dict) else (per if isinstance(per, list) else [])
+    if any(v == "down" for v in statuses):
         down.append(seat)
 partial_note = None
 if down:
