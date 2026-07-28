@@ -155,9 +155,9 @@
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; today's 3 sends were visible only because a teammate was a recipient, so his figure remains a floor",
    "Rupert_groovin": "live: a LinkedIn message is attributed to him from the note body",
-   "allo_reconciled": "20 call records regrouped per day and reconciled against allo_get_team_analytics: Elliott 9, Luke 5, James 4, Chris 2, Bianca 0",
-   "email_28jul": "28 Jul was paged from midnight to 16:28 UTC across three contiguous pages, has_more false on each, so today's email row and its deal split are complete to the run time rather than a floor",
-   "leave_recheck": "Zelt re-read this run; no change to the trailing-seven-day window, and nobody on the scorecard is on leave today"
+   "allo_reconciled": "20 call records regrouped per day, re-verified against allo_get_team_analytics at 21:20 with no change: Elliott 9, Luke 5, James 4, Chris 2, Bianca 0",
+   "email_28jul": "28 Jul was paged from midnight to 20:19 UTC across four contiguous pages, has_more false on each, so today's email row and its deal split are complete to the run time rather than a floor",
+   "leave_recheck": "Zelt re-read at 17:55 with no change to the trailing-seven-day window; nobody on the scorecard is on leave today"
   },
   "seats": {
    "Bianca": [
@@ -191,21 +191,21 @@
     "ok"
    ]
   },
-  "updated": "28 Jul 2026, 17:55",
+  "updated": "28 Jul 2026, 21:25",
   "workspace": [
    {
     "name": "Attio",
-    "note": "259 deals, 206 tasks, 2289 notes via REST; 281 invitation and 36 chat note bodies fetched with no errors; email search paged 28 Jul end to end across three pages",
+    "note": "260 deals, 206 tasks, 2303 notes via REST; 293 invitation and 38 chat note bodies fetched with no errors; email search paged 28 Jul end to end across four pages",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "135 meetings parsed, 1-28 Jul; of today's six notes three are internal-only and one is partner exploration with no deal, so two count as sales meetings",
+    "note": "135 meetings parsed, 1-28 Jul, unchanged since 17:55; of today's six notes three are internal-only and one is partner exploration with no deal, so two count as sales meetings",
     "status": "ok"
    },
    {
     "name": "Apollo",
-    "note": "profile endpoint authenticated this run; sends route via the connected mailboxes and are counted there, never separately",
+    "note": "authenticated earlier this evening; sends route via the connected mailboxes and are counted there, never separately",
     "status": "ok"
    }
   ]
@@ -214,10 +214,10 @@
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_source": "Allo per-seat call records (20 calls 2026-07-21 to 2026-07-28); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T16:28:43Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T20:19:50Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "179 domains resolve to a deal; 95 of 102 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "179 domains resolve to a deal; 95 of 103 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-07-28",
   "join_coverage": {
@@ -225,9 +225,9 @@
    "joinable": 95,
    "joinable_pct_by_value": 100.0,
    "joinable_value": 1961880.0,
-   "open_deals": 102,
+   "open_deals": 103,
    "pipeline_value": 1961880.0,
-   "unjoinable": 7,
+   "unjoinable": 8,
    "unjoinable_deals": [
     {
      "name": "Trade Logistica",
@@ -272,6 +272,13 @@
      "value": 0.0
     },
     {
+     "name": "Elliott Perks",
+     "owner": "Luke",
+     "reason": "no company linked",
+     "stage": "New Lead",
+     "value": 0.0
+    },
+    {
      "name": "Adapt Vehicle Solutions",
      "owner": "Luke",
      "reason": "no company linked",
@@ -280,7 +287,7 @@
     }
    ]
   },
-  "join_note": "7 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
+  "join_note": "8 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
   "leave_source": "Zelt absence calendar; the Jigcar holidays calendar holds no events after mid-2025 and is not read",
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
@@ -288,8 +295,69 @@
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 91 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [],
-  "stage_moves_accumulated": 10,
+  "stage_diff": [
+   {
+    "date": "2026-07-28",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Hudson Automotive Group",
+    "owner": "Elliott",
+    "record_id": "16e17bdf",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Gee Automotive Companies",
+    "owner": "Elliott",
+    "record_id": "1f38e393",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Ken Garff Automotive",
+    "owner": "Elliott",
+    "record_id": "5660b717",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Ed Morse Automotive Group",
+    "owner": "Elliott",
+    "record_id": "bfcbee7d",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Suttons Motors - Buy Signal (Vehicle Movement Hire)",
+    "owner": "Elliott",
+    "record_id": "dbd750d8",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "easyauto123 - Buy Signal (Mitsubishi Corp stake)",
+    "owner": "Elliott",
+    "record_id": "e35e72c6",
+    "to": "Qualification",
+    "value": 0.0
+   }
+  ],
+  "stage_moves_accumulated": 16,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -411,7 +479,7 @@
    ],
    "2026-07-28": [
     1,
-    0,
+    1,
     1,
     1,
     2,
@@ -456,7 +524,7 @@
     10,
     5,
     6,
-    11,
+    13,
     3
    ]
   },
@@ -490,7 +558,7 @@
     0,
     2,
     3,
-    0,
+    1,
     0
    ]
   },
@@ -524,7 +592,7 @@
     7,
     0,
     1,
-    4,
+    5,
     0
    ]
   },
@@ -586,11 +654,11 @@
     0
    ],
    "2026-07-28": [
-    0,
+    2,
     2,
     3,
     0,
-    0,
+    1,
     0
    ]
   },
@@ -628,11 +696,11 @@
     0
    ],
    "2026-07-28": [
-    0,
+    2,
     1,
     1,
     0,
-    0,
+    1,
     0
    ]
   },
@@ -682,7 +750,7 @@
     9,
     8,
     0,
-    18,
+    21,
     0
    ]
   },
@@ -786,7 +854,7 @@
     1
    ],
    "2026-07-28": [
-    0,
+    1,
     1,
     0,
     0,
@@ -812,7 +880,7 @@
     1
    ],
    "2026-07-28": [
-    0,
+    1,
     1,
     0,
     0,
@@ -972,7 +1040,7 @@
     1,
     0,
     0,
-    2,
+    8,
     0
    ]
   },
@@ -1158,7 +1226,7 @@
   }
  },
  "last_run": "2026-07-28",
- "last_run_stamp": "28 Jul 2026, 17:55",
+ "last_run_stamp": "28 Jul 2026, 21:25",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -1330,6 +1398,66 @@
    "record_id": "f5cbb219",
    "to": "Proposal",
    "value": 75000.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Hudson Automotive Group",
+   "owner": "Elliott",
+   "record_id": "16e17bdf",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Gee Automotive Companies",
+   "owner": "Elliott",
+   "record_id": "1f38e393",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Ken Garff Automotive",
+   "owner": "Elliott",
+   "record_id": "5660b717",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Ed Morse Automotive Group",
+   "owner": "Elliott",
+   "record_id": "bfcbee7d",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Suttons Motors - Buy Signal (Vehicle Movement Hire)",
+   "owner": "Elliott",
+   "record_id": "dbd750d8",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "easyauto123 - Buy Signal (Mitsubishi Corp stake)",
+   "owner": "Elliott",
+   "record_id": "e35e72c6",
+   "to": "Qualification",
+   "value": 0.0
   }
  ],
  "stage_snapshot": {
@@ -1460,7 +1588,7 @@
   },
   "16e17bdf": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "17b805fb": {
@@ -1510,7 +1638,7 @@
   },
   "1f38e393": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "1f6a572c": {
@@ -1720,7 +1848,7 @@
   },
   "5660b717": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "56e9edc1": {
@@ -2248,6 +2376,11 @@
    "stage": "Closed Lost",
    "value": 0.0
   },
+  "b40a99df": {
+   "owner": "Luke",
+   "stage": "New Lead",
+   "value": 0.0
+  },
   "b4b58997": {
    "owner": "Elliott",
    "stage": "Nurture",
@@ -2290,7 +2423,7 @@
   },
   "bfcbee7d": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "c0b92649": {
@@ -2445,7 +2578,7 @@
   },
   "dbd750d8": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "dca63849": {
@@ -2485,7 +2618,7 @@
   },
   "e35e72c6": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "e4735e69": {
