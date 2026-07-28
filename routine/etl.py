@@ -178,6 +178,15 @@ try:
 except FileNotFoundError:
     print("NOTE: no previous snapshot; this run seeds the baseline and the diff is empty")
 
+# The published state at the repo root is the most recent record of what the routine
+# actually told leadership. Only perf_flags is read from it: everything else must be
+# recomputed from raw/ so the figures stay reproducible from this checkout alone.
+try:
+    with open(f"{SP}/dashboard_state.json") as fh:
+        PUBLISHED_FLAGS = (json.load(fh).get("perf_flags") or {})
+except (FileNotFoundError, ValueError):
+    PUBLISHED_FLAGS = {}
+
 STAGE_DIFF = []
 for d in deals:
     before = prev.get(d["id"])
@@ -186,9 +195,13 @@ for d in deals:
     old_stage, new_stage = before["stage"], d["stage"]
     if old_stage == new_stage or not new_stage:
         continue
+    # Every owner's move is RECORDED here, including the back-book owners. Only the
+    # per-person scorecard columns are restricted to the six, and that restriction
+    # belongs at attribution below, not here. Dropping the move outright hid a
+    # £36,000 deal moving into Contracts from the move log and from "what moved",
+    # and it also skipped the won-date stamp, so a back-book owner closing a deal
+    # would never have been dated and would never have reached Q3 revenue.
     owner = d["owner"]
-    if owner not in IDX:
-        continue                                  # non-scorecard owner: revenue panels only
     if new_stage in SHUT:
         kind = "shutoff"
     elif old_stage in PROG and new_stage in PROG and PROG.index(new_stage) > PROG.index(old_stage):
@@ -220,12 +233,14 @@ progressed_daily = collections.defaultdict(z)
 shutoff_daily = collections.defaultdict(z)
 newly_won = []
 for m in ALL_MOVES:
-    if m["owner"] not in IDX:
-        continue
-    if m["kind"] == "progressed":
-        progressed_daily[m["date"]][IDX[m["owner"]]] += 1
-    elif m["kind"] == "shutoff":
-        shutoff_daily[m["date"]][IDX[m["owner"]]] += 1
+    # Per-person columns cover the scorecard six only, because those are the only
+    # people with a column. The won-date stamp is deliberately OUTSIDE that gate:
+    # closed-won revenue counts every owner, so a back-book close must be dated.
+    if m["owner"] in IDX:
+        if m["kind"] == "progressed":
+            progressed_daily[m["date"]][IDX[m["owner"]]] += 1
+        elif m["kind"] == "shutoff":
+            shutoff_daily[m["date"]][IDX[m["owner"]]] += 1
     if m["to"] == "Closed Won" and m["record_id"] not in WON_DATES:
         WON_DATES[m["record_id"]] = m["date"]     # stamp the real won date on first entry
         newly_won.append(m)
@@ -480,8 +495,13 @@ state = {"schema": 3, "last_run": RUN_DATE, "last_run_stamp": RUN_STAMP,
                                     "included_count": inc_count, "excluded_count": exc_count,
                                     "internal_only_count": internal_count},
          # carried forward, not recomputed: slack_messages.py owns this and needs the
-         # history to escalate on the third consecutive day rather than repeat itself
-         "perf_flags": (_ps.get("perf_flags", {}) if prev else {}),
+         # history to escalate on the third consecutive day rather than repeat itself.
+         # Merged from BOTH the diff baseline and the currently published state. The
+         # baseline is yesterday's snapshot, so on a same-day re-run it does not yet
+         # know about a flag an earlier run wrote today; taking only the baseline
+         # dropped that flag and reset the streak, which is the exact failure the
+         # spec warns about. The published state is the later record, so it wins.
+         "perf_flags": {**(_ps.get("perf_flags", {}) if prev else {}), **PUBLISHED_FLAGS},
          "leave": leave_summary,
          "off_today": off_today,
          "attendance": attendance,

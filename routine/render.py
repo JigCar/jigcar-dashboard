@@ -263,7 +263,7 @@ HEAD = r'''<!DOCTYPE html>
       <br><br>
       <strong>Excluded:</strong> internal-only meetings (all attendees on a jigcar.com address), including dailies, weeklies, all-hands, one-to-ones, prep and deck reviews; advisers and the chairman; investors; media and press; suppliers and 3PL carriers; tooling and vendor demos; partner or channel exploration not attached to a deal; recruitment and personal appointments. <span id="mtgAudit"></span>
       <br><br>
-      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. The <strong>(live deal)</strong> figure beside each email count is the recipient join: the email went to a company with an open deal, New Lead through Contracts, with Closed Won accounts counted separately on the customer line. It is resolved by recipient domain to the Attio company and its strongest deal state, and is classified only for <span id="splitWindow"></span>; email totals outside that window carry no split and show 0 deal-associated, which means unclassified rather than unrelated. Join coverage: <span id="splitJoin"></span>. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; invitations carry the rep in the note <em>body</em> rather than the title ("from Elliott Perks to David Farner", "James Griffin is now connected with …"), so requests sent and connections made are both attributed to a named person from Attio alone. An earlier build read only the title, found no rep, and fell back to counting cadence tasks, which credited the task assignee rather than the sender; that proxy has been removed. Each event writes a person-side and a company-side note, so events are deduped on date, rep, contact and kind. <strong>(deal)</strong> throughout means the contact's company has an open deal, New Lead through Contracts, the same test the email split uses. <strong>Connections made lag</strong> the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period. <strong>Tasks</strong> are dated by their actual completion timestamp from the Attio tasks endpoint. <strong>Progressed / shut off:</strong> measured by diffing this run's stage snapshot of all <span id="dealCount"></span> deals against the previous run's. <span id="moveNote"></span> Moves that happened before the routine existed are never backfilled, so these columns count only what the routine has actually observed between two runs.
+      <strong>Contract out</strong> is the ARR of that person's deals sitting in Contracts now, a live pipeline figure, not period activity. <strong>Email</strong> is a de-duped multi-mailbox sent count, complete from <span id="emailFrom"></span> only; earlier days in the period carry no email coverage in this build and read as a floor of 0, not as inactivity. The routine accumulates a full day each run. The <strong>(live deal)</strong> figure beside each email count is the recipient join: the email went to a company with an open deal, New Lead through Contracts, with Closed Won accounts counted separately on the customer line. It is resolved by recipient domain to the Attio company and its strongest deal state, and is classified only for <span id="splitWindow"></span>; email totals outside that window carry no split and show 0 deal-associated, which means unclassified rather than unrelated. Join coverage: <span id="splitJoin"></span>. <strong>LinkedIn:</strong> messages are rep-attributed from Groovin chat-note titles and are complete from <span id="liFrom"></span>; invitations carry the rep in the note <em>body</em> rather than the title ("from Elliott Perks to David Farner", "James Griffin is now connected with …"), so requests sent and connections made are both attributed to a named person from Attio alone. An earlier build read only the title, found no rep, and fell back to counting cadence tasks, which credited the task assignee rather than the sender; that proxy has been removed. Each event writes a person-side and a company-side note, so events are deduped on date, rep, contact and kind. <strong>(deal)</strong> throughout means the contact's company has an open deal, New Lead through Contracts, the same test the email split uses. <strong>Connections made lag</strong> the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period. <strong>Tasks</strong> are dated by their actual completion timestamp from the Attio tasks endpoint. <strong>Progressed / shut off:</strong> measured by diffing this run's stage snapshot of all <span id="dealCount"></span> deals against the previous run's. <span id="moveNote"></span> Moves that happened before the routine existed are never backfilled, so these columns count only what the routine has actually observed between two runs. <span id="ownerScopeNote"></span>
     </div>
 
     <h2><span class="bar">4.</span> Read &amp; actions</h2>
@@ -649,6 +649,29 @@ function renderConn(){
 }
 
 function renderCoverage(){
+  // Owner scope. This table has a column per scorecard person, while the revenue
+  // panels count every owner including the back book. When a non-scorecard owner
+  // holds a Contracts or Closed Won deal, the banner is legitimately higher than
+  // this table's totals, and an unexplained gap reads as an error. Built from the
+  // payload, so it names the real deals and disappears when there are none.
+  (function(){
+    const el=document.getElementById('ownerScopeNote');
+    const outside=d=>reps.indexOf(d.owner)<0;
+    const gbp=v=>'£'+Math.round(v).toLocaleString('en-GB');
+    const bits=[];
+    [['out for contract',contractDeals.filter(outside)],
+     ['closed won',closedWonDeals.filter(outside)]].forEach(function(pair){
+      const lbl=pair[0], ds=pair[1];
+      if(!ds.length) return;
+      const owners=ds.map(function(d){return d.owner;}).filter(function(o,i,a){return a.indexOf(o)===i;});
+      bits.push(ds.map(function(d){return d.name+' '+gbp(d.arr);}).join(', ')+' '+lbl+
+                ' ('+owners.join(', ')+')');
+    });
+    el.innerHTML = bits.length
+      ? '<strong>Owner scope:</strong> these columns cover the six scorecard people, while the revenue panels count every owner. '+
+        bits.join(' and ')+(bits.length===1?' is':' are')+' owned outside the scorecard, so the revenue banner is higher than the Contract out and Closed won totals here by exactly that much. Nothing is missing from either; they count different sets of people.'
+      : '';
+  })();
   document.getElementById('emailFrom').textContent=COVERAGE.email_covered_from;
   document.getElementById('liFrom').textContent=COVERAGE.linkedin_notes_covered_from;
   document.getElementById('splitWindow').textContent=(COVERAGE.email_split_from===COVERAGE.email_split_to)
@@ -672,7 +695,13 @@ function renderCoverage(){
         bits.push('found '+num(fwd.length)+' forward move'+(fwd.length===1?'':'s')+
           (hops.length===1?', all '+hops[0]:'')+': '+named(fwd)+'.');
       }
-      if(off.length) bits.push(num(off.length)+' shut off: '+named(off)+'.');
+      // num() yields lowercase words, so the shut-off clause needs the verb when it
+      // opens the sentence and a capital when it follows one. Without this it read
+      // "Today's diff found five forward moves: ... . one shut off: ...".
+      if(off.length){
+        const t=num(off.length)+' shut off: '+named(off)+'.';
+        bits.push(fwd.length ? t.charAt(0).toUpperCase()+t.slice(1) : 'found '+t);
+      }
       else if(fwd.length) bits.push('Nothing was shut off.');
       s="Today's diff "+bits.join(' ');
     }

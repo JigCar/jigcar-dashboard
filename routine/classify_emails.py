@@ -129,10 +129,11 @@ _split_days = sorted(set(split_daily) | set(zeros)
 split_from = min(_split_days) if _split_days else None
 split_to = max(_split_days) if _split_days else None
 
-# The paged window is what was READ, not what was found. A page that legitimately
-# contained no team sends still covers its range, so fall back to the range the page
-# declares rather than reporting the window as null.
-stamps = sorted(k[2] for k in sends) or sorted(paged_bounds)
+# The paged window is what was READ, not what was found. Prefer the range each page
+# declares: deriving it from the sends reports the first and last team send, which on
+# a morning whose first send was at 08:07 understated a page that ran from midnight,
+# and reported no window at all when a page held no team sends.
+stamps = sorted(paged_bounds) or sorted(k[2] for k in sends)
 out = {"by_day": by_day, "deal": deal, "cust": cust,
        "split_by_day": {d: v for d, v in sorted(split_daily.items())},
        "split_from": split_from, "split_to": split_to,

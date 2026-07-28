@@ -11,9 +11,14 @@
      "value": 63200.0
     },
     {
-     "created": 13,
+     "created": 12,
      "name": "Chris",
-     "value": 342400.0
+     "value": 267400.0
+    },
+    {
+     "created": 5,
+     "name": "Elliott",
+     "value": 217000.0
     },
     {
      "created": 4,
@@ -24,11 +29,6 @@
      "created": 4,
      "name": "James",
      "value": 0.0
-    },
-    {
-     "created": 4,
-     "name": "Elliott",
-     "value": 142000.0
     }
    ],
    "closedWon": [
@@ -44,10 +44,10 @@
    "createdPipeline": 652600.0,
    "label": "Q1 2026 (Jan - Mar) . reconstructed archive",
    "outcomes": {
-    "Live (New Lead to Contracts)": 19,
+    "Live (New Lead to Contracts)": 18,
     "Non-ICP / Lost": 7,
     "Now won": 2,
-    "Nurture": 17
+    "Nurture": 18
    }
   },
   "Q2-2026": {
@@ -63,7 +63,7 @@
     {
      "created": 7,
      "name": "Chris",
-     "value": 186000.0
+     "value": 168000.0
     }
    ],
    "closedWon": [
@@ -90,7 +90,7 @@
     }
    ],
    "createdCount": 15,
-   "createdPipeline": 330000.0,
+   "createdPipeline": 312000.0,
    "label": "Q2 2026 (Apr - Jun) . reconstructed archive",
    "outcomes": {
     "Live (New Lead to Contracts)": 6,
@@ -152,10 +152,10 @@
  "connectivity": {
   "notes": {
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
-   "Rupert_allo": "no Allo account",
-   "Rupert_email": "own mailbox not connected; sends visible only where a teammate was a recipient, so his figure is a floor",
-   "Rupert_groovin": "no LinkedIn events attributed in the covered window; cannot tell no activity from no seat",
-   "email_today": "the 28 Jul page was read end to end and held no team sends; the run is at 08:00, so today's email row is a true zero rather than a gap"
+   "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
+   "Rupert_email": "own mailbox not connected; his 2 sends today were both visible only because a teammate was a recipient, so his figure remains a floor",
+   "Rupert_groovin": "resolved this run: 2 LinkedIn messages attributed to him from the note title, so the seat is live rather than unknown",
+   "email_28jul": "the 28 Jul page was read from midnight to 11:00 UTC with has_more false, so today's email row and its deal split are complete to the run time, not a floor"
   },
   "seats": {
    "Bianca": [
@@ -186,19 +186,19 @@
    "Rupert": [
     "na",
     "partial",
-    "unknown"
+    "ok"
    ]
   },
-  "updated": "28 Jul 2026, 08:55",
+  "updated": "28 Jul 2026, 12:05",
   "workspace": [
    {
     "name": "Attio",
-    "note": "258 deals, 206 tasks, 2184 notes via REST; 191 invitation note bodies fetched with no errors; email search paged over MCP",
+    "note": "258 deals, 206 tasks, 2200 notes via REST; 205 invitation note bodies fetched with no errors; email search paged 28 Jul end to end",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "128 meetings parsed, 1-27 Jul; no 28 Jul notes yet at the 08:00 run",
+    "note": "130 meetings parsed, 1-28 Jul; the single 28 Jul note is an internal-only daily, so it is excluded from sales meetings",
     "status": "ok"
    },
    {
@@ -212,19 +212,19 @@
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_source": "Allo per-seat call records (16 calls 2026-07-21 to 2026-07-23); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T07:48:14Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T11:00:14Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "178 domains resolve to a deal; 95 of 102 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "178 domains resolve to a deal; 94 of 101 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-07-28",
   "join_coverage": {
    "domains_resolving": 178,
-   "joinable": 95,
+   "joinable": 94,
    "joinable_pct_by_value": 100.0,
-   "joinable_value": 2044880.0,
-   "open_deals": 102,
-   "pipeline_value": 2044880.0,
+   "joinable_value": 1936880.0,
+   "open_deals": 101,
+   "pipeline_value": 1936880.0,
    "unjoinable": 7,
    "unjoinable_deals": [
     {
@@ -285,8 +285,69 @@
   "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [],
-  "stage_moves_accumulated": 4,
+  "stage_diff": [
+   {
+    "date": "2026-07-28",
+    "from": "Proposal",
+    "kind": "shutoff",
+    "name": "JCT600",
+    "owner": "Chris",
+    "record_id": "11ebdd39",
+    "to": "Nurture",
+    "value": 90000.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Proposal",
+    "kind": "progressed",
+    "name": "Marriott Motor Group",
+    "owner": "Bob O'Reilly",
+    "record_id": "18dafab6",
+    "to": "Contracts",
+    "value": 36000.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Qualification",
+    "kind": "progressed",
+    "name": "Vmoves",
+    "owner": "Luke",
+    "record_id": "75f9bc2a",
+    "to": "Demo",
+    "value": 24000.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Demo",
+    "kind": "progressed",
+    "name": "AvailableCar",
+    "owner": "Elliott",
+    "record_id": "8328ccae",
+    "to": "Trial",
+    "value": 24000.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Proposal",
+    "kind": "progressed",
+    "name": "HR Owen",
+    "owner": "Chris",
+    "record_id": "c0b92649",
+    "to": "Trial",
+    "value": 36000.0
+   },
+   {
+    "date": "2026-07-28",
+    "from": "Demo",
+    "kind": "progressed",
+    "name": "Lookers",
+    "owner": "Elliott",
+    "record_id": "f5cbb219",
+    "to": "Proposal",
+    "value": 75000.0
+   }
+  ],
+  "stage_moves_accumulated": 10,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -441,12 +502,12 @@
     5
    ],
    "2026-07-28": [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
+    4,
+    4,
+    5,
+    3,
+    1,
+    2
    ]
   },
   "emailsCust": {
@@ -477,8 +538,8 @@
    "2026-07-28": [
     0,
     0,
-    0,
-    0,
+    2,
+    2,
     0,
     0
    ]
@@ -509,10 +570,10 @@
     0
    ],
    "2026-07-28": [
+    3,
+    1,
     0,
-    0,
-    0,
-    0,
+    1,
     0,
     0
    ]
@@ -577,7 +638,7 @@
    "2026-07-28": [
     0,
     0,
-    1,
+    2,
     0,
     0,
     0
@@ -657,6 +718,14 @@
     0,
     25,
     0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    6,
+    0,
+    0,
+    0
    ]
   },
   "liConnDeal": {
@@ -698,6 +767,14 @@
     0,
     0,
     24,
+    0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    4,
+    0,
+    0,
     0
    ]
   },
@@ -741,6 +818,14 @@
     0,
     6,
     0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2
    ]
   },
   "liMsgDeal": {
@@ -759,6 +844,14 @@
     0,
     2,
     0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
    ]
   },
   "meetings": {
@@ -899,9 +992,26 @@
     1,
     2,
     0
+   ],
+   "2026-07-28": [
+    1,
+    1,
+    0,
+    0,
+    2,
+    0
    ]
   },
-  "shutoff": {},
+  "shutoff": {
+   "2026-07-28": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
   "tasks": {
    "2024-12-29": [
     0,
@@ -1062,11 +1172,19 @@
     0,
     5,
     0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    2
    ]
   }
  },
  "last_run": "2026-07-28",
- "last_run_stamp": "28 Jul 2026, 08:55",
+ "last_run_stamp": "28 Jul 2026, 12:05",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -1111,7 +1229,7 @@
   },
   "excluded_count": 11,
   "included_count": 43,
-  "internal_only_count": 66
+  "internal_only_count": 68
  },
  "off_today": [
   {
@@ -1177,6 +1295,66 @@
    "record_id": "e62789e9",
    "to": "Qualification",
    "value": 0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Proposal",
+   "kind": "shutoff",
+   "name": "JCT600",
+   "owner": "Chris",
+   "record_id": "11ebdd39",
+   "to": "Nurture",
+   "value": 90000.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Proposal",
+   "kind": "progressed",
+   "name": "Marriott Motor Group",
+   "owner": "Bob O'Reilly",
+   "record_id": "18dafab6",
+   "to": "Contracts",
+   "value": 36000.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Qualification",
+   "kind": "progressed",
+   "name": "Vmoves",
+   "owner": "Luke",
+   "record_id": "75f9bc2a",
+   "to": "Demo",
+   "value": 24000.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Demo",
+   "kind": "progressed",
+   "name": "AvailableCar",
+   "owner": "Elliott",
+   "record_id": "8328ccae",
+   "to": "Trial",
+   "value": 24000.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Proposal",
+   "kind": "progressed",
+   "name": "HR Owen",
+   "owner": "Chris",
+   "record_id": "c0b92649",
+   "to": "Trial",
+   "value": 36000.0
+  },
+  {
+   "date": "2026-07-28",
+   "from": "Demo",
+   "kind": "progressed",
+   "name": "Lookers",
+   "owner": "Elliott",
+   "record_id": "f5cbb219",
+   "to": "Proposal",
+   "value": 75000.0
   }
  ],
  "stage_snapshot": {
@@ -1282,7 +1460,7 @@
   },
   "11ebdd39": {
    "owner": "Chris",
-   "stage": "Proposal",
+   "stage": "Nurture",
    "value": 90000.0
   },
   "124b5252": {
@@ -1322,7 +1500,7 @@
   },
   "18dafab6": {
    "owner": "Bob O'Reilly",
-   "stage": "Proposal",
+   "stage": "Contracts",
    "value": 36000.0
   },
   "18ea02a6": {
@@ -1737,7 +1915,7 @@
   },
   "75f9bc2a": {
    "owner": "Luke",
-   "stage": "Qualification",
+   "stage": "Demo",
    "value": 24000.0
   },
   "795f21b4": {
@@ -1787,7 +1965,7 @@
   },
   "8328ccae": {
    "owner": "Elliott",
-   "stage": "Demo",
+   "stage": "Trial",
    "value": 24000.0
   },
   "834e0337": {
@@ -2137,8 +2315,8 @@
   },
   "c0b92649": {
    "owner": "Chris",
-   "stage": "Proposal",
-   "value": 54000.0
+   "stage": "Trial",
+   "value": 36000.0
   },
   "c15259da": {
    "owner": "Chris",
@@ -2421,8 +2599,8 @@
    "value": 0.0
   },
   "f5cbb219": {
-   "owner": "Chris",
-   "stage": "Demo",
+   "owner": "Elliott",
+   "stage": "Proposal",
    "value": 75000.0
   },
   "f63ad4de": {

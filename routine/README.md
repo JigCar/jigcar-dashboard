@@ -91,6 +91,19 @@ interpreting connectivity status. It never invents a metric value.
   kind) and the company side supplies the deal join.
 - Connections made lag the invitation that earned them, often by weeks, so a high
   accepted count reflects earlier outreach rather than work done in the period.
+- The stage diff RECORDS moves for every owner, including the back-book owners, and
+  only the per-person scorecard columns are restricted to the six. An earlier build
+  dropped non-scorecard owners before recording the move, which hid a £36,000 deal
+  moving into Contracts from the move log, from "what moved" and from the celebration
+  trigger. It also skipped the won-date stamp, so a back-book owner closing a deal
+  would never have been dated and would never have reached closed-won revenue.
+- Because the table has a column per scorecard person while the revenue panels count
+  every owner, the banner can legitimately exceed the table's Contract out and Closed
+  won totals. The page states the difference and names the deals whenever it is
+  non-zero, so the gap cannot read as an error.
+- `perf_flags` is merged from the diff baseline AND the published state at the repo
+  root. The baseline is yesterday's snapshot, so on a same-day re-run it does not know
+  about a flag an earlier run wrote today; taking only the baseline reset the streak.
 - Email is a de-duped multi-mailbox sent count keyed on (sender, subject, sent_at).
   Attio has no public emails REST endpoint, so the period is paged through the MCP
   search and filtered by sender. Coverage starts at `coverage.email_covered_from`;
