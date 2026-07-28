@@ -36,6 +36,21 @@ Pull steps first. Each writes only to `raw/`, so a transform never calls an API.
    blank, because it verified each render call sat in its own try/catch while the
    script was dying before those functions were even defined.
    Run: `node routine/qa_browser.mjs <path>/index-18.html` (needs `playwright`).
+
+   In the sandbox `playwright` is installed **globally**, at
+   `/opt/node22/lib/node_modules`, and there is no `node_modules` in this repo. ESM
+   resolves bare imports from the importing file's own directory upwards, not from
+   the working directory, so running the script from its place in `routine/` fails
+   with ERR_MODULE_NOT_FOUND however you set the cwd. Copy it next to the package
+   and run it there:
+
+       cp routine/qa_browser.mjs /opt/node22/lib/node_modules/_jigcar_qa_browser.mjs
+       node /opt/node22/lib/node_modules/_jigcar_qa_browser.mjs "$PWD/build/index-18.html"
+
+   Pass an ABSOLUTE path: the script builds a `file://` URL from argv[2], and a
+   relative one becomes `file://build/...`, which fails as ERR_INVALID_URL. Never run
+   `playwright install`; `PLAYWRIGHT_BROWSERS_PATH` already points at the bundled
+   Chromium at `/opt/pw-browsers/chromium`.
 5. `slack_messages.py` - builds the two per-channel messages and prints them for
    review before anything is posted.
 
