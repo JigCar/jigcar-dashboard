@@ -16,6 +16,10 @@ Pull steps first. Each writes only to `raw/`, so a transform never calls an API.
 1. `parse_granola.py` - parses the Granola meeting dump into `raw/granola.json`. The
    dump path is passed in or discovered; it is never hardcoded.
 1b. `parse_leave.py` - parses the Zelt absence feed into `raw/leave.json`.
+1c. `parse_allo.py` - regroups the transcribed Allo call records into `raw/calls.json`
+   per person per day. The seat list is confirmed each run with `allo_list_users` and
+   the per-seat totals are reconciled against `allo_get_team_analytics`, so the daily
+   tally is a regrouping of real call records rather than a figure typed in by hand.
 1c. `classify_emails.py` - tallies sent emails per person per day from the paged MCP
    search, de-duped across mailbox copies, splits them by what the recipient is to
    us, and records the coverage window. Days it did not page are carried forward
@@ -79,6 +83,12 @@ interpreting connectivity status. It never invents a metric value.
 - Rupert's own mailbox is not connected, so his sends are only visible where a
   teammate was a recipient. His email figure is a floor and his Email seat reads
   `partial`. Rupert has no Allo account either, so his Allo seat reads `na`.
+- A day that was paged end to end but held no team sends is written as an explicit
+  zero row, not left absent, and the split window is the union of what earlier runs
+  recorded with what this run paged. The 08:00 run routinely pages a day before
+  anyone has sent anything: deriving the window from the sends alone collapsed it to
+  null and would have published an unlabelled split, which is exactly the "0 that
+  means unclassified" the spec forbids.
 
 ## Output QA (all must pass before committing)
 

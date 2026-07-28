@@ -1,0 +1,6 @@
+# Intermediate pull output and build artefacts. This repo is PUBLIC and served by
+# GitHub Pages, so raw/ must never be committed: it holds customer contact domains,
+# recipient lists and a full company export. Only the built page and the state store
+# belong in the repo, and both are copied to the root by the publish step.
+raw/
+build/

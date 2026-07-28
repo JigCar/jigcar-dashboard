@@ -101,52 +101,52 @@
  },
  "attendance": {
   "Bianca": {
-   "month": 19,
-   "quarter": 19,
+   "month": 20,
+   "quarter": 20,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "Chris": {
-   "month": 19,
-   "quarter": 19,
+   "month": 20,
+   "quarter": 20,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "Elliott": {
-   "month": 19,
-   "quarter": 19,
+   "month": 20,
+   "quarter": 20,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "James": {
-   "month": 17,
-   "quarter": 17,
+   "month": 18,
+   "quarter": 18,
    "today": 1,
    "trailing7": 4,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "Luke": {
-   "month": 17,
-   "quarter": 17,
-   "today": 0,
+   "month": 18,
+   "quarter": 18,
+   "today": 1,
    "trailing7": 3,
-   "week": 0,
+   "week": 1,
    "yesterday": 0
   },
   "Rupert": {
-   "month": 19,
-   "quarter": 19,
+   "month": 20,
+   "quarter": 20,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   }
  },
  "connectivity": {
@@ -154,7 +154,8 @@
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
    "Rupert_allo": "no Allo account",
    "Rupert_email": "own mailbox not connected; sends visible only where a teammate was a recipient, so his figure is a floor",
-   "Rupert_groovin": "no LinkedIn events attributed in the covered window; cannot tell no activity from no seat"
+   "Rupert_groovin": "no LinkedIn events attributed in the covered window; cannot tell no activity from no seat",
+   "email_today": "the 28 Jul page was read end to end and held no team sends; the run is at 08:00, so today's email row is a true zero rather than a gap"
   },
   "seats": {
    "Bianca": [
@@ -188,22 +189,22 @@
     "unknown"
    ]
   },
-  "updated": "27 Jul 2026, 23:41",
+  "updated": "28 Jul 2026, 08:05",
   "workspace": [
    {
     "name": "Attio",
-    "note": "252 deals, 193 tasks, 2176 notes via REST; email search paged over MCP",
+    "note": "258 deals, 206 tasks, 2184 notes via REST; 191 invitation note bodies fetched with no errors; email search paged over MCP",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "128 meetings parsed, 1-27 Jul",
+    "note": "128 meetings parsed, 1-27 Jul; no 28 Jul notes yet at the 08:00 run",
     "status": "ok"
    },
    {
     "name": "Apollo",
-    "note": "not exercised this run; sends route via the connected mailboxes and are counted there",
-    "status": "unknown"
+    "note": "profile endpoint authenticated this run; sends route via the connected mailboxes and are counted there, never separately",
+    "status": "ok"
    }
   ]
  },
@@ -211,18 +212,18 @@
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_source": "Allo per-seat call records (16 calls 2026-07-21 to 2026-07-23); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-24T13:48:03.000Z to 2026-07-27T20:58:58.000Z and carried forward 1 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T07:48:14Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "172 domains resolve to a deal; 89 of 96 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "178 domains resolve to a deal; 95 of 102 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
-  "email_split_to": "2026-07-27",
+  "email_split_to": "2026-07-28",
   "join_coverage": {
-   "domains_resolving": 172,
-   "joinable": 89,
+   "domains_resolving": 178,
+   "joinable": 95,
    "joinable_pct_by_value": 100.0,
    "joinable_value": 2044880.0,
-   "open_deals": 96,
+   "open_deals": 102,
    "pipeline_value": 2044880.0,
    "unjoinable": 7,
    "unjoinable_deals": [
@@ -396,6 +397,14 @@
     1,
     6,
     2
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    2
    ]
   },
   "emails": {
@@ -430,6 +439,14 @@
     12,
     31,
     5
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "emailsCust": {
@@ -456,6 +473,14 @@
     7,
     1,
     1
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "emailsDeal": {
@@ -481,6 +506,14 @@
     4,
     2,
     20,
+    0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    0,
+    0,
+    0,
     0
    ]
   },
@@ -539,6 +572,14 @@
     4,
     0,
     3,
+    0
+   ],
+   "2026-07-28": [
+    0,
+    0,
+    1,
+    0,
+    0,
     0
    ]
   },
@@ -1024,17 +1065,15 @@
    ]
   }
  },
- "last_run": "2026-07-27",
- "last_run_stamp": "27 Jul 2026, 23:41",
+ "last_run": "2026-07-28",
+ "last_run_stamp": "28 Jul 2026, 08:05",
  "leave": {
   "Bianca": [
    "2026-07-27",
    "2026-07-29",
    "2026-08-04"
   ],
-  "Chris": [
-   "2026-08-07"
-  ],
+  "Chris": [],
   "Elliott": [],
   "James": [
    "2026-06-22",
@@ -1076,20 +1115,13 @@
  },
  "off_today": [
   {
-   "half": "AM",
-   "person": "Bianca"
-  },
-  {
    "half": null,
    "person": "Krzysztof Burka"
-  },
-  {
-   "half": null,
-   "person": "Luke"
   }
  ],
  "perf_flags": {
-  "2026-07-27": null
+  "2026-07-27": null,
+  "2026-07-28": null
  },
  "pre_2026_won": [
   "12f2dbef",
@@ -1150,6 +1182,11 @@
  "stage_snapshot": {
   "000b3101": {
    "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
+  "002bb060": {
+   "owner": "Rupert",
    "stage": "Buy Signal",
    "value": 0.0
   },
@@ -2188,6 +2225,11 @@
    "stage": "Buy Signal",
    "value": 0.0
   },
+  "cfa90e9b": {
+   "owner": "Rupert",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "d0c46c29": {
    "owner": "Pierre de Villeplee",
    "stage": "Nurture",
@@ -2243,6 +2285,11 @@
    "stage": "Contracts",
    "value": 72000.0
   },
+  "dbd750d8": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "dca63849": {
    "owner": "Chris",
    "stage": "Qualification",
@@ -2276,6 +2323,11 @@
   "e231050e": {
    "owner": "Elliott",
    "stage": "Nurture",
+   "value": 0.0
+  },
+  "e35e72c6": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "e4735e69": {
@@ -2318,6 +2370,11 @@
    "stage": "Qualification",
    "value": 0.0
   },
+  "e9d9d512": {
+   "owner": "James",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "eb443fa1": {
    "owner": "Elliott",
    "stage": "Nurture",
@@ -2357,6 +2414,11 @@
    "owner": "Luke",
    "stage": "Qualification",
    "value": 24000.0
+  },
+  "f3e04f00": {
+   "owner": "Bianca",
+   "stage": "Buy Signal",
+   "value": 0.0
   },
   "f5cbb219": {
    "owner": "Chris",

@@ -62,8 +62,17 @@ for f in files:
             sends[(s, g(r"^\s*subject_line:\s*(.+)$"), sent)] = g(r"^\s*recipients\[\d+\]:\s*(.*)$") or ""
 
 extra_files = sorted(glob.glob(f"{SP}/raw/mail_*.json"))
+# Days a page states it covered end to end, even if nothing team-sent turned up in
+# them. A run at 08:00 routinely pages a day with no team sends yet, and that day IS
+# classified: everything sent in it (nothing) has been read. Without this the day
+# vanishes from the split window and the page would label its own coverage as null.
+paged_days = set()
+paged_bounds = []
 for ef in extra_files:
-    for e in json.load(open(ef))["sends"]:
+    _p = json.load(open(ef))
+    paged_days.update(_p.get("_paged_days") or [])
+    paged_bounds += [b for b in (_p.get("_paged_from"), _p.get("_paged_to")) if b]
+    for e in _p["sends"]:
         sends[(e["sender"].lower(), e["subject"], e["sent"])] = e["recipients"]
 
 
@@ -90,6 +99,7 @@ for (s, subj, sent), rc in sends.items():
 # Carry forward days this run did not page. Rebuilding the store from only
 # today's pull would silently drop last week and read as a quiet period.
 carried = {}
+prev_split_from = prev_split_to = None
 try:
     prev = json.load(open(f"{SP}/raw/prev_state.json"))
     pdm = prev.get("daily_metrics", {})
@@ -98,16 +108,35 @@ try:
             carried[day] = row
     prev_deal = {d: v for d, v in (pdm.get("emailsDeal") or {}).items() if d < FRESH_FROM}
     prev_cust = {d: v for d, v in (pdm.get("emailsCust") or {}).items() if d < FRESH_FROM}
+    _pc = prev.get("coverage") or {}
+    prev_split_from, prev_split_to = _pc.get("email_split_from"), _pc.get("email_split_to")
 except FileNotFoundError:
     prev_deal, prev_cust = {}, {}
 
-by_day = dict(sorted({**carried, **{d: v for d, v in tot_daily.items()}}.items()))
-deal = dict(sorted({**prev_deal, **{d: v["open"] for d, v in split_daily.items()}}.items()))
-cust = dict(sorted({**prev_cust, **{d: v["won"] for d, v in split_daily.items()}}.items()))
+# A paged day with no team sends is a real zero, not an absence. Write it explicitly
+# so the period totals read 0 against a stated coverage window rather than dropping
+# the day and leaving "covered but empty" indistinguishable from "never pulled".
+zeros = {d: [0] * 6 for d in paged_days if d >= FRESH_FROM}
+by_day = dict(sorted({**carried, **zeros, **{d: v for d, v in tot_daily.items()}}.items()))
+deal = dict(sorted({**prev_deal, **zeros, **{d: v["open"] for d, v in split_daily.items()}}.items()))
+cust = dict(sorted({**prev_cust, **zeros, **{d: v["won"] for d, v in split_daily.items()}}.items()))
 
-stamps = sorted(k[2] for k in sends)
+# The split window is the union of what previous runs recorded and what this run
+# paged. Deriving it from split_by_day alone made it collapse to null on a morning
+# whose pages held no team sends, which would have published an unlabelled split.
+_split_days = sorted(set(split_daily) | set(zeros)
+                     | {d for d in (prev_split_from, prev_split_to) if d})
+split_from = min(_split_days) if _split_days else None
+split_to = max(_split_days) if _split_days else None
+
+# The paged window is what was READ, not what was found. A page that legitimately
+# contained no team sends still covers its range, so fall back to the range the page
+# declares rather than reporting the window as null.
+stamps = sorted(k[2] for k in sends) or sorted(paged_bounds)
 out = {"by_day": by_day, "deal": deal, "cust": cust,
        "split_by_day": {d: v for d, v in sorted(split_daily.items())},
+       "split_from": split_from, "split_to": split_to,
+       "paged_days": sorted(paged_days),
        "fresh_from": FRESH_FROM,
        "pulled_from": stamps[0] if stamps else None,
        "pulled_to": stamps[-1] if stamps else None,
@@ -123,7 +152,7 @@ print(f"pulled window: {out['pulled_from']} -> {out['pulled_to']}")
 print(f"recomputed from {FRESH_FROM}; carried forward: {out['carried_days']}")
 print(f"{'day':12}" + "".join(f"{r:>9}" for r in REPS) + "   (total sent)")
 for d, v in by_day.items():
-    tag = "" if d in tot_daily else "  carried"
+    tag = "" if d in tot_daily else ("  paged, no team sends" if d in zeros else "  carried")
     print(f"{d:12}" + "".join(f"{x:>9}" for x in v) + tag)
 print("\n--- deal split, only for days actually classified ---")
 for d, v in sorted(split_daily.items()):

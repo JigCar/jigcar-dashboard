@@ -404,9 +404,16 @@ let cmpChart,trendChart,cwChart,ocChart,lbValChart,lbCntChart,acqChart;
 
 function render(){
   const v=state.view;
+  // The calendar week is capped at the run date, so it is a part-week for most of
+  // the week. State the day count wherever the week is labelled: on a Tuesday two
+  // days of activity must not read as a quiet full week.
+  const wkDays=(function(){const r=ranges.week;
+    return Math.round((new Date(r[1]+'T00:00:00Z')-new Date(r[0]+'T00:00:00Z'))/86400000)+1;})();
+  const wkLabel='Week to date ('+wkDays+' day'+(wkDays===1?'':'s')+')';
+  const label=(v==='week')?wkLabel:viewLabel[v];
   document.getElementById('rangeLabel').textContent=rangeText[v];
-  document.getElementById('scLabel').textContent=viewLabel[v];
-  document.getElementById('tblLabel').textContent=viewLabel[v];
+  document.getElementById('scLabel').textContent=label;
+  document.getElementById('tblLabel').textContent=label;
 
   const mtgs=agg('meetings',v),calls=agg('calls',v),emails=agg('emails',v),tasks=agg('tasks',v),deals=agg('deals',v),prog=agg('progressed',v),shut=agg('shutoff',v);
   const liCa=agg('liConnAll',v),liCd=agg('liConnDeal',v),liMa=agg('liMsgAll',v),liMd=agg('liMsgDeal',v);
@@ -420,7 +427,8 @@ function render(){
     ? '<strong>'+viewLabel[v]+' ('+rangeText[v]+').</strong> Single-day snapshot. Revenue, leaderboard and contract-out stay at quarter level.'
     : (v==='month'||v==='quarter'
         ? '<strong>'+viewLabel[v]+'.</strong> Sales meetings and deals cover the full month. Calls and tasks began 21-22 Jul (Allo and cadence switch-on) and email coverage starts '+COVERAGE.email_covered_from+', so those match the week for now.'
-        : '<strong>This week ('+rangeText[v]+').</strong> The calendar week, Monday to Sunday, counted to date. On a Monday that is a single day, so the month and quarter views carry the fuller picture.');
+        // rangeText already carries the dates and the day count, so do not repeat it here.
+        : '<strong>'+rangeText[v]+'.</strong> The calendar week runs Monday to Sunday, capped at the run date, so a short week is not a quiet one. On a Monday it is a single day. The month and quarter views carry the fuller picture.');
 
   const cards=document.getElementById('cards'); cards.innerHTML='';
   reps.forEach((r,i)=>{
@@ -1007,7 +1015,9 @@ if _top(_mtg):
     _ov.append("%s. " % _join(["%s carries %d" % (n, v) for n, v in _top(_mtg)]))
 if _won_by:
     _bigwin = max(_won_by, key=lambda k: _won_by[k])
-    _ov.append("%s converts what he touches: %s of the Q3 book"
+    # No pronoun for the named person: the top of the won book is whoever the data
+    # puts there, and a guessed pronoun is a claim about a real colleague.
+    _ov.append("%s is doing the converting: %s of the Q3 book"
                % (_bigwin, _money(_won_by[_bigwin])))
     if _oc_by.get(_bigwin):
         _ov.append(", plus %s of the %s out for contract" % (_money(_oc_by[_bigwin]), _money(_oc_total)))

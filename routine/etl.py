@@ -115,8 +115,11 @@ emails_daily = _em["by_day"]
 emails_deal = _em["deal"]
 emails_cust = _em["cust"]
 EMAIL_COVERED_FROM = min(emails_daily) if emails_daily else None
-EMAIL_SPLIT_FROM = min(_em["split_by_day"]) if _em["split_by_day"] else None
-EMAIL_SPLIT_TO = max(_em["split_by_day"]) if _em["split_by_day"] else None
+# classify_emails.py owns the split window: it unions what earlier runs recorded with
+# what this run paged, so a morning whose pages held no team sends does not collapse
+# the window to null and publish an unlabelled split.
+EMAIL_SPLIT_FROM = _em.get("split_from")
+EMAIL_SPLIT_TO = _em.get("split_to")
 
 # ---------- tasks completed (dated by completed_at from the Attio tasks API) ----------
 # completed_at, never created_at. An earlier build dated tasks by creation, which
