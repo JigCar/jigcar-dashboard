@@ -73,6 +73,9 @@ EXCLUDED_MEETINGS = {
     ("2026-07-21", "TradeBid/Jigcar Potential Strategic Collaboration"): "partner / channel exploration, no deal attached",
     ("2026-07-24", "Book a 30-min meeting with Elliott at Jigcar (Rita Schmidt)"): "tooling / vendor (HERE maps)",
     ("2026-07-24", "Jig Car chat"): "investor",
+    # Warranty provider, no deal on the domain, convened by a Jigcar colleague rather
+    # than by the counterparty. Partner exploration, not a deal-advancing meeting.
+    ("2026-07-28", "Jigcar meeting at Euston office"): "partner / channel exploration, no deal attached",
 }
 EXCL_PREFIX = [(d, t[:40]) for (d, t) in EXCLUDED_MEETINGS]
 
