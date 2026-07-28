@@ -153,9 +153,10 @@
   "notes": {
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
-   "Rupert_email": "own mailbox not connected; his 2 sends today were both visible only because a teammate was a recipient, so his figure remains a floor",
-   "Rupert_groovin": "resolved this run: 2 LinkedIn messages attributed to him from the note title, so the seat is live rather than unknown",
-   "email_28jul": "the 28 Jul page was read from midnight to 11:00 UTC with has_more false, so today's email row and its deal split are complete to the run time, not a floor"
+   "Rupert_email": "own mailbox not connected; today's 2 sends were visible only because a teammate was a recipient, so his figure remains a floor",
+   "Rupert_groovin": "live: a LinkedIn message is attributed to him from the note body this run",
+   "email_28jul": "28 Jul was paged from midnight to 13:11 UTC across two pages with has_more false on both, so today's email row and its deal split are complete to the run time rather than a floor",
+   "li_messages": "messages are now counted per message and dated by their own timestamp in the note body; 91 messages belonging to threads Groovin backfilled on switch-on are excluded rather than credited to the sync day"
   },
   "seats": {
    "Bianca": [
@@ -189,11 +190,11 @@
     "ok"
    ]
   },
-  "updated": "28 Jul 2026, 12:05",
+  "updated": "28 Jul 2026, 14:15",
   "workspace": [
    {
     "name": "Attio",
-    "note": "258 deals, 206 tasks, 2200 notes via REST; 205 invitation note bodies fetched with no errors; email search paged 28 Jul end to end",
+    "note": "258 deals, 206 tasks, 2222 notes via REST; 227 invitation and 34 chat note bodies fetched with no errors; email search paged 28 Jul end to end in two pages",
     "status": "ok"
    },
    {
@@ -212,7 +213,7 @@
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_source": "Allo per-seat call records (16 calls 2026-07-21 to 2026-07-23); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T11:00:14Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T13:11:29Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
   "email_split_join": "178 domains resolve to a deal; 94 of 101 open deals are joinable and 100.0% by pipeline value",
@@ -283,70 +284,10 @@
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
   "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
+  "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 91 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [
-   {
-    "date": "2026-07-28",
-    "from": "Proposal",
-    "kind": "shutoff",
-    "name": "JCT600",
-    "owner": "Chris",
-    "record_id": "11ebdd39",
-    "to": "Nurture",
-    "value": 90000.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Proposal",
-    "kind": "progressed",
-    "name": "Marriott Motor Group",
-    "owner": "Bob O'Reilly",
-    "record_id": "18dafab6",
-    "to": "Contracts",
-    "value": 36000.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Qualification",
-    "kind": "progressed",
-    "name": "Vmoves",
-    "owner": "Luke",
-    "record_id": "75f9bc2a",
-    "to": "Demo",
-    "value": 24000.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Demo",
-    "kind": "progressed",
-    "name": "AvailableCar",
-    "owner": "Elliott",
-    "record_id": "8328ccae",
-    "to": "Trial",
-    "value": 24000.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Proposal",
-    "kind": "progressed",
-    "name": "HR Owen",
-    "owner": "Chris",
-    "record_id": "c0b92649",
-    "to": "Trial",
-    "value": 36000.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Demo",
-    "kind": "progressed",
-    "name": "Lookers",
-    "owner": "Elliott",
-    "record_id": "f5cbb219",
-    "to": "Proposal",
-    "value": 75000.0
-   }
-  ],
+  "stage_diff": [],
   "stage_moves_accumulated": 10,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
@@ -503,10 +444,10 @@
    ],
    "2026-07-28": [
     4,
-    4,
+    10,
     5,
     3,
-    1,
+    8,
     2
    ]
   },
@@ -571,10 +512,10 @@
    ],
    "2026-07-28": [
     3,
-    1,
+    7,
     0,
     1,
-    0,
+    2,
     0
    ]
   },
@@ -637,7 +578,7 @@
    ],
    "2026-07-28": [
     0,
-    0,
+    2,
     2,
     0,
     0,
@@ -675,6 +616,14 @@
     2,
     0,
     1,
+    0
+   ],
+   "2026-07-28": [
+    0,
+    1,
+    0,
+    0,
+    0,
     0
    ]
   },
@@ -721,7 +670,7 @@
    ],
    "2026-07-28": [
     0,
-    0,
+    9,
     6,
     0,
     0,
@@ -771,7 +720,7 @@
    ],
    "2026-07-28": [
     0,
-    0,
+    8,
     4,
     0,
     0,
@@ -779,12 +728,20 @@
    ]
   },
   "liMsgAll": {
+   "2026-07-14": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
    "2026-07-21": [
     0,
     0,
     0,
     0,
-    7,
+    3,
     0
    ],
    "2026-07-22": [
@@ -799,33 +756,33 @@
     0,
     0,
     0,
-    0,
-    2,
+    1,
+    4,
     0
    ],
    "2026-07-24": [
     0,
+    0,
+    0,
+    0,
     2,
-    0,
-    0,
-    4,
     0
    ],
    "2026-07-27": [
     0,
     0,
-    4,
+    1,
     0,
-    6,
-    0
+    5,
+    1
    ],
    "2026-07-28": [
     0,
     0,
     0,
     0,
-    0,
-    2
+    1,
+    0
    ]
   },
   "liMsgDeal": {
@@ -834,7 +791,7 @@
     0,
     1,
     0,
-    0,
+    1,
     0
    ],
    "2026-07-27": [
@@ -843,15 +800,15 @@
     1,
     0,
     2,
-    0
+    1
    ],
    "2026-07-28": [
     0,
     0,
     0,
     0,
-    0,
-    1
+    1,
+    0
    ]
   },
   "meetings": {
@@ -1175,7 +1132,7 @@
    ],
    "2026-07-28": [
     0,
-    0,
+    2,
     0,
     0,
     1,
@@ -1184,7 +1141,7 @@
   }
  },
  "last_run": "2026-07-28",
- "last_run_stamp": "28 Jul 2026, 12:05",
+ "last_run_stamp": "28 Jul 2026, 14:15",
  "leave": {
   "Bianca": [
    "2026-07-27",

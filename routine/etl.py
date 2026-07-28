@@ -453,6 +453,14 @@ coverage = {
                    f"{EMAIL_COVERED_FROM} are not covered and read as a floor, never as zero."),
     "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
     "linkedin_notes_covered_from": LI_NOTE_COVERED_FROM,
+    "li_message_basis": (
+        "LinkedIn messages count individual messages sent by that person, each dated by its own "
+        f"timestamp inside the Groovin note, not by the date the note was created. "
+        f"{sum(_msg.get('backfilled_excluded', {}).values())} message(s) in the synced threads "
+        "predate July and are excluded rather than credited to the day Groovin first synced them. "
+        "Every conversation writes a person-side and a company-side note with identical bodies, so "
+        "each message is counted once. Coverage before 21 Jul is a floor: it only includes threads "
+        "Groovin has since synced."),
     "tasks_dated_by": "completed_at from the Attio tasks API",
     "li_connects_attributed_by": LI_ATTRIBUTION,
     "li_connect_gap": ("none: every invitation sent and accepted is attributed to a named rep from the "

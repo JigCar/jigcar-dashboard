@@ -71,10 +71,30 @@ with cf.ThreadPoolExecutor(max_workers=8) as ex:
     inv_full = list(ex.map(fetch_body, inv))
 json.dump(inv_full, open(f"{SP}/raw/invite_notes.json", "w"), indent=0)
 
-SENT_RE = re.compile(r"\bfrom\s+([A-Z][A-Za-z'\-]*(?:\s+[A-Z][A-Za-z'\-]*)*)\s+to\s+"
-                     r"([A-Z][A-Za-z'\-.]*(?:\s+[A-Z][A-Za-z'\-.]*)*)")
-ACC_RE = re.compile(r"^([A-Z][A-Za-z'\-]*(?:\s+[A-Z][A-Za-z'\-]*)*)\s+is now connected with\s+"
-                    r"([A-Z][A-Za-z'\-.]*(?:\s+[A-Z][A-Za-z'\-.]*)*)")
+# Chat bodies are fetched too, because the TITLE cannot carry a message count and the
+# note's created date is not when the messages were sent. Two faults came from reading
+# chat notes off the title alone:
+#   1. Every conversation writes a person-side and a company-side note. The person-side
+#      title has no contact in it ("1:1 LinkedIn chat | with Elliott Perks"), so a
+#      contact-based dedupe key fell back to the record id, the two copies never
+#      collapsed, and messages counted roughly double.
+#   2. Groovin backfilled whole conversation histories on switch-on day, so threads
+#      whose messages are from 2024 and 2025 were being dated 21 Jul 2026 and credited
+#      as a day's work.
+# Both are fixed by counting the individual messages in the body and dating each one by
+# its own timestamp. The bodies of the two copies are identical, so (rep, timestamp)
+# collapses them naturally.
+with cf.ThreadPoolExecutor(max_workers=8) as ex:
+    chats_full = list(ex.map(fetch_body, chats))
+json.dump(chats_full, open(f"{SP}/raw/chat_notes.json", "w"), indent=0)
+
+# The REP must look like a workspace member name, which is reliably capitalised. The
+# CONTACT is whatever follows, to end of string: it is only used as a dedupe key, and
+# requiring it to be capitalised silently dropped real events. A live invitation whose
+# body read "from Luke Nogueira to bob galiger" was lost that way, so a rep who had
+# sent nine requests showed eight.
+SENT_RE = re.compile(r"\bfrom\s+([A-Z][A-Za-z'\-]*(?:\s+[A-Z][A-Za-z'\-]*)*)\s+to\s+(.+?)\s*$")
+ACC_RE = re.compile(r"^([A-Z][A-Za-z'\-]*(?:\s+[A-Z][A-Za-z'\-]*)*)\s+is now connected with\s+(.+?)\s*\.?\s*$")
 CHAT_RE = re.compile(r"1:1 LinkedIn chat\s*\|\s*(.*?)\s+with\s+(.+)$")
 
 
@@ -115,18 +135,58 @@ for n in inv_full:
     if cur is None or (st and (cur["state"] is None or RANK[st] > RANK[cur["state"]])):
         events[key] = {"date": n["created"], "rep": rep, "kind": kind, "state": st}
 
-for n in chats:
-    m = CHAT_RE.match(n["title"])
-    rep = rep_of(m.group(2)) if m else None
-    contact = re.sub(r"\s+", " ", m.group(1)).strip().lower() if m else ""
-    if not rep:
-        unattributed["message"] += 1
+# A message segment in a chat body reads "<Author> • Jul 21, 2026, 9:53 AM UTC <text>".
+# Only segments authored by a rep are counted: an inbound reply is not outreach.
+MSG_RE = re.compile(r"([A-Z][A-Za-z'\-.]*(?:\s+[A-Z][A-Za-z'\-.]*)*)\s+•\s+"
+                    r"([A-Z][a-z]{2} \d{1,2}, \d{4}), (\d{1,2}:\d{2}\s*[AP]M)\s+UTC")
+MONTHS = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+          "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+msg_backfilled = collections.Counter()      # rep-authored messages predating the window
+
+
+def seg_date(datepart):
+    m = re.match(r"([A-Z][a-z]{2}) (\d{1,2}), (\d{4})", datepart)
+    return "%04d-%02d-%02d" % (int(m.group(3)), MONTHS[m.group(1)], int(m.group(2))) if m else None
+
+
+for n in chats_full:
+    tm = CHAT_RE.match(n["title"])
+    title_rep = rep_of(tm.group(2)) if tm else None
+    contact = re.sub(r"\s+", " ", tm.group(1)).strip().lower() if tm else ""
+    body = n.get("body") or ""
+    # finditer, not findall, so the message TEXT can be taken as the span between this
+    # header and the next. The text is what makes the dedupe exact: the person-side and
+    # company-side bodies are identical, so the same message yields the same key, while
+    # two different threads written in the same minute stay separate.
+    hits = list(MSG_RE.finditer(body))
+    segs = [(h.group(1), h.group(2), h.group(3),
+             body[h.end():(hits[i + 1].start() if i + 1 < len(hits) else len(body))].strip()[:120])
+            for i, h in enumerate(hits)]
+    if not segs:
+        # No parseable message in the body. Recorded as a gap rather than counted from
+        # the title, which would date the whole thread to the day Groovin synced it.
+        unattributed["message_no_body"] += 1
         continue
-    key = (n["created"], rep, contact or n["parent_record"], "message")
     st = deal_state(n)
-    cur = events.get(key)
-    if cur is None or (st and (cur["state"] is None or RANK[st] > RANK[cur["state"]])):
-        events[key] = {"date": n["created"], "rep": rep, "kind": "message", "state": st}
+    for author, datepart, timepart, text in segs:
+        rep = rep_of(author)
+        if not rep:
+            continue                       # inbound message from the contact, not outreach
+        day = seg_date(datepart)
+        if not day:
+            continue
+        if day < FROM:
+            msg_backfilled[rep] += 1       # historic thread swept in on sync, never dated to today
+            continue
+        # The message itself: same rep, same minute, same words. Contact is deliberately
+        # NOT in the key, because the person-side copy has no contact in its title and
+        # including it is what stopped the two copies collapsing in the first place.
+        key = (day, rep, timepart.replace(" ", ""), text, "message")
+        cur = events.get(key)
+        if cur is None or (st and (cur["state"] is None or RANK[st] > RANK[cur["state"]])):
+            events[key] = {"date": day, "rep": rep, "kind": "message", "state": st}
+    if not title_rep:
+        unattributed["message_title_rep"] += 1
 
 
 def z():
@@ -157,7 +217,13 @@ json.dump({"sentAll": sent_all, "sentDeal": sent_deal,
            "unattributed": dict(unattributed),
            "events": len(events)},
           open(f"{SP}/raw/li_invites.json", "w"), indent=1)
-json.dump({"all": msg_all, "deal": msg_deal}, open(f"{SP}/raw/li_msgs.json", "w"), indent=1)
+json.dump({"all": msg_all, "deal": msg_deal,
+           "backfilled_excluded": dict(msg_backfilled),
+           "note": "each message is counted once and dated by its own timestamp in the "
+                   "note body, not by the note's created date. Messages predating "
+                   f"{FROM} are Groovin's initial sync of historic threads and are "
+                   "excluded rather than credited to the sync day."},
+          open(f"{SP}/raw/li_msgs.json", "w"), indent=1)
 
 
 def tot(d):
