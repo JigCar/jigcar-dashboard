@@ -386,6 +386,28 @@ A deal with no channel is `Unassigned` and **excluded from the qualifying total*
 do-not-pay-yet warning naming the deals, ARR and owner. Attribute by deal owner at close. Carry all
 of this through the archive quarters.
 
+**Quarterly activity leaderboard** (added at the account owner's request, 29 Jul 2026). Lives in the
+Leaderboard & bonus tab, under the closed-won leaderboard. Ranks the six scorecard people on one
+switchable measure at a time: total activity, sales meetings, calls, sent emails, LinkedIn requests,
+LinkedIn connections, LinkedIn messages, completed tasks. Total activity is one point per action:
+meetings + calls + emails + LI requests + LI messages + tasks, with connections accepted excluded
+because they lag the request that earned them. Rules that must hold:
+
+- It reads the same daily store and quarter range as the scorecard, so its numbers always reconcile
+  with the summary table's quarter view, and it rolls to Q4 with no edit.
+- **Q3 2026 onward only.** The feeding tools did not exist before July 2026, so there is nothing
+  honest to rank for Q1 or Q2, and the panel must never appear on the reconstructed archives.
+- Drawn as plain HTML bars, deliberately not Chart.js, so the ranking survives a blocked CDN
+  exactly like the tables do.
+- Every per-metric caveat is built from the coverage fields, never hardcoded: email and call floors,
+  Rupert's n/a Allo seat and floor mailbox, the acceptance lag. Each caveat disappears by itself
+  once coverage predates the quarter.
+- Each row shows working days attended, so a quiet row reads against booked leave.
+- Activity is volume, not outcome, and the panel says so; the closed-won table above it stays the
+  scoreboard. This leaderboard feeds no Slack line and no performance flag.
+- When Q3 freezes, the archive's full activity snapshot carries the per-person quarter totals so the
+  archived quarter can still show its leaderboard.
+
 **Archive dual-mode.** Q3 2026 onward archive as the full activity snapshot. Pre-tooling quarters
 (Q1, Q2 2026) use the reconstructed shape: closed won by close date, plus deals-created and
 current-outcome as context, with the note that calls, emails, tasks and LinkedIn did not exist then.

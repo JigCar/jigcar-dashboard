@@ -106,6 +106,19 @@ HEAD = r'''<!DOCTYPE html>
   td.total,th.total{font-weight:700;color:var(--bright)}
   .lb td:first-child{width:44px;text-align:center;color:var(--muted);font-weight:700}
   .lb .medal{font-size:15px}
+  /* Quarterly activity leaderboard: HTML bars, deliberately not Chart.js, so the
+     ranking survives a blocked CDN exactly like the tables do. */
+  .actbar-row{display:grid;grid-template-columns:26px 74px 1fr 64px 110px;gap:10px;align-items:center;padding:7px 4px;border-bottom:1px solid #222}
+  .actbar-row:last-child{border-bottom:none}
+  .actbar-rank{color:var(--muted);font-size:13px;text-align:center}
+  .actbar-name{font-weight:600;font-size:13.5px}
+  .actbar-track{background:#0e0e0e;border:1px solid #222;border-radius:6px;height:18px;overflow:hidden}
+  .actbar-fill{height:100%;background:var(--green);border-radius:5px;min-width:2px}
+  .actbar-fill.top{background:var(--bright)}
+  .actbar-val{font-weight:700;font-size:13.5px;text-align:right}
+  .actbar-att{color:var(--muted);font-size:11px;text-align:right}
+  .actbar-total{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+  @media(max-width:560px){.actbar-row{grid-template-columns:22px 64px 1fr 50px}.actbar-att{display:none}}
   .chartbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 16px;margin:16px 0}
   .chartbox h3{margin:0 0 12px;font-size:13.5px;font-weight:600}
   .note{background:#141414;border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;color:#cfcfcf}
@@ -280,6 +293,23 @@ HEAD = r'''<!DOCTYPE html>
       <div class="chartbox"><h3>Closed won value . Q3 and 2026 to date</h3><canvas id="lbValChart" height="170"></canvas></div>
       <div class="chartbox"><h3>Deals won . Q3 and 2026 to date</h3><canvas id="lbCntChart" height="170"></canvas></div>
     </div>
+
+    <h2><span class="bar"></span>Quarterly activity leaderboard</h2>
+    <p class="lead">Who is putting the work in this quarter, ranked on whichever measure you pick. Activity is volume, not outcome: the closed-won table above is the scoreboard, this is the effort behind it. Each row shows working days attended, so a quiet row can be read against booked leave. Q3 onward only: the tools that feed this did not exist before July, so there is nothing honest to rank for Q1 or Q2.</p>
+    <div class="filterbar">
+      <div class="toggle" id="actToggle" style="flex-wrap:wrap">
+        <button data-m="total" class="on">Total activity</button>
+        <button data-m="meetings">Sales mtgs</button>
+        <button data-m="calls">Calls</button>
+        <button data-m="emails">Emails</button>
+        <button data-m="liConnAll">LI requests</button>
+        <button data-m="liAccAll">LI connections</button>
+        <button data-m="liMsgAll">LI messages</button>
+        <button data-m="tasks">Tasks</button>
+      </div>
+    </div>
+    <div class="note" id="actNote"></div>
+    <div class="chartbox" style="margin-top:10px"><div id="actBoard"></div></div>
 
     <h2><span class="bar"></span>Outbound bonus <span class="pill amber">payout basis</span></h2>
     <div class="note warn" style="font-size:12.5px" id="bonusLimits"></div>
@@ -599,6 +629,61 @@ function renderLeaderboard(){
     {label:'2026 to date',data:rows.map(o=>o.yn),backgroundColor:'#2f7d54'}
   ]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'top'}},scales:{x:{grid:{color:grid},beginAtZero:true,ticks:{stepSize:1}},y:{grid:{display:false}}}}});
 }
+
+// ===== quarterly activity leaderboard =====
+// HTML bars rather than Chart.js, so the ranking survives a blocked CDN exactly like
+// the tables do. Reads the same daily store and quarter range as the scorecard, so a
+// figure here always reconciles with the summary table on the quarter view, and in Q4
+// it rolls to the new quarter with no edit. Every caveat is built from COVERAGE
+// fields, never hardcoded, so each disappears by itself once coverage predates the
+// quarter.
+const ACT_METRICS={
+ total:{label:'Total activity',keys:['meetings','calls','emails','liConnAll','liMsgAll','tasks'],
+   note:function(){return 'One point per action: sales meetings + calls + sent emails + LinkedIn requests + LinkedIn messages + completed tasks. Connections accepted are excluded because they lag the request that earned them. Email and call coverage starts partway through the quarter ('+COVERAGE.email_covered_from+' and '+COVERAGE.calls_covered_from+'), so every total is a floor. Rupert has no Allo seat and no connected mailbox, so his total leans hardest on the floor.';}},
+ meetings:{label:'Sales meetings',keys:['meetings'],
+   note:function(){return 'External, deal-advancing meetings from Granola, every Jigcar attendee credited, deduped on date and title. Internal meetings, advisers, investors, suppliers and vendor demos are excluded; each exclusion is recorded in state.';}},
+ calls:{label:'Calls',keys:['calls'],
+   note:function(){return 'Allo call records, reconciled against team analytics each run, counted from '+COVERAGE.calls_covered_from+'. Rupert has no Allo account, so his row reads n/a rather than a zero that would look like inactivity.';}},
+ emails:{label:'Sent emails',keys:['emails'],
+   note:function(){return 'Sent emails across the connected mailboxes, deduped across copies, counted from '+COVERAGE.email_covered_from+'. Earlier weeks of the quarter are not covered, so every figure is a floor. Rupert’s own mailbox is not connected; his sends are visible only where a teammate was a recipient, so his row is a floor throughout.';}},
+ liConnAll:{label:'LinkedIn requests sent',keys:['liConnAll'],
+   note:function(){return 'Connection requests sent, attributed to the sender from the Groovin note body, counted from '+COVERAGE.linkedin_notes_covered_from+'.';}},
+ liAccAll:{label:'LinkedIn connections made',keys:['liAccAll'],
+   note:function(){return 'Invitations accepted, attributed from the note body, counted from '+COVERAGE.linkedin_notes_covered_from+'. Acceptances lag the request that earned them, often by weeks, so this ranking reflects earlier outreach rather than work done this quarter. Rank on requests sent to see current effort.';}},
+ liMsgAll:{label:'LinkedIn messages',keys:['liMsgAll'],
+   note:function(){return 'LinkedIn messages sent, attributed from the chat-note title, deduped across the person and company copies, counted from '+COVERAGE.linkedin_notes_covered_from+'.';}},
+ tasks:{label:'Tasks completed',keys:['tasks'],
+   note:function(){return 'Attio tasks dated by completed_at, so a task counts on the day it was finished, not the day it was created.';}}
+};
+let actMetric='total';
+function renderActivityBoard(){
+  const m=ACT_METRICS[actMetric];
+  const vals=m.keys.map(k=>agg(k,'quarter'));
+  const rows=reps.map((r,i)=>({name:r,
+      v:vals.reduce((a,arr)=>a+arr[i],0),
+      att:(attendance[r]||{}).quarter,
+      na:actMetric==='calls'&&r==='Rupert'}))
+    .sort((a,b)=>b.v-a.v);
+  const max=Math.max.apply(null,rows.map(o=>o.v).concat([1]));
+  document.getElementById('actNote').innerHTML=
+    '<strong>'+m.label+' . '+rangeText.quarter+'.</strong> '+m.note();
+  const medal=(i,o)=> o.v>0&&i<3 ? '<span class="medal">'+(i+1)+'</span>' : (i+1);
+  document.getElementById('actBoard').innerHTML=rows.map((o,i)=>
+    '<div class="actbar-row">'+
+      '<div class="actbar-rank">'+(o.na?'-':medal(i,o))+'</div>'+
+      '<div class="actbar-name">'+o.name+'</div>'+
+      '<div class="actbar-track">'+(o.na?'':'<div class="actbar-fill'+(i===0&&o.v>0?' top':'')+'" style="width:'+Math.max(o.v/max*100,o.v>0?2:0)+'%"></div>')+'</div>'+
+      '<div class="actbar-val'+(o.na||!o.v?' m':'')+'">'+(o.na?'n/a':o.v)+'</div>'+
+      '<div class="actbar-att">'+(o.att!=null?o.att+' days attended':'')+'</div>'+
+    '</div>').join('')+
+    '<div class="actbar-total">Team: '+rows.reduce((a,o)=>a+o.v,0)+
+    (actMetric==='calls'?' (Rupert n/a, no Allo seat)':'')+
+    '. Rank order changes with the measure; none of these is revenue. </div>';
+}
+document.querySelectorAll('#actToggle button').forEach(b=>{
+  b.onclick=()=>{ document.querySelectorAll('#actToggle button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); actMetric=b.dataset.m; try{ renderActivityBoard(); }catch(e){ console.error('render failed: activity',e); } };
+});
 
 // ===== channel detail + direct outbound bonus basis (shared by live and archive) =====
 function renderChannels(deals,prefix){
@@ -944,7 +1029,7 @@ function applyView(){
     ? (state.tab==='momentum'
         ? [['banner',renderBanner],['revenue',renderRevenue],['acquisition',buildAcq],
            ['scorecard',render],['trend',buildTrend],['coverage',renderCoverage],['read',renderRead]]
-        : [['leaderboard',renderLeaderboard],['bonus',()=>renderChannels(closedWonDeals,'bonus')]])
+        : [['leaderboard',renderLeaderboard],['activity',renderActivityBoard],['bonus',()=>renderChannels(closedWonDeals,'bonus')]])
     : [['archive',()=>renderArchive(q)]];
   steps.forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
 }
