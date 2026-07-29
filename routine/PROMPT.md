@@ -169,12 +169,24 @@ The separate "Jigcar holidays" calendar holds no events after mid-2025. **Do not
 
 ## Time periods
 
-Filter: Today / Yesterday / This week / This month / This quarter.
+Filter: Today / Yesterday / This week / Last week / This month / This quarter.
 
 **"This week" is the calendar week, Monday to Sunday**, capped at the run date because there is no
 data for days that have not happened. On a Monday it is a single day, and the label must say
 "week to date" with the day count so a short week is not mistaken for a quiet one. It must span
 months and years correctly.
+
+**"Last week" is the previous calendar week, Monday to Sunday**, added at the account owner's
+request on 29 Jul 2026. It is wholly in the past, so it is always seven days and is never capped.
+Derive it by stepping back from this week's Monday, not by subtracting seven days from the run date,
+or it stops landing on week boundaries. It must span months and years correctly.
+
+Because it reaches further back than this week does, it is the view most likely to sit partly before
+a connector was switched on, so **it must state which metrics only partly cover it**. That includes
+the email deal split, which is narrower than the email tally: an unclassified day renders as `(0)` in
+the Emails column and would otherwise read as "nothing was deal-related" when it means "never
+classified". Build the caveat from the coverage dates so each entry disappears by itself once
+coverage predates the range, rather than hardcoding a list that goes stale.
 
 **The Slack performance threshold does not use that filter.** It runs on a separate trailing
 seven-day range, kept out of the UI toggle. Reusing the calendar week would flag nearly every

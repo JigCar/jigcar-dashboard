@@ -228,6 +228,7 @@ HEAD = r'''<!DOCTYPE html>
         <button data-v="today">Today</button>
         <button data-v="yesterday">Yesterday</button>
         <button data-v="week" class="on">This week</button>
+        <button data-v="lastweek">Last week</button>
         <button data-v="month">This month</button>
         <button data-v="quarter">This quarter</button>
       </div>
@@ -382,7 +383,35 @@ const offToday=__OFFTODAY__;
 const attendance=__ATTENDANCE__;
 const ranges=__RANGES__;
 const rangeText=__RANGETEXT__;
-const viewLabel={today:'Today',yesterday:'Yesterday',week:'This week',month:'This month',quarter:'This quarter'};
+const viewLabel={today:'Today',yesterday:'Yesterday',week:'This week',lastweek:'Last week',month:'This month',quarter:'This quarter'};
+
+// Which metrics only partly cover a selected range, because the connector was
+// switched on partway through it. Returned as prose fragments so a period note can
+// state the gap instead of letting an under-counted total read as a quiet week.
+// Data-driven, so each entry disappears by itself once coverage predates the range.
+function coverageGaps(view){
+  const [s,e]=ranges[view];
+  const from={'sent emails':COVERAGE.email_covered_from,
+              'calls':COVERAGE.calls_covered_from,
+              'LinkedIn activity':COVERAGE.linkedin_notes_covered_from};
+  const out=[];
+  for(const label in from){
+    const f=from[label];
+    if(!f) continue;
+    if(f>e) out.push(label+' has no coverage in this period at all (it starts '+f+')');
+    else if(f>s) out.push(label+' only from '+f);
+  }
+  // The deal split is narrower than the email tally itself, and its gap is the more
+  // dangerous one: an unclassified day renders as "(0)" in the Emails column, which
+  // reads as "none were deal-related" when it means "never classified". Name it.
+  const sf=COVERAGE.email_split_from;
+  if(sf&&sf>s){
+    out.push(sf>e
+      ? 'no sent email in this period has been classified against a deal, so the bracketed figure is 0 because it is unclassified, not because nothing was deal-related'
+      : 'the email deal split only from '+sf+', so the bracketed (deal) figure before that date is unclassified rather than zero');
+  }
+  return out;
+}
 const acqChannels=__ACQ__;
 const archives=__ARCHIVES__;
 
@@ -423,12 +452,21 @@ function render(){
   const ocByRep=reps.map(r=>contractDeals.filter(d=>d.owner===r).reduce((a,d)=>a+d.arr,0));
 
   const dailyView=(v==='today'||v==='yesterday');
+  // Coverage gaps are appended to whichever week is selected. Last week reaches
+  // further back than this week does, so it is the view most likely to sit partly
+  // before a connector was switched on.
+  const gaps=coverageGaps(v);
+  const gapText=gaps.length
+    ? ' Coverage does not span the whole period: '+gaps.join('; ')+'. Those columns are a floor for this view, not a complete count.'
+    : '';
   document.getElementById('ctxNote').innerHTML= dailyView
     ? '<strong>'+viewLabel[v]+' ('+rangeText[v]+').</strong> Single-day snapshot. Revenue, leaderboard and contract-out stay at quarter level.'
     : (v==='month'||v==='quarter'
         ? '<strong>'+viewLabel[v]+'.</strong> Sales meetings and deals cover the full month. Calls and tasks began 21-22 Jul (Allo and cadence switch-on) and email coverage starts '+COVERAGE.email_covered_from+', so those match the week for now.'
-        // rangeText already carries the dates and the day count, so do not repeat it here.
-        : '<strong>'+rangeText[v]+'.</strong> The calendar week runs Monday to Sunday, capped at the run date, so a short week is not a quiet one. On a Monday it is a single day. The month and quarter views carry the fuller picture.');
+        : v==='lastweek'
+          // rangeText already carries the dates and the day count, so do not repeat it here.
+          ? '<strong>Last week, '+rangeText[v]+'.</strong> The previous calendar week, Monday to Sunday, complete and never capped. Revenue, leaderboard and contract-out stay at quarter level and do not move with this filter.'+gapText
+          : '<strong>'+rangeText[v]+'.</strong> The calendar week runs Monday to Sunday, capped at the run date, so a short week is not a quiet one. On a Monday it is a single day. The month and quarter views carry the fuller picture.'+gapText);
 
   const cards=document.getElementById('cards'); cards.innerHTML='';
   reps.forEach((r,i)=>{

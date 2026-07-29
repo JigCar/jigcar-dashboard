@@ -132,6 +132,27 @@ interpreting connectivity status. It never invents a metric value.
 Charts are (re)built when a tab becomes visible, because a chart drawn inside a
 hidden tab renders at zero height.
 
+## Time period filter
+
+Today / Yesterday / This week / Last week / This month / This quarter. `etl.py` owns
+the date maths and writes `ranges` and `rangeText`; the toggle and `agg()` are generic
+over whatever keys those hold, so a new period needs a range entry, a button and a
+`viewLabel` entry, nothing more. `trailing7` is deliberately in `ranges` but has no
+button: it is the Slack performance basis, not a UI view.
+
+Both week views run Monday to Sunday. This week is capped at the run date and labelled
+"week to date" with the day count. Last week is the previous whole week, always seven
+days, derived by stepping back from this week's Monday so it keeps landing on week
+boundaries whatever day the routine runs. Both labels carry the year when the span
+crosses one.
+
+The week views append a coverage caveat built from `coverage.email_covered_from`,
+`calls_covered_from`, `linkedin_notes_covered_from` and `email_split_from`. Last week
+reaches further back than this week, so it is the view most likely to predate a
+connector switch-on. The split window matters most: outside it the Emails column shows
+`(0)`, which means unclassified, not unrelated. Each caveat drops out on its own once
+coverage predates the range, so nothing needs editing as coverage accumulates.
+
 ## Two ways this page has come out blank. Do not reintroduce either.
 
 1. **An unguarded `Chart` reference at the top of the script.** Chart.js is fetched

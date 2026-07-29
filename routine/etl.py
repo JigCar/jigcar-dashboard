@@ -396,6 +396,25 @@ else:
             if wk_start.month == d0.month else f"{dm(wk_start)} - {dm(d0)}")
     wk_text = f"{span} ({wk_days} days)" if complete_week else f"{span} (week to date, {wk_days} days)"
 
+# "Last week" is the previous calendar week, Monday to Sunday. It is wholly in the
+# past, so unlike "this week" it is never capped and is always seven days. Built by
+# stepping back from this week's Monday rather than by subtracting seven days from
+# the run date, so it lands on week boundaries whatever day the routine runs.
+lw_start = wk_start - datetime.timedelta(days=7)
+lw_end = wk_start - datetime.timedelta(days=1)
+
+
+def span_text(a, b):
+    """Date span that stays correct across month and year boundaries."""
+    if a.year != b.year:                      # e.g. 28 Dec 2026 - 3 Jan 2027
+        return f"{dm(a)} {a.year} - {dm(b)} {b.year}"
+    if a.month == b.month:
+        return f"{a.day}-{b.day} {MONTHS[b.month - 1]}"
+    return f"{dm(a)} - {dm(b)}"
+
+
+lw_text = f"{span_text(lw_start, lw_end)} (7 days)"
+
 # Trailing seven days. Not shown in the UI toggle: this is the basis for the Slack
 # performance threshold, which the spec defines over a full week. Reusing the calendar
 # week there would flag someone for a quiet Monday morning.
@@ -404,12 +423,14 @@ t7_start = d0 - datetime.timedelta(days=6)
 ranges = {"today": [RUN_DATE, RUN_DATE],
           "yesterday": [str(d0 - datetime.timedelta(days=1))] * 2,
           "week": [str(wk_start), RUN_DATE],
+          "lastweek": [str(lw_start), str(lw_end)],
           "month": [f"{RUN_DATE[:7]}-01", RUN_DATE],
           "quarter": ["2026-07-01", RUN_DATE],
           "trailing7": [str(t7_start), RUN_DATE]}
 rangeText = {"today": dlabel(d0),
              "yesterday": dlabel(d0 - datetime.timedelta(days=1)),
              "week": wk_text,
+             "lastweek": lw_text,
              "month": f"{MONTHS_FULL[d0.month - 1]}, 1-{d0.day}",
              "quarter": f"Q3 to date, 1-{d0.day} {MONTHS[d0.month - 1]}",
              "trailing7": f"{dm(t7_start)} - {dm(d0)} (7 days)"}
@@ -473,6 +494,10 @@ coverage = {
     "calls_source": (f"Allo per-seat call records ({_calls['total']} calls "
                      f"{_calls['covered_from']} to {_calls['covered_to']}); Rupert has no Allo account, "
                      "so his calls are always 0 and his seat reads na"),
+    # Machine-readable so the period notes can compare a selected range against it.
+    # Parsing the date back out of calls_source prose would break the moment the
+    # wording changed, and a silently wrong coverage claim is worse than none.
+    "calls_covered_from": _calls["covered_from"],
     "tasks_unassigned": TASKS_UNASSIGNED,
     "email_split_from": EMAIL_SPLIT_FROM,
     "email_split_to": EMAIL_SPLIT_TO,

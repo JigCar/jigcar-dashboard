@@ -101,6 +101,7 @@
  },
  "attendance": {
   "Bianca": {
+   "lastweek": 5,
    "month": 20,
    "quarter": 20,
    "today": 0,
@@ -109,6 +110,7 @@
    "yesterday": 1
   },
   "Chris": {
+   "lastweek": 5,
    "month": 21,
    "quarter": 21,
    "today": 1,
@@ -117,6 +119,7 @@
    "yesterday": 1
   },
   "Elliott": {
+   "lastweek": 5,
    "month": 21,
    "quarter": 21,
    "today": 1,
@@ -125,6 +128,7 @@
    "yesterday": 1
   },
   "James": {
+   "lastweek": 4,
    "month": 19,
    "quarter": 19,
    "today": 1,
@@ -133,6 +137,7 @@
    "yesterday": 1
   },
   "Luke": {
+   "lastweek": 4,
    "month": 19,
    "quarter": 19,
    "today": 1,
@@ -141,6 +146,7 @@
    "yesterday": 1
   },
   "Rupert": {
+   "lastweek": 5,
    "month": 21,
    "quarter": 21,
    "today": 1,
@@ -212,6 +218,7 @@
  },
  "coverage": {
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
+  "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (20 calls 2026-07-21 to 2026-07-28); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
   "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T05:17:16.000Z to 2026-07-29T06:17:37.000Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
