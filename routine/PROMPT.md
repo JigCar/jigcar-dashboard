@@ -386,12 +386,26 @@ A deal with no channel is `Unassigned` and **excluded from the qualifying total*
 do-not-pay-yet warning naming the deals, ARR and owner. Attribute by deal owner at close. Carry all
 of this through the archive quarters.
 
-**Quarterly activity leaderboard** (added at the account owner's request, 29 Jul 2026). Lives in the
-Leaderboard & bonus tab, under the closed-won leaderboard. Ranks the six scorecard people on one
-switchable measure at a time: total activity, sales meetings, calls, sent emails, LinkedIn requests,
-LinkedIn connections, LinkedIn messages, completed tasks. Total activity is one point per action:
-meetings + calls + emails + LI requests + LI messages + tasks, with connections accepted excluded
-because they lag the request that earned them. Rules that must hold:
+**Closed won leaderboard** (restructured at the account owner's request, 29 Jul 2026). Four
+independent ranked boards, not one mixed table: ARR closed won and deals closed won for the live
+quarter, then the same pair for the year to date as their own separate boards. The quarter boards
+never show the year figure alongside. Each board ranks on its own measure, drawn as the same plain
+HTML bars as the activity leaderboard so a blocked chart CDN costs nothing. Any owner who closed a
+deal is ranked, including back-book owners, alongside the six.
+
+**Quarterly activity leaderboard** (added at the account owner's request, 29 Jul 2026;
+deal-scoped and extended the same day). Lives in the Leaderboard & bonus tab, under the closed-won
+boards. Ranks the six scorecard people on one switchable measure at a time: total activity, sales
+meetings, calls, **deal-associated** emails, **deal-associated** LinkedIn requests / connections /
+messages, completed tasks, deals assigned, and deals progressed. The email and LinkedIn measures use
+the deal split, the same open-deal join as the scorecard's `(deal)` columns, not the raw tallies.
+Calls stay unfiltered because Allo carries no per-call deal join, and the note says so. Total
+activity is one point per deal-facing action: meetings + calls + deal emails + deal LI requests +
+deal LI messages + tasks, with connections accepted excluded because they lag the request that
+earned them. Two coverage truths the notes must carry: the email deal split starts later than the
+raw email tally (`email_split_from`), so the deal-email view is a floor twice over for Rupert; and
+deals progressed is measured by the stage diff, which has only existed since 27 Jul 2026, so it is
+a floor, not a quarter total. Rules that must hold:
 
 - It reads the same daily store and quarter range as the scorecard, so its numbers always reconcile
   with the summary table's quarter view, and it rolls to Q4 with no edit.
