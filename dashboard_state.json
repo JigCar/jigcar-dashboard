@@ -103,49 +103,49 @@
   "Bianca": {
    "month": 20,
    "quarter": 20,
-   "today": 1,
-   "trailing7": 5,
-   "week": 2,
-   "yesterday": 1
-  },
-  "Chris": {
-   "month": 20,
-   "quarter": 20,
-   "today": 1,
-   "trailing7": 5,
-   "week": 2,
-   "yesterday": 1
-  },
-  "Elliott": {
-   "month": 20,
-   "quarter": 20,
-   "today": 1,
-   "trailing7": 5,
-   "week": 2,
-   "yesterday": 1
-  },
-  "James": {
-   "month": 18,
-   "quarter": 18,
-   "today": 1,
+   "today": 0,
    "trailing7": 4,
    "week": 2,
    "yesterday": 1
   },
-  "Luke": {
-   "month": 18,
-   "quarter": 18,
-   "today": 1,
-   "trailing7": 3,
-   "week": 1,
-   "yesterday": 0
-  },
-  "Rupert": {
-   "month": 20,
-   "quarter": 20,
+  "Chris": {
+   "month": 21,
+   "quarter": 21,
    "today": 1,
    "trailing7": 5,
+   "week": 3,
+   "yesterday": 1
+  },
+  "Elliott": {
+   "month": 21,
+   "quarter": 21,
+   "today": 1,
+   "trailing7": 5,
+   "week": 3,
+   "yesterday": 1
+  },
+  "James": {
+   "month": 19,
+   "quarter": 19,
+   "today": 1,
+   "trailing7": 4,
+   "week": 3,
+   "yesterday": 1
+  },
+  "Luke": {
+   "month": 19,
+   "quarter": 19,
+   "today": 1,
+   "trailing7": 3,
    "week": 2,
+   "yesterday": 1
+  },
+  "Rupert": {
+   "month": 21,
+   "quarter": 21,
+   "today": 1,
+   "trailing7": 5,
+   "week": 3,
    "yesterday": 1
   }
  },
@@ -153,11 +153,11 @@
   "notes": {
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
-   "Rupert_email": "own mailbox not connected; today's 3 sends were visible only because a teammate was a recipient, so his figure remains a floor",
-   "Rupert_groovin": "live: a LinkedIn message is attributed to him from the note body",
-   "allo_reconciled": "20 call records regrouped per day, re-verified against allo_get_team_analytics at 21:20 with no change: Elliott 9, Luke 5, James 4, Chris 2, Bianca 0",
-   "email_28jul": "28 Jul was paged from midnight to 20:19 UTC across four contiguous pages, has_more false on each, so today's email row and its deal split are complete to the run time rather than a floor",
-   "leave_recheck": "Zelt re-read at 17:55 with no change to the trailing-seven-day window; nobody on the scorecard is on leave today"
+   "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
+   "Rupert_groovin": "live: LinkedIn messages are attributed to him from the note body",
+   "allo_reconciled": "20 call records regrouped per day and reconciled against allo_get_team_analytics for 1-29 Jul with no discrepancy: Elliott 9, Luke 5, James 4, Chris 2, Bianca 0. No calls placed since 28 Jul.",
+   "email_28jul": "28 Jul was re-paged from midnight across two contiguous pages with has_more false, picking up three late Elliott sends that fell after yesterday's 20:19 cut-off, so the 28 Jul row is now complete for the whole day",
+   "leave_today": "Zelt read this run: Bianca Monteiro is on booked leave today, as are Krzysztof Burka and Eerik Saksi off the scorecard"
   },
   "seats": {
    "Bianca": [
@@ -191,21 +191,21 @@
     "ok"
    ]
   },
-  "updated": "28 Jul 2026, 21:25",
+  "updated": "29 Jul 2026, 06:25",
   "workspace": [
    {
     "name": "Attio",
-    "note": "260 deals, 206 tasks, 2303 notes via REST; 293 invitation and 38 chat note bodies fetched with no errors; email search paged 28 Jul end to end across four pages",
+    "note": "260 deals, 17,954 companies, 206 tasks and 2,307 notes via REST; 295 invitation and 40 chat note bodies fetched with no errors; email search paged 28 Jul end to end and 29 Jul to 06:17 UTC, has_more false on the last page",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "135 meetings parsed, 1-28 Jul, unchanged since 17:55; of today's six notes three are internal-only and one is partner exploration with no deal, so two count as sales meetings",
+    "note": "227 meetings parsed, 1 Jun to 28 Jul; no meeting notes written yet today, so today's sales-meeting count is 0 by coverage rather than by inactivity",
     "status": "ok"
    },
    {
     "name": "Apollo",
-    "note": "authenticated earlier this evening; sends route via the connected mailboxes and are counted there, never separately",
+    "note": "authenticated this run; sends route via the connected mailboxes and are counted there, never separately",
     "status": "ok"
    }
   ]
@@ -214,12 +214,12 @@
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_source": "Allo per-seat call records (20 calls 2026-07-21 to 2026-07-28); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T00:00:00Z to 2026-07-28T20:19:50Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T05:17:16.000Z to 2026-07-29T06:17:37.000Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
   "email_split_join": "179 domains resolve to a deal; 95 of 103 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
-  "email_split_to": "2026-07-28",
+  "email_split_to": "2026-07-29",
   "join_coverage": {
    "domains_resolving": 179,
    "joinable": 95,
@@ -295,68 +295,7 @@
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 91 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [
-   {
-    "date": "2026-07-28",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Hudson Automotive Group",
-    "owner": "Elliott",
-    "record_id": "16e17bdf",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Gee Automotive Companies",
-    "owner": "Elliott",
-    "record_id": "1f38e393",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Ken Garff Automotive",
-    "owner": "Elliott",
-    "record_id": "5660b717",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Ed Morse Automotive Group",
-    "owner": "Elliott",
-    "record_id": "bfcbee7d",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Suttons Motors - Buy Signal (Vehicle Movement Hire)",
-    "owner": "Elliott",
-    "record_id": "dbd750d8",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-07-28",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "easyauto123 - Buy Signal (Mitsubishi Corp stake)",
-    "owner": "Elliott",
-    "record_id": "e35e72c6",
-    "to": "Qualification",
-    "value": 0.0
-   }
-  ],
+  "stage_diff": [],
   "stage_moves_accumulated": 16,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
@@ -524,8 +463,16 @@
     10,
     5,
     6,
-    13,
+    16,
     3
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
    ]
   },
   "emailsCust": {
@@ -560,6 +507,14 @@
     3,
     1,
     0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "emailsDeal": {
@@ -592,7 +547,15 @@
     7,
     0,
     1,
-    5,
+    8,
+    0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
+    1,
     0
    ]
   },
@@ -658,7 +621,7 @@
     2,
     3,
     0,
-    1,
+    2,
     0
    ]
   },
@@ -700,7 +663,7 @@
     1,
     1,
     0,
-    1,
+    2,
     0
    ]
   },
@@ -858,7 +821,7 @@
     1,
     0,
     0,
-    1,
+    2,
     0
    ]
   },
@@ -884,11 +847,163 @@
     1,
     0,
     0,
-    1,
+    2,
     0
    ]
   },
   "meetings": {
+   "2026-06-01": [
+    0,
+    0,
+    1,
+    0,
+    1,
+    1
+   ],
+   "2026-06-02": [
+    1,
+    2,
+    2,
+    0,
+    3,
+    2
+   ],
+   "2026-06-04": [
+    1,
+    1,
+    0,
+    1,
+    0,
+    1
+   ],
+   "2026-06-05": [
+    1,
+    0,
+    1,
+    1,
+    0,
+    0
+   ],
+   "2026-06-08": [
+    1,
+    1,
+    2,
+    2,
+    2,
+    4
+   ],
+   "2026-06-09": [
+    1,
+    0,
+    0,
+    2,
+    2,
+    2
+   ],
+   "2026-06-10": [
+    1,
+    0,
+    0,
+    0,
+    1,
+    1
+   ],
+   "2026-06-11": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "2026-06-12": [
+    0,
+    0,
+    0,
+    0,
+    2,
+    1
+   ],
+   "2026-06-15": [
+    0,
+    1,
+    2,
+    1,
+    0,
+    0
+   ],
+   "2026-06-16": [
+    0,
+    1,
+    2,
+    2,
+    1,
+    0
+   ],
+   "2026-06-17": [
+    2,
+    0,
+    2,
+    2,
+    0,
+    0
+   ],
+   "2026-06-18": [
+    1,
+    0,
+    2,
+    2,
+    0,
+    0
+   ],
+   "2026-06-22": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "2026-06-23": [
+    1,
+    0,
+    0,
+    0,
+    3,
+    1
+   ],
+   "2026-06-24": [
+    1,
+    0,
+    0,
+    0,
+    2,
+    1
+   ],
+   "2026-06-26": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1
+   ],
+   "2026-06-29": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+   ],
+   "2026-06-30": [
+    2,
+    1,
+    2,
+    0,
+    4,
+    2
+   ],
    "2026-07-02": [
     1,
     0,
@@ -1225,15 +1340,17 @@
    ]
   }
  },
- "last_run": "2026-07-28",
- "last_run_stamp": "28 Jul 2026, 21:25",
+ "last_run": "2026-07-29",
+ "last_run_stamp": "29 Jul 2026, 06:25",
  "leave": {
   "Bianca": [
    "2026-07-27",
    "2026-07-29",
    "2026-08-04"
   ],
-  "Chris": [],
+  "Chris": [
+   "2026-08-07"
+  ],
   "Elliott": [],
   "James": [
    "2026-06-22",
@@ -1271,18 +1388,27 @@
    "2026-07-28|Jigcar meeting at Euston office": "partner / channel exploration, no deal attached"
   },
   "excluded_count": 12,
-  "included_count": 45,
-  "internal_only_count": 70
+  "included_count": 93,
+  "internal_only_count": 108
  },
  "off_today": [
   {
    "half": null,
    "person": "Krzysztof Burka"
+  },
+  {
+   "half": null,
+   "person": "Eerik Saksi"
+  },
+  {
+   "half": null,
+   "person": "Bianca"
   }
  ],
  "perf_flags": {
   "2026-07-27": null,
-  "2026-07-28": null
+  "2026-07-28": null,
+  "2026-07-29": null
  },
  "pre_2026_won": [
   "12f2dbef",
