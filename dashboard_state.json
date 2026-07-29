@@ -45,7 +45,7 @@
    "label": "Q1 2026 (Jan - Mar) . reconstructed archive",
    "outcomes": {
     "Live (New Lead to Contracts)": 18,
-    "Non-ICP / Lost": 7,
+    "Lost / no outcome": 7,
     "Now won": 2,
     "Nurture": 18
    }
@@ -94,7 +94,7 @@
    "label": "Q2 2026 (Apr - Jun) . reconstructed archive",
    "outcomes": {
     "Live (New Lead to Contracts)": 6,
-    "Non-ICP / Lost": 2,
+    "Lost / no outcome": 2,
     "Nurture": 7
    }
   }
@@ -161,9 +161,10 @@
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
    "Rupert_groovin": "live: LinkedIn messages are attributed to him from the note body",
-   "allo_reconciled": "20 call records regrouped per day and reconciled against allo_get_team_analytics for 1-29 Jul with no discrepancy: Elliott 9, Luke 5, James 4, Chris 2, Bianca 0. No calls placed since 28 Jul.",
-   "email_28jul": "28 Jul was re-paged from midnight across two contiguous pages with has_more false, picking up three late Elliott sends that fell after yesterday's 20:19 cut-off, so the 28 Jul row is now complete for the whole day",
-   "leave_today": "Zelt read this run: Bianca Monteiro is on booked leave today, as are Krzysztof Burka and Eerik Saksi off the scorecard"
+   "allo_reconciled": "20 call records regrouped per day and reconciled against allo_get_team_analytics for 1-29 Jul at 09:23 with no change: Elliott 9, Luke 5, James 4, Chris 2, Bianca 0. No calls placed today.",
+   "email_28jul": "28 Jul was paged end to end earlier today and is carried forward complete; 29 Jul was paged from midnight to 09:21 UTC with has_more false",
+   "leave_today": "Zelt re-read at 09:25: Bianca Monteiro is on booked leave today, as are Krzysztof Burka and Eerik Saksi off the scorecard. Bianca has still sent email today, including an out-of-office reply",
+   "stage_rename": "Attio renamed the shut-off stage 'Non-ICP' to 'Contacted - no outcome' today. The same 8 record ids sit in it and none moved, so both the pull and the stored baseline are normalised through one alias map and the diff records no move for them"
   },
   "seats": {
    "Bianca": [
@@ -197,16 +198,16 @@
     "ok"
    ]
   },
-  "updated": "29 Jul 2026, 06:25",
+  "updated": "29 Jul 2026, 09:30",
   "workspace": [
    {
     "name": "Attio",
-    "note": "260 deals, 17,954 companies, 206 tasks and 2,307 notes via REST; 295 invitation and 40 chat note bodies fetched with no errors; email search paged 28 Jul end to end and 29 Jul to 06:17 UTC, has_more false on the last page",
+    "note": "262 deals, 218 tasks and 2,348 notes via REST; 321 invitation and 46 chat note bodies fetched with no errors; email search paged 28 and 29 Jul end to end, has_more false on each. Stage option 'Non-ICP' was renamed 'Contacted - no outcome' in Attio today and is normalised on the pull, so the 8 deals in it show no phantom move",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "227 meetings parsed, 1 Jun to 28 Jul; no meeting notes written yet today, so today's sales-meeting count is 0 by coverage rather than by inactivity",
+    "note": "230 meetings parsed, 1 Jun to 29 Jul; today's Pickles & Jigcar counts as a sales meeting (Pickles is an open deal at Demo)",
     "status": "ok"
    },
    {
@@ -221,20 +222,20 @@
   "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (20 calls 2026-07-21 to 2026-07-28); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T05:17:16.000Z to 2026-07-29T06:17:37.000Z and carried forward 4 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-28T05:17:16.000Z to 2026-07-29T09:21:19.000Z and carried forward 5 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "179 domains resolve to a deal; 95 of 103 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "183 domains resolve to a deal; 99 of 105 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-07-29",
   "join_coverage": {
-   "domains_resolving": 179,
-   "joinable": 95,
+   "domains_resolving": 183,
+   "joinable": 99,
    "joinable_pct_by_value": 100.0,
    "joinable_value": 1961880.0,
-   "open_deals": 103,
+   "open_deals": 105,
    "pipeline_value": 1961880.0,
-   "unjoinable": 8,
+   "unjoinable": 6,
    "unjoinable_deals": [
     {
      "name": "Trade Logistica",
@@ -258,13 +259,6 @@
      "value": 0.0
     },
     {
-     "name": "Rupert Wood",
-     "owner": "Luke",
-     "reason": "no company linked",
-     "stage": "New Lead",
-     "value": 0.0
-    },
-    {
      "name": "Toyota GB PLC",
      "owner": "Jon Pollock",
      "reason": "no company linked",
@@ -279,13 +273,6 @@
      "value": 0.0
     },
     {
-     "name": "Elliott Perks",
-     "owner": "Luke",
-     "reason": "no company linked",
-     "stage": "New Lead",
-     "value": 0.0
-    },
-    {
      "name": "Adapt Vehicle Solutions",
      "owner": "Luke",
      "reason": "no company linked",
@@ -294,7 +281,7 @@
     }
    ]
   },
-  "join_note": "8 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
+  "join_note": "6 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
   "leave_source": "Zelt absence calendar; the Jigcar holidays calendar holds no events after mid-2025 and is not read",
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
@@ -302,8 +289,159 @@
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 91 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [],
-  "stage_moves_accumulated": 16,
+  "stage_diff": [
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Dilawri Group",
+    "owner": "Luke",
+    "record_id": "000b3101",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Sons Auto Group",
+    "owner": "Chris",
+    "record_id": "0700de21",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Eagers Automotive",
+    "owner": "Chris",
+    "record_id": "0f6d09c4",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Billion Automotive",
+    "owner": "Luke",
+    "record_id": "103bfcf1",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Dimmitt Automotive Group",
+    "owner": "Chris",
+    "record_id": "1aae4121",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Dick Hannah Dealerships",
+    "owner": "Chris",
+    "record_id": "2e619b15",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Morgan Auto Group",
+    "owner": "Chris",
+    "record_id": "40978935",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "AutoCanada",
+    "owner": "Chris",
+    "record_id": "6455a9d7",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Hertrich Family of Dealerships",
+    "owner": "Chris",
+    "record_id": "6a1362ee",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Young Automotive Group",
+    "owner": "Chris",
+    "record_id": "834e0337",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Faulkner Automotive Group",
+    "owner": "Chris",
+    "record_id": "9cab61d0",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Jenkins Auto Group",
+    "owner": "Luke",
+    "record_id": "ce263c25",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Braman Miami",
+    "owner": "Chris",
+    "record_id": "cf48e108",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Andy Mohr Automotive Group",
+    "owner": "Chris",
+    "record_id": "d138faae",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-29",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Sterling Automotive Group",
+    "owner": "Chris",
+    "record_id": "ecd5f1b0",
+    "to": "Qualification",
+    "value": 0.0
+   }
+  ],
+  "stage_moves_accumulated": 31,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -385,7 +523,7 @@
    ],
    "2026-07-21": [
     3,
-    4,
+    3,
     0,
     0,
     1,
@@ -425,9 +563,17 @@
    ],
    "2026-07-28": [
     1,
+    0,
     1,
     1,
-    1,
+    2,
+    2
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
     2,
     2
    ]
@@ -474,10 +620,10 @@
     3
    ],
    "2026-07-29": [
+    1,
     0,
-    0,
-    0,
-    0,
+    3,
+    4,
     1,
     0
    ]
@@ -516,10 +662,10 @@
     0
    ],
    "2026-07-29": [
+    1,
     0,
-    0,
-    0,
-    0,
+    3,
+    1,
     0,
     0
    ]
@@ -561,7 +707,7 @@
     0,
     0,
     0,
-    0,
+    1,
     1,
     0
    ]
@@ -630,6 +776,14 @@
     0,
     2,
     0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    1,
+    0,
+    1,
+    0
    ]
   },
   "liAccDeal": {
@@ -671,6 +825,14 @@
     1,
     0,
     2,
+    0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    1,
+    0,
+    1,
     0
    ]
   },
@@ -722,6 +884,14 @@
     0,
     21,
     0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    2,
+    0,
+    0,
+    9
    ]
   },
   "liConnDeal": {
@@ -772,6 +942,14 @@
     0,
     18,
     0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    7
    ]
   },
   "liMsgAll": {
@@ -830,6 +1008,14 @@
     0,
     2,
     0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    2,
+    0,
+    1,
+    0
    ]
   },
   "liMsgDeal": {
@@ -855,6 +1041,14 @@
     0,
     0,
     2,
+    0
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    2,
+    0,
+    1,
     0
    ]
   },
@@ -1146,6 +1340,14 @@
     1,
     1,
     1
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
    ]
   },
   "progressed": {
@@ -1163,6 +1365,14 @@
     0,
     0,
     8,
+    0
+   ],
+   "2026-07-29": [
+    12,
+    3,
+    0,
+    0,
+    0,
     0
    ]
   },
@@ -1344,11 +1554,19 @@
     0,
     1,
     2
+   ],
+   "2026-07-29": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    3
    ]
   }
  },
  "last_run": "2026-07-29",
- "last_run_stamp": "29 Jul 2026, 06:25",
+ "last_run_stamp": "29 Jul 2026, 09:30",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -1395,8 +1613,8 @@
    "2026-07-28|Jigcar meeting at Euston office": "partner / channel exploration, no deal attached"
   },
   "excluded_count": 12,
-  "included_count": 93,
-  "internal_only_count": 108
+  "included_count": 94,
+  "internal_only_count": 110
  },
  "off_today": [
   {
@@ -1591,12 +1809,162 @@
    "record_id": "e35e72c6",
    "to": "Qualification",
    "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Dilawri Group",
+   "owner": "Luke",
+   "record_id": "000b3101",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Sons Auto Group",
+   "owner": "Chris",
+   "record_id": "0700de21",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Eagers Automotive",
+   "owner": "Chris",
+   "record_id": "0f6d09c4",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Billion Automotive",
+   "owner": "Luke",
+   "record_id": "103bfcf1",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Dimmitt Automotive Group",
+   "owner": "Chris",
+   "record_id": "1aae4121",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Dick Hannah Dealerships",
+   "owner": "Chris",
+   "record_id": "2e619b15",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Morgan Auto Group",
+   "owner": "Chris",
+   "record_id": "40978935",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "AutoCanada",
+   "owner": "Chris",
+   "record_id": "6455a9d7",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Hertrich Family of Dealerships",
+   "owner": "Chris",
+   "record_id": "6a1362ee",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Young Automotive Group",
+   "owner": "Chris",
+   "record_id": "834e0337",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Faulkner Automotive Group",
+   "owner": "Chris",
+   "record_id": "9cab61d0",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Jenkins Auto Group",
+   "owner": "Luke",
+   "record_id": "ce263c25",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Braman Miami",
+   "owner": "Chris",
+   "record_id": "cf48e108",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Andy Mohr Automotive Group",
+   "owner": "Chris",
+   "record_id": "d138faae",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-29",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Sterling Automotive Group",
+   "owner": "Chris",
+   "record_id": "ecd5f1b0",
+   "to": "Qualification",
+   "value": 0.0
   }
  ],
  "stage_snapshot": {
   "000b3101": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "002bb060": {
@@ -1626,7 +1994,7 @@
   },
   "0700de21": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "07e5e656": {
@@ -1666,12 +2034,12 @@
   },
   "0eb839e9": {
    "owner": "James",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "0f6d09c4": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "0fca43a8": {
@@ -1681,7 +2049,7 @@
   },
   "103bfcf1": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "11060c52": {
@@ -1751,7 +2119,7 @@
   },
   "1aae4121": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "1bcdcb0f": {
@@ -1776,7 +2144,7 @@
   },
   "1f6a572c": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "1ff4cc2c": {
@@ -1821,7 +2189,7 @@
   },
   "2e619b15": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "2f5bbde1": {
@@ -1916,7 +2284,7 @@
   },
   "40978935": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "41558700": {
@@ -2081,7 +2449,7 @@
   },
   "6455a9d7": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "65f02c4c": {
@@ -2106,7 +2474,7 @@
   },
   "6a1362ee": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "6c9765c0": {
@@ -2118,11 +2486,6 @@
    "owner": "Elliott",
    "stage": "Nurture",
    "value": 30000.0
-  },
-  "6cd92151": {
-   "owner": "Luke",
-   "stage": "New Lead",
-   "value": 0.0
   },
   "6ce2f53c": {
    "owner": "Elliott",
@@ -2146,7 +2509,7 @@
   },
   "7434dd74": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "75f9bc2a": {
@@ -2206,7 +2569,7 @@
   },
   "834e0337": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "860793a4": {
@@ -2304,6 +2667,11 @@
    "stage": "Nurture",
    "value": 0.0
   },
+  "92e8652e": {
+   "owner": "Rupert",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "93f8107f": {
    "owner": "Luke",
    "stage": "New Lead",
@@ -2312,6 +2680,11 @@
   "94f0b301": {
    "owner": "Luke",
    "stage": "Nurture",
+   "value": 0.0
+  },
+  "9812f9d1": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "983579cf": {
@@ -2366,7 +2739,7 @@
   },
   "9cab61d0": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "9e3c4149": {
@@ -2413,6 +2786,16 @@
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 15000.0
+  },
+  "a272daf3": {
+   "owner": "Rupert",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
+  "a2e0e896": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
+   "value": 0.0
   },
   "a33e1ea3": {
    "owner": "Luke",
@@ -2461,7 +2844,7 @@
   },
   "af8dce0a": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "b152f863": {
@@ -2471,7 +2854,7 @@
   },
   "b16a6959": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "b173768b": {
@@ -2507,11 +2890,6 @@
   "b3aa2730": {
    "owner": "Elliott",
    "stage": "Closed Lost",
-   "value": 0.0
-  },
-  "b40a99df": {
-   "owner": "Luke",
-   "stage": "New Lead",
    "value": 0.0
   },
   "b4b58997": {
@@ -2551,7 +2929,7 @@
   },
   "bee80e12": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "bfcbee7d": {
@@ -2636,7 +3014,7 @@
   },
   "ce263c25": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "ce85471d": {
@@ -2646,7 +3024,7 @@
   },
   "cf48e108": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "cfa90e9b": {
@@ -2661,7 +3039,7 @@
   },
   "d138faae": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "d195d445": {
@@ -2756,7 +3134,7 @@
   },
   "e4735e69": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "e5421eec": {
@@ -2771,7 +3149,7 @@
   },
   "e685a0e4": {
    "owner": "Luke",
-   "stage": "Non-ICP",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "e71bc796": {
@@ -2811,7 +3189,7 @@
   },
   "ecd5f1b0": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "eeabc7f7": {

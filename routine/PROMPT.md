@@ -157,7 +157,18 @@ fact, which this routine must never do. Prefer `est_closed_date`, accept a value
 valid ISO date, and render anything else as `est TBC`.
 
 Deal stages: New Lead, Buy Signal, Qualification, Demo, Proposal, Trial, Contracts, Closed Won
-(progression, in order) and Nurture, Closed Lost, Churn, Non-ICP (shut-off states).
+(progression, in order) and Nurture, Closed Lost, Churn, `Contacted - no outcome` (shut-off states).
+
+**`Contacted - no outcome` is the renamed `Non-ICP`, not a stage added beside it.** Confirmed on
+29 Jul 2026: `Non-ICP` is absent from the status options altogether rather than archived, the new
+title appeared in its place, and the same eight record ids sit in it having never moved. A renamed
+stage is not a move, so both `pull_attio.py` and `etl.py` normalise through a `STAGE_ALIAS` map,
+the pull for today's data and the ETL for the committed baseline. Drop either side and the diff
+compares the old label against the new one and books a shut-off against every owner holding a deal
+in it, on a day nobody touched them. The account owner described the stage as "Contacted - no
+response"; the real title in Attio is "Contacted - no outcome", and the real title is what the code
+must match. Read the live status options before trusting any stage name in a prompt, including
+this one.
 
 Allo: confirm the seat list each run with `allo_list_users`; use `allo_get_team_analytics` with all
 user IDs in one call. Rupert has no Allo account (render `n/a`, calls `0`).

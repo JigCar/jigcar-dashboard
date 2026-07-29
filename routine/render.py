@@ -801,7 +801,7 @@ function buildPayload(){
     definitions:{
       sales_meeting:"A scheduled conversation with at least one participant from outside Jigcar, at a prospect or customer, to move an opportunity or account forward. Every Jigcar attendee is credited. Excludes internal-only meetings, advisers, investors, media, suppliers, vendor demos, partner exploration not tied to a deal, recruitment and personal appointments.",
       progressed:"Deals owned by that person that moved forward a stage in the period, attributed by deal owner rather than by who made the change.",
-      shut_off:"Deals owned by that person moved to Nurture, Closed Lost, Churn or Non-ICP.",
+      shut_off:"Deals owned by that person moved to Nurture, Closed Lost, Churn or Contacted - no outcome.",
       contract_out:"ARR of that person's deals currently in Contracts. A live snapshot, not period activity.",
       known_gaps:COVERAGE.known_gaps
     }

@@ -30,6 +30,18 @@ MEMBERS = {
 }
 OPEN_STAGES = ["New Lead", "Buy Signal", "Qualification", "Demo", "Proposal", "Trial", "Contracts"]
 
+# Stage renames in Attio, normalised to the CURRENT title at the point of the pull so
+# raw/ is canonical and every downstream step sees one name per stage.
+#
+# On 29 Jul 2026 "Non-ICP" was renamed to "Contacted - no outcome": it is absent from
+# the status options entirely, not merely archived, "Contacted - no outcome" appeared
+# in its place, and the same eight record ids sit in it. So this is a relabel, not a
+# move. Without this map the stage diff would compare a stored "Non-ICP" against a
+# pulled "Contacted - no outcome" and book eight shut-offs against their owners on a
+# day nobody touched those deals. Both titles mean a shut-off state, so nothing about
+# the classification changes; only the label does.
+STAGE_ALIAS = {"Non-ICP": "Contacted - no outcome"}
+
 
 def req(path, body=None, method=None):
     r = urllib.request.Request(API + path, method=method or ("POST" if body else "GET"),
@@ -103,7 +115,7 @@ for r in raw_deals:
         "record_id": rid,
         "short": rid[:8],
         "name": v1(r, "name") or "(unnamed)",
-        "stage": status_of(r, "stage"),
+        "stage": STAGE_ALIAS.get(status_of(r, "stage"), status_of(r, "stage")),
         "owner": actor_of(r, "owner"),
         "value": float(money or 0),
         "acq": option_of(r, "acquisition"),

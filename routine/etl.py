@@ -15,7 +15,21 @@ QUARTER_TARGET = 400000                      # Q3 2026. One editable constant pe
 REPS = ["Chris", "Luke", "James", "Bianca", "Elliott", "Rupert"]
 IDX = {r: i for i, r in enumerate(REPS)}
 PROG = ["New Lead", "Buy Signal", "Qualification", "Demo", "Proposal", "Trial", "Contracts", "Closed Won"]
-SHUT = ["Nurture", "Closed Lost", "Churn", "Non-ICP"]
+# Shut-off states. "Contacted - no outcome" joins Nurture, Closed Lost and Churn: a deal
+# entering it counts as shut off, per the account owner on 29 Jul 2026.
+SHUT = ["Nurture", "Closed Lost", "Churn", "Contacted - no outcome"]
+
+# The same rename map pull_attio.py applies, repeated here because the COMMITTED state
+# store still holds the pre-rename title in stage_snapshot and stage_moves. The pull
+# normalises today's data; this normalises yesterday's baseline, and the diff only stays
+# continuous if both sides use one name. "Non-ICP" is deliberately absent from SHUT
+# above: every path reads stages through this map, so the canonical title is the only
+# one the classification needs to know about.
+STAGE_ALIAS = {"Non-ICP": "Contacted - no outcome"}
+
+
+def canon_stage(s):
+    return STAGE_ALIAS.get(s, s)
 
 
 def z():
@@ -178,6 +192,13 @@ try:
         _ps = json.load(fh)
     prev = _ps.get("stage_snapshot", {})
     prior_moves = _ps.get("stage_moves") or []
+    # Normalise the stored baseline through the rename map before diffing. A renamed
+    # stage is not a move, and comparing the old label against the new one would
+    # manufacture a shut-off for every deal sitting in it.
+    for _v in prev.values():
+        _v["stage"] = canon_stage(_v.get("stage"))
+    for _m in prior_moves:
+        _m["from"], _m["to"] = canon_stage(_m.get("from")), canon_stage(_m.get("to"))
 except FileNotFoundError:
     print("NOTE: no previous snapshot; this run seeds the baseline and the diff is empty")
 
@@ -313,8 +334,8 @@ def archive(qkey, start, end, label):
             out["Now won"] += 1
         elif s == "Nurture":
             out["Nurture"] += 1
-        elif s in ("Closed Lost", "Non-ICP", "Churn") or s is None:
-            out["Non-ICP / Lost"] += 1
+        elif s in ("Closed Lost", "Contacted - no outcome", "Churn") or s is None:
+            out["Lost / no outcome"] += 1
         else:
             out["Live (New Lead to Contracts)"] += 1
     return {"label": label,
