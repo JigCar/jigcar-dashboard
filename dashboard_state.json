@@ -160,11 +160,11 @@
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
-   "Rupert_groovin": "live: LinkedIn invitations and messages are attributed to him from the note body",
-   "allo_reconciled": "25 call records regrouped per day and reconciled against allo_get_team_analytics for 21-30 Jul with no change: Luke 10, Elliott 9, James 4, Chris 2, Bianca 0. Seat list re-confirmed with allo_list_users. No calls placed yet today",
-   "email_29jul": "29 Jul was paged end to end from midnight across two contiguous pages, has_more false on the last, so it is recomputed complete rather than carried forward partial. 30 Jul is paged to 06:20 UTC",
-   "granola_today": "no meetings recorded yet today at the 07:17 run, so today's sales-meeting figures are a floor that fills in through the day",
-   "leave_today": "Zelt re-read this run: nobody on the scorecard is on booked leave today. Bianca was off yesterday and is back"
+   "Rupert_groovin": "live: LinkedIn messages are attributed to him from the note body",
+   "allo_reconciled": "25 call records regrouped per day and reconciled against allo_get_team_analytics for 1-30 Jul at 16:50 with no discrepancy: Luke 10, Elliott 9, James 4, Chris 2, Bianca 0. Luke's five new calls were made 29 Jul 15:28-15:39, before his leave began.",
+   "email_28jul": "29 Jul is carried forward complete from the morning run's state; 30 Jul was paged from midnight to 16:45 UTC, has_more false",
+   "leave_today": "Zelt re-read at 16:45: Luke Nogueira is on booked leave today (30 Jul to 1 Aug), as are Krzysztof Burka and Eerik Saksi off the scorecard",
+   "stage_rename": "Attio renamed the shut-off stage 'Non-ICP' to 'Contacted - no outcome' today. The same 8 record ids sit in it and none moved, so both the pull and the stored baseline are normalised through one alias map and the diff records no move for them"
   },
   "seats": {
    "Bianca": [
@@ -198,16 +198,16 @@
     "ok"
    ]
   },
-  "updated": "30 Jul 2026, 07:17",
+  "updated": "30 Jul 2026, 16:50",
   "workspace": [
    {
     "name": "Attio",
-    "note": "263 deals, 218 tasks and 2,412 notes via REST. 362 invitation and 54 chat note bodies fetched with no errors and every LinkedIn event attributed to a named rep from the note body. Email search paged 29 Jul from midnight and 30 Jul to 06:20 UTC, has_more false on the final page",
+    "note": "263 deals, 238 tasks and 2,536 notes via REST; 446 invitation and 64 chat note bodies fetched with no errors and every event attributed to a named rep. Email search paged 30 Jul end to end to 16:45 UTC, has_more false",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "232 meetings parsed, 1 Jun to 29 Jul. No meeting notes written yet today, which is expected at this hour rather than a gap",
+    "note": "238 meetings parsed, 1 Jun to 30 Jul, after adapting the parser to Granola's new dump attributes; today's Mike Maidment meeting counts (Snows, open deal at Qualification), the Groovin catch-up is excluded as a tooling vendor",
     "status": "ok"
    },
    {
@@ -222,18 +222,18 @@
   "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (25 calls 2026-07-21 to 2026-07-29); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-29T00:00:00.000Z to 2026-07-30T06:20:00.000Z and carried forward 5 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-30T00:00:00.000Z to 2026-07-30T16:45:00.000Z and carried forward 6 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "183 domains resolve to a deal; 99 of 106 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "195 domains resolve to a deal; 112 of 119 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-07-30",
   "join_coverage": {
-   "domains_resolving": 183,
-   "joinable": 99,
+   "domains_resolving": 195,
+   "joinable": 112,
    "joinable_pct_by_value": 100.0,
    "joinable_value": 1961880.0,
-   "open_deals": 106,
+   "open_deals": 119,
    "pipeline_value": 1961880.0,
    "unjoinable": 7,
    "unjoinable_deals": [
@@ -293,11 +293,42 @@
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
   "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
-  "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 93 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
+  "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 105 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [],
-  "stage_moves_accumulated": 31,
+  "stage_diff": [
+   {
+    "date": "2026-07-30",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Kenwood Dealer Group",
+    "owner": "Chris",
+    "record_id": "b6d26330",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-30",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Patterson Cheney Cars & Trucks",
+    "owner": "James",
+    "record_id": "e9d9d512",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-07-30",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Northern Roads Auto Group",
+    "owner": "Bianca",
+    "record_id": "f3e04f00",
+    "to": "Qualification",
+    "value": 0.0
+   }
+  ],
+  "stage_moves_accumulated": 34,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -440,6 +471,14 @@
     0,
     2,
     2
+   ],
+   "2026-07-30": [
+    4,
+    3,
+    2,
+    1,
+    3,
+    0
    ]
   },
   "emails": {
@@ -492,12 +531,12 @@
     4
    ],
    "2026-07-30": [
-    0,
-    0,
-    0,
-    0,
+    10,
     1,
-    0
+    6,
+    20,
+    19,
+    6
    ]
   },
   "emailsCust": {
@@ -544,10 +583,10 @@
    "2026-07-30": [
     0,
     0,
-    0,
-    0,
-    0,
-    0
+    1,
+    14,
+    2,
+    1
    ]
   },
   "emailsDeal": {
@@ -592,11 +631,11 @@
     0
    ],
    "2026-07-30": [
-    0,
-    0,
-    0,
-    0,
+    7,
     1,
+    4,
+    2,
+    9,
     0
    ]
   },
@@ -674,12 +713,12 @@
     1
    ],
    "2026-07-30": [
+    1,
+    1,
+    2,
     0,
-    0,
-    0,
-    0,
-    0,
-    1
+    5,
+    2
    ]
   },
   "liAccDeal": {
@@ -732,11 +771,11 @@
     1
    ],
    "2026-07-30": [
+    1,
     0,
+    1,
     0,
-    0,
-    0,
-    0,
+    2,
     1
    ]
   },
@@ -796,6 +835,14 @@
     1,
     6,
     9
+   ],
+   "2026-07-30": [
+    4,
+    0,
+    17,
+    3,
+    0,
+    7
    ]
   },
   "liConnDeal": {
@@ -854,6 +901,14 @@
     0,
     5,
     7
+   ],
+   "2026-07-30": [
+    3,
+    0,
+    2,
+    3,
+    0,
+    3
    ]
   },
   "liMsgAll": {
@@ -920,6 +975,14 @@
     0,
     1,
     1
+   ],
+   "2026-07-30": [
+    0,
+    0,
+    0,
+    0,
+    3,
+    2
    ]
   },
   "liMsgDeal": {
@@ -953,6 +1016,14 @@
     3,
     0,
     1,
+    1
+   ],
+   "2026-07-30": [
+    0,
+    0,
+    0,
+    0,
+    2,
     1
    ]
   },
@@ -1252,6 +1323,22 @@
     0,
     1,
     0
+   ],
+   "2026-07-30": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "2026-08-03": [
+    0,
+    0,
+    1,
+    1,
+    0,
+    1
    ]
   },
   "progressed": {
@@ -1276,6 +1363,14 @@
     3,
     0,
     0,
+    0,
+    0
+   ],
+   "2026-07-30": [
+    1,
+    0,
+    1,
+    1,
     0,
     0
    ]
@@ -1466,39 +1561,29 @@
     0,
     0,
     3
+   ],
+   "2026-07-30": [
+    7,
+    0,
+    3,
+    3,
+    11,
+    0
    ]
   }
  },
  "last_run": "2026-07-30",
- "last_run_stamp": "30 Jul 2026, 07:17",
+ "last_run_stamp": "30 Jul 2026, 16:50",
  "leave": {
   "Bianca": [
    "2026-07-27",
    "2026-07-29",
-   "2026-08-04",
-   "2026-08-20",
-   "2026-08-21",
-   "2026-08-22",
-   "2026-08-23",
-   "2026-08-24"
+   "2026-08-04"
   ],
   "Chris": [
-   "2026-06-12",
-   "2026-08-07",
-   "2026-08-12",
-   "2026-08-13",
-   "2026-08-20",
-   "2026-08-21",
-   "2026-08-22",
-   "2026-08-23",
-   "2026-08-24",
-   "2026-09-18",
-   "2026-09-24",
-   "2026-09-25"
+   "2026-08-07"
   ],
-  "Elliott": [
-   "2026-08-31"
-  ],
+  "Elliott": [],
   "James": [
    "2026-06-22",
    "2026-06-23",
@@ -1506,19 +1591,9 @@
    "2026-06-25",
    "2026-06-26",
    "2026-07-10",
-   "2026-07-24",
-   "2026-08-15",
-   "2026-08-17",
-   "2026-08-24",
-   "2026-09-07",
-   "2026-09-08",
-   "2026-09-09",
-   "2026-09-10"
+   "2026-07-24"
   ],
   "Luke": [
-   "2026-06-22",
-   "2026-06-23",
-   "2026-06-24",
    "2026-06-25",
    "2026-06-26",
    "2026-06-29",
@@ -1528,15 +1603,11 @@
    "2026-07-31"
   ],
   "Rupert": [
-   "2026-06-15",
-   "2026-06-16",
-   "2026-06-17",
    "2026-08-10",
    "2026-08-11",
    "2026-08-12",
    "2026-08-13",
-   "2026-08-14",
-   "2026-08-31"
+   "2026-08-14"
   ]
  },
  "meeting_classification": {
@@ -1552,11 +1623,12 @@
    "2026-07-21|TradeBid/Jigcar Potential Strategic Collaboration": "partner / channel exploration, no deal attached",
    "2026-07-24|Book a 30-min meeting with Elliott at Jigcar (Rita Schmidt)": "tooling / vendor (HERE maps)",
    "2026-07-24|Jig Car chat": "investor",
-   "2026-07-28|Jigcar meeting at Euston office": "partner / channel exploration, no deal attached"
+   "2026-07-28|Jigcar meeting at Euston office": "partner / channel exploration, no deal attached",
+   "2026-07-30|Elliott Perks and Guillaume Bruere": "tooling / vendor (Groovin)"
   },
-  "excluded_count": 12,
-  "included_count": 94,
-  "internal_only_count": 112
+  "excluded_count": 13,
+  "included_count": 96,
+  "internal_only_count": 114
  },
  "off_today": [
   {
@@ -1902,8 +1974,94 @@
    "record_id": "ecd5f1b0",
    "to": "Qualification",
    "value": 0.0
+  },
+  {
+   "date": "2026-07-30",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Kenwood Dealer Group",
+   "owner": "Chris",
+   "record_id": "b6d26330",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-30",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Patterson Cheney Cars & Trucks",
+   "owner": "James",
+   "record_id": "e9d9d512",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-07-30",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Northern Roads Auto Group",
+   "owner": "Bianca",
+   "record_id": "f3e04f00",
+   "to": "Qualification",
+   "value": 0.0
   }
  ],
+ "stage_shape": {
+  "2026-07-30": {
+   "Buy Signal": [
+    23,
+    0.0
+   ],
+   "Churn": [
+    2,
+    54804.0
+   ],
+   "Closed Lost": [
+    20,
+    117000.0
+   ],
+   "Closed Won": [
+    16,
+    778500.0
+   ],
+   "Contacted - no outcome": [
+    8,
+    0.0
+   ],
+   "Contracts": [
+    4,
+    231600.0
+   ],
+   "Demo": [
+    15,
+    504000.0
+   ],
+   "New Lead": [
+    12,
+    168480.0
+   ],
+   "None": [
+    1,
+    0.0
+   ],
+   "Nurture": [
+    110,
+    2144600.0
+   ],
+   "Proposal": [
+    10,
+    508800.0
+   ],
+   "Qualification": [
+    52,
+    399000.0
+   ],
+   "Trial": [
+    3,
+    150000.0
+   ]
+  }
+ },
  "stage_snapshot": {
   "000b3101": {
    "owner": "Luke",
@@ -2025,6 +2183,11 @@
    "stage": "Closed Won",
    "value": 23040.0
   },
+  "1376824c": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "161c9d9e": {
    "owner": "Chris",
    "stage": "Nurture",
@@ -2032,6 +2195,11 @@
   },
   "16e17bdf": {
    "owner": "Elliott",
+   "stage": "Qualification",
+   "value": 0.0
+  },
+  "17618246": {
+   "owner": "Chris",
    "stage": "Qualification",
    "value": 0.0
   },
@@ -2062,6 +2230,11 @@
   },
   "1aae4121": {
    "owner": "Chris",
+   "stage": "Qualification",
+   "value": 0.0
+  },
+  "1aaf4015": {
+   "owner": "James",
    "stage": "Qualification",
    "value": 0.0
   },
@@ -2130,6 +2303,11 @@
    "stage": "Nurture",
    "value": 24000.0
   },
+  "2c2ead84": {
+   "owner": "Bianca",
+   "stage": "Qualification",
+   "value": 0.0
+  },
   "2e619b15": {
    "owner": "Chris",
    "stage": "Qualification",
@@ -2168,6 +2346,11 @@
   "33224ee3": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
+   "value": 0.0
+  },
+  "345235a1": {
+   "owner": "Elliott",
+   "stage": "Demo",
    "value": 0.0
   },
   "35f9a982": {
@@ -2240,6 +2423,11 @@
    "stage": "Qualification",
    "value": 0.0
   },
+  "43fb29aa": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "446e041b": {
    "owner": "James",
    "stage": "Nurture",
@@ -2263,6 +2451,16 @@
   "47fceeb5": {
    "owner": "Chris",
    "stage": "Qualification",
+   "value": 0.0
+  },
+  "4ab64856": {
+   "owner": "Chris",
+   "stage": "Qualification",
+   "value": 0.0
+  },
+  "4ad5acea": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "4f7c177d": {
@@ -2485,6 +2683,11 @@
    "stage": "Closed Lost",
    "value": 0.0
   },
+  "7fd696e4": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "8009f9a8": {
    "owner": "Chris",
    "stage": "Nurture",
@@ -2503,6 +2706,11 @@
   "82bcaad1": {
    "owner": "James",
    "stage": "Closed Lost",
+   "value": 0.0
+  },
+  "82cc1bc0": {
+   "owner": "Chris",
+   "stage": "Qualification",
    "value": 0.0
   },
   "8328ccae": {
@@ -2539,6 +2747,11 @@
    "owner": "Luke",
    "stage": "Nurture",
    "value": 12800.0
+  },
+  "8869bd78": {
+   "owner": "Chris",
+   "stage": "Qualification",
+   "value": 0.0
   },
   "89ab167e": {
    "owner": "Jon Pollock",
@@ -2862,7 +3075,7 @@
   },
   "b6d26330": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "bcc7e90e": {
@@ -2878,6 +3091,11 @@
   "bfcbee7d": {
    "owner": "Elliott",
    "stage": "Qualification",
+   "value": 0.0
+  },
+  "bffe5d0c": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "c0b92649": {
@@ -3122,7 +3340,7 @@
   },
   "e9d9d512": {
    "owner": "James",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "eb443fa1": {
@@ -3137,6 +3355,11 @@
   },
   "ecd5f1b0": {
    "owner": "Chris",
+   "stage": "Qualification",
+   "value": 0.0
+  },
+  "edb14622": {
+   "owner": "James",
    "stage": "Qualification",
    "value": 0.0
   },
@@ -3167,7 +3390,7 @@
   },
   "f3e04f00": {
    "owner": "Bianca",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "f5cbb219": {

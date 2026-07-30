@@ -118,6 +118,23 @@ HEAD = r'''<!DOCTYPE html>
   .actbar-att{color:var(--muted);font-size:11px;text-align:right}
   .actbar-total{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
   .actbar-row.cw{grid-template-columns:26px 74px 1fr 96px}
+  /* What moved */
+  .movday{padding:8px 4px;border-bottom:1px solid #222}
+  .movday:last-child{border-bottom:none}
+  .movday .mhead{font-weight:700;font-size:13px;margin-bottom:4px}
+  .movday .mhead small{color:var(--muted);font-weight:400}
+  .movday .mv{font-size:12.5px;color:var(--muted);padding:1.5px 0 1.5px 12px}
+  .movday .mv b{color:var(--text);font-weight:600}
+  .movday .mv .to{color:var(--bright)} .movday .mv .to.off{color:var(--amber)}
+  #movTable{width:100%;border-collapse:collapse;font-size:12.5px;min-width:560px}
+  #movTable th{text-align:left;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;padding:7px 10px;border-bottom:1px solid var(--line)}
+  #movTable th small{display:block;text-transform:none;letter-spacing:0;font-weight:400}
+  #movTable td{padding:7px 10px;border-bottom:1px solid #222}
+  #movTable td.mcell b{font-size:13.5px}
+  #movTable td .mprev{color:var(--muted);font-size:11.5px}
+  #movTable td .mdelta{font-weight:700;margin-left:6px}
+  .dup{color:var(--bright)} .ddown{color:var(--red)} .dflat,.dneutral{color:var(--muted)}
+  #movTable td.mna{color:#6a6a6a;font-size:11.5px;font-style:italic}
   @media(max-width:560px){.actbar-row{grid-template-columns:22px 64px 1fr 50px}.actbar-row.cw{grid-template-columns:22px 64px 1fr 76px}.actbar-att{display:none}}
   .chartbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 16px;margin:16px 0}
   .chartbox h3{margin:0 0 12px;font-size:13.5px;font-weight:600}
@@ -239,6 +256,18 @@ HEAD = r'''<!DOCTYPE html>
     <div class="chartbox">
       <h3 id="acqTitle"></h3>
       <canvas id="acqChart" height="90"></canvas>
+    </div>
+
+    <h2><span class="bar"></span>What moved</h2>
+    <p class="lead">Pipeline movement as the stage diff measured it, then the pace of work period on period. Comparisons use completed working days only, like for like, and a cell only shows a number when both periods sit fully inside that metric's coverage, so a widening coverage window can never read as growth.</p>
+    <div class="chartbox">
+      <h3>Stage moves, day by day <span class="pill grey" id="movLogBadge"></span></h3>
+      <div id="movLog"></div>
+    </div>
+    <div class="chartbox" style="margin-top:12px">
+      <h3>Team movement</h3>
+      <div style="overflow-x:auto"><table id="movTable"><tbody></tbody></table></div>
+      <div class="note" id="movNote" style="margin-top:10px"></div>
     </div>
 
     <div class="filterbar">
@@ -397,6 +426,52 @@ const QUARTER_TARGET=__QT__; // Q3 2026
 const RUN_STAMP=__RUN_STAMP__;
 const RUN_DATE=__RUN_DATE__;
 const STAGE_MOVES=__STAGEMOVES__;
+const MOVEMENT=__MOVEMENT__;
+
+// ===== What moved: stage-move log + period-on-period movement table =====
+// All numbers arrive precomputed from the ETL, coverage-gated per cell; this only
+// draws them. Plain HTML, no Chart.js, so it survives a blocked CDN like the tables.
+function renderMovement(){
+  const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const day=iso=>{const t=new Date(iso+'T12:00:00');return DW[t.getDay()]+' '+t.getDate()+' '+MO[t.getMonth()];};
+  const gbp=v=>'£'+Math.round(v).toLocaleString('en-GB');
+  const byDay={};
+  STAGE_MOVES.forEach(m=>{(byDay[m.date]=byDay[m.date]||[]).push(m);});
+  const days=Object.keys(byDay).sort().reverse();
+  document.getElementById('movLogBadge').textContent='measured since '+MOVEMENT.diffFrom;
+  document.getElementById('movLog').innerHTML=(days.map(d=>{
+    const ms=byDay[d];
+    const prog=ms.filter(m=>m.kind==='progressed').length;
+    const shut=ms.filter(m=>m.kind==='shutoff').length;
+    const won=ms.filter(m=>m.to==='Closed Won').reduce((a,m)=>a+(m.value||0),0);
+    return '<div class="movday"><div class="mhead">'+day(d)+
+      ' <small>. '+ms.length+' move'+(ms.length===1?'':'s')+' . '+prog+' progressed . '+shut+' shut off'+
+      (won>0?' . '+gbp(won)+' won':'')+'</small></div>'+
+      ms.map(m=>'<div class="mv"><b>'+m.name+'</b> ('+m.owner+') '+m.from+
+        ' <span class="to'+(m.kind==='shutoff'?' off':'')+'">&rarr; '+m.to+'</span>'+
+        (m.value>0?' . '+gbp(m.value):'')+'</div>').join('')+'</div>';
+  }).join(''))||'<div class="movday"><div class="mv">No stage move has been observed yet.</div></div>';
+
+  let h='<thead><tr><th>Metric</th>'+MOVEMENT.cols.map(c=>
+    '<th>'+c.label+'<small>'+c.curText+' vs '+c.prevText+'</small></th>').join('')+'</tr></thead><tbody>';
+  MOVEMENT.rows.forEach(r=>{
+    const f=v=>r.gbp?gbp(v):String(v);
+    h+='<tr><td>'+r.label+'</td>'+r.cells.map(c=>{
+      if(c.na!==undefined)return '<td class="mna">'+c.na+'</td>';
+      const d=c.cur-c.prev;
+      // Direction gets a colour only where more is unambiguously better; deals
+      // created and shut off move for reasons that are neither good nor bad.
+      const cls=d===0?'dflat':(r.valence===0?'dneutral':(d>0?'dup':'ddown'));
+      const arrow=d===0?'level':(d>0?'&#9650; ':'&#9660; ')+f(Math.abs(d));
+      return '<td class="mcell"><b>'+f(c.cur)+'</b> <span class="mprev">vs '+f(c.prev)+
+        '</span><span class="mdelta '+cls+'">'+arrow+'</span></td>';
+    }).join('')+'</tr>';
+  });
+  document.getElementById('movTable').innerHTML=h+'</tbody>';
+  document.getElementById('movNote').innerHTML='<strong>How to read this.</strong> '+MOVEMENT.note+
+    ' A greyed cell names why it cannot be compared yet; each fills in by itself as coverage accumulates.';
+}
 const WON_BOOK_COUNT=__WONBOOK__;
 const DEAL_COUNT=__DEALCOUNT__;
 const COVERAGE=__COVERAGE__;
@@ -1049,6 +1124,7 @@ function applyView(){
   const steps = live
     ? (state.tab==='momentum'
         ? [['banner',renderBanner],['revenue',renderRevenue],['acquisition',buildAcq],
+           ['movement',renderMovement],
            ['scorecard',render],['trend',buildTrend],['coverage',renderCoverage],['read',renderRead]]
         : [['leaderboard',renderLeaderboard],['activity',renderActivityBoard],['bonus',()=>renderChannels(closedWonDeals,'bonus')]])
     : [['archive',()=>renderArchive(q)]];
@@ -1293,6 +1369,7 @@ subs={
  "__RUN_STAMP__":J(p["RUN_STAMP"]),
  "__RUN_DATE__":J(p["RUN_DATE"]),
  "__STAGEMOVES__":J(p["stageMoves"]),
+ "__MOVEMENT__":J(p["movement"]),
  "__WONBOOK__":str(p["wonBookCount"]),
  "__DEALCOUNT__":str(len(st["stage_snapshot"])),
  "__COVERAGE__":J(cov),

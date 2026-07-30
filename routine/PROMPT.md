@@ -386,6 +386,40 @@ A deal with no channel is `Unassigned` and **excluded from the qualifying total*
 do-not-pay-yet warning naming the deals, ARR and owner. Attribute by deal owner at close. Carry all
 of this through the archive quarters.
 
+**"What moved" section** (requested by the commercial director via the account owner, 29 Jul 2026).
+On the Momentum tab, directly after the revenue and acquisition panels and before the scorecard.
+Two parts, both plain HTML so a blocked chart CDN costs nothing, all numbers computed in `etl.py`
+and only drawn by the page:
+
+1. **Stage-move log, grouped by day**, newest first: every observed move with deal, owner,
+   from → to and value, with per-day totals (progressed, shut off, £ won). Lists every owner
+   including the back book.
+2. **Team movement table**: rows are deals created, progressed, shut off, closed won £, sales
+   meetings, calls, emails (deal), LI requests (deal), tasks completed. Three comparison columns:
+   day on day (last two complete working days), week to date like for like (this week through
+   yesterday vs the same weekdays of last week), and last full week vs the prior week.
+
+Rules that must hold, in order of the damage breaking them does:
+
+- **Completed working days only.** The 08:00 run must never compare a full day against two waking
+  hours. On a Monday the week-to-date column says "no completed working day this week yet".
+- **Coverage gating per cell.** A comparison renders only when both periods sit fully inside that
+  metric's coverage window; otherwise the cell states the reason. A covered week compared against
+  an uncovered one reads as growth that is actually the coverage window opening, and that lie to a
+  commercial director is worse than an empty cell. Cells fill in by themselves as coverage accrues.
+- **Direction-aware colour.** Green/red only where more is unambiguously better (meetings, won £,
+  progressed…). Deals created and shut off move for reasons that are neither good nor bad and stay
+  neutral. Never a red arrow that amounts to a performance judgement; person-level deltas are
+  deliberately excluded from this section because they collide with the leave rules.
+- **Scope stated.** The log counts every owner; the table's progressed/shut-off rows count the six
+  scorecard people to match the scorecard, so the log can legitimately total higher on a day a
+  back-book owner moved a deal. The note says so.
+- Closed won £ is by real close date; quarter-only back-book seeds are excluded from daily
+  comparisons because their stored dates are placeholders.
+- The ETL also persists `stage_shape` in state: count and value per stage per run day, carried
+  forward, never backfilled. It exists so pipeline-shape movement ("Qualification grew £84k this
+  week") can be added once a couple of weeks of history accrue; do not delete it as unused.
+
 **Closed won leaderboard** (restructured at the account owner's request, 29 Jul 2026). Four
 independent ranked boards, not one mixed table: ARR closed won and deals closed won for the live
 quarter, then the same pair for the year to date as their own separate boards. The quarter boards

@@ -90,6 +90,9 @@ EXCLUDED_MEETINGS = {
     # Warranty provider, no deal on the domain, convened by a Jigcar colleague rather
     # than by the counterparty. Partner exploration, not a deal-advancing meeting.
     ("2026-07-28", "Jigcar meeting at Euston office"): "partner / channel exploration, no deal attached",
+    # Groovin is the LinkedIn tool this dashboard itself reads from: a vendor
+    # check-in, not a deal-advancing meeting.
+    ("2026-07-30", "Elliott Perks and Guillaume Bruere"): "tooling / vendor (Groovin)",
 }
 EXCL_PREFIX = [(d, t[:40]) for (d, t) in EXCLUDED_MEETINGS]
 
@@ -481,6 +484,117 @@ def working_days(person, start, end):
 
 
 attendance = {r: {v: working_days(r, *ranges[v]) for v in ranges} for r in REPS}
+
+# ---------- movement: period-over-period deltas + the daily pipeline shape ----------
+# Requested by the commercial director, 29 Jul 2026. Everything is computed here so
+# the page only displays it. Two rules are load-bearing:
+#   1. Completed days only. The 08:00 run must never compare a full day against two
+#      waking hours, so day-on-day is the last two complete working days, and the
+#      weekly column is this week THROUGH YESTERDAY against the same weekdays of
+#      last week, like for like.
+#   2. Coverage gating. A cell renders only when both periods sit fully inside the
+#      metric's coverage window, else it carries the reason instead of a number. A
+#      covered week against an uncovered one reads as growth that is actually the
+#      coverage window opening, which is the exact lie this table must not tell.
+STAGE_DIFF_FROM = "2026-07-27"          # first day the stage diff existed
+Q_START = "2026-07-01"
+
+
+def prev_working(day):
+    day -= datetime.timedelta(days=1)
+    while day.weekday() >= 5:
+        day -= datetime.timedelta(days=1)
+    return day
+
+
+y1 = prev_working(d0)                   # last complete working day
+y0 = prev_working(y1)
+
+# closed-won £ by real close date. Quarter-only back-book seeds are excluded: their
+# stored dates are placeholders, and a placeholder inside a daily comparison would
+# invent a win on a day nobody closed anything.
+won_by_day = collections.defaultdict(float)
+for _d in closed_won:
+    _wd = WON_DATES.get(_d["id"])
+    if _wd and _d["id"] not in WON_DATE_QUARTER_ONLY:
+        won_by_day[_wd] += _d["value"]
+
+
+def series_total(key, a, b):
+    if key == "wonGBP":
+        return round(sum(v for k, v in won_by_day.items() if str(a) <= k <= str(b)))
+    return sum(sum(v) for k, v in (daily.get(key) or {}).items() if str(a) <= k <= str(b))
+
+
+MOVE_METRICS = [
+    # (daily key, label, covered from, valence: 1 = more is better, 0 = neutral, gbp)
+    ("deals",      "Deals created",      Q_START,         0, False),
+    ("progressed", "Deals progressed",   STAGE_DIFF_FROM, 1, False),
+    ("shutoff",    "Deals shut off",     STAGE_DIFF_FROM, 0, False),
+    ("wonGBP",     "Closed won",         Q_START,         1, True),
+    ("meetings",   "Sales meetings",     Q_START,         1, False),
+    ("calls",      "Calls",              _calls["covered_from"] or RUN_DATE, 1, False),
+    ("emailsDeal", "Emails (deal)",      EMAIL_SPLIT_FROM or RUN_DATE,       1, False),
+    ("liConnDeal", "LI requests (deal)", LI_NOTE_COVERED_FROM,               1, False),
+    ("tasks",      "Tasks completed",    Q_START,         1, False),
+]
+
+_wtd_ok = y1 >= wk_start                # false on a Monday: no completed day this week
+_swlw_a = wk_start - datetime.timedelta(days=7)
+_swlw_b = _swlw_a + (y1 - wk_start) if _wtd_ok else None
+_pfw_a = lw_start - datetime.timedelta(days=7)
+_pfw_b = lw_start - datetime.timedelta(days=1)
+
+MOVE_COLS = [
+    {"key": "dod", "label": "Day on day",
+     "curText": dlabel(y1), "prevText": dlabel(y0),
+     "cur": (y1, y1), "prev": (y0, y0)},
+    {"key": "wow", "label": "Week to date, like for like",
+     "curText": (f"Mon-{DAYS[y1.weekday()]} this week" if _wtd_ok else "no completed day yet"),
+     "prevText": "same weekdays last week",
+     "cur": (wk_start, y1) if _wtd_ok else None,
+     "prev": (_swlw_a, _swlw_b) if _wtd_ok else None},
+    {"key": "fw", "label": "Last full week vs prior",
+     "curText": span_text(lw_start, lw_end), "prevText": span_text(_pfw_a, _pfw_b),
+     "cur": (lw_start, lw_end), "prev": (_pfw_a, _pfw_b)},
+]
+
+movement_rows = []
+for _key, _label, _from, _val, _gbp in MOVE_METRICS:
+    cells = []
+    for _c in MOVE_COLS:
+        if _c["cur"] is None:
+            cells.append({"na": "no completed working day this week yet"})
+        elif str(_c["prev"][0]) < _from:
+            cells.append({"na": f"coverage began {_from}, after this comparison window opens"})
+        else:
+            cells.append({"cur": series_total(_key, *_c["cur"]),
+                          "prev": series_total(_key, *_c["prev"])})
+    movement_rows.append({"key": _key, "label": _label, "valence": _val, "gbp": _gbp,
+                          "coveredFrom": _from, "cells": cells})
+
+movement = {"cols": [{k: c[k] for k in ("key", "label", "curText", "prevText")} for c in MOVE_COLS],
+            "rows": movement_rows,
+            "diffFrom": STAGE_DIFF_FROM,
+            "note": ("Completed working days only, so today never appears part-built. Deals "
+                     "progressed and shut off are observed by the stage diff, which has existed "
+                     f"since {STAGE_DIFF_FROM}; nothing earlier was measured and nothing is "
+                     "backfilled. Closed won is by real close date and counts dated wins only. "
+                     "The move log above lists every owner including the back book, while this "
+                     "table's progressed and shut off rows count the six scorecard people to "
+                     "match the scorecard columns, so the log can legitimately total one or two "
+                     "higher on a day a back-book owner moved a deal.")}
+
+# Daily pipeline shape: count and value per stage, one row per run day, carried
+# forward. This is what unlocks "Qualification grew £84k this week" once a couple of
+# weeks of history exist. It cannot be backfilled, so it starts accruing today.
+prev_shape = (_ps.get("stage_shape") or {}) if prev else {}
+_today_shape = {}
+for _d in deals:
+    _e = _today_shape.setdefault(_d["stage"] or "None", [0, 0.0])
+    _e[0] += 1
+    _e[1] += _d["value"]
+stage_shape = {**prev_shape, RUN_DATE: _today_shape}
 leave_summary = {r: sorted(k for k, v in leave_by_person.get(r, {}).items()) for r in REPS}
 
 coverage = {
@@ -562,6 +676,7 @@ state = {"schema": 3, "last_run": RUN_DATE, "last_run_stamp": RUN_STAMP,
          "leave": leave_summary,
          "off_today": off_today,
          "attendance": attendance,
+         "stage_shape": stage_shape,
          "coverage": coverage}
 
 os.makedirs(f"{SP}/build", exist_ok=True)
@@ -579,6 +694,7 @@ payload = {"RUN_STAMP": RUN_STAMP, "RUN_DATE": RUN_DATE, "QUARTER_TARGET": QUART
            "connectivity": connectivity, "ranges": ranges, "rangeText": rangeText,
            "archives": archives, "coverage": coverage,
            "stageMoves": ALL_MOVES,
+           "movement": movement,
            "leave": leave_summary, "offToday": off_today, "attendance": attendance}
 json.dump(payload, open(f"{SP}/build/payload.json", "w"), indent=1)
 

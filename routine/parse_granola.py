@@ -26,8 +26,20 @@ def find_dump():
 
 F = find_dump()
 raw = open(F, encoding="utf-8").read()
-blocks = re.findall(r'<meeting id="([^"]+)" title="([^"]*)" date="([^"]*)">\s*'
+# The meeting tag is matched attribute-by-attribute, tolerating any extras between
+# date and the closing bracket. On 30 Jul 2026 Granola added captured_by_me /
+# listed_as_participant / is_workspace_visible attributes and the previous strict
+# pattern matched nothing, which would have silently published a zero-meeting
+# dashboard; hence the tolerant pattern AND the hard failure below.
+blocks = re.findall(r'<meeting id="([^"]+)" title="([^"]*)" date="([^"]*)"[^>]*>\s*'
                     r'<known_participants>(.*?)</known_participants>', raw, re.S)
+_declared = re.search(r'<meetings_data[^>]*\bcount="(\d+)"', raw)
+if not blocks and (_declared is None or int(_declared.group(1)) > 0):
+    raise SystemExit("parse_granola: 0 meetings parsed from a dump that declares "
+                     f"{_declared.group(1) if _declared else 'an unknown number of'} meetings. "
+                     "The dump format has probably changed again. Refusing to overwrite "
+                     "raw/granola.json with an empty list: a zero-meeting dashboard is a "
+                     "silent lie, not a quiet day.")
 MONTH = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
          'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
 meetings = []

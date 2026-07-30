@@ -1,0 +1,803 @@
+emails[100]:
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: eea2274a-ecea-4975-92bd-75681bf2c095
+    subject_line: 12 foods linked to a lower risk of disease
+    summary: null
+    snippet: "The latest science on fibre, your gut microbiome and long-term\nhealth  ZOE Science and Nutrition Weekly \n( https://clicks.zoe.com/f/a/I7Id6fEgWqufVOpkGo3Xrg~~/AAAHahA~/MEPNS0SR0CWNctI5Fk3FTqFTcXFJsskVsEprQ-BQO0RiARqR6vySpLcOs6qSikvvduG9ckSFMQdZKHTWKKpl99r"
+    sender: hello@info.zoe.com
+    recipients[2]: hello@joinzoe.com,elliottaperks@gmail.com
+    sent_at: "2026-07-30T16:41:27.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: e7b21ae5-50c6-4e12-a669-5542f5df53c4
+    subject_line: "Re: Jigcar's Spain and France workforce management"
+    summary: null
+    snippet: "Hi Elliott,\n\nI realize I’m emailing you out of the blue, so thank you for reading.\nCurious if you had any feedback on my initial note.\n\nIs this top of mind?\n\nCheers,\nMykaela\n\n--\n*Mykaela Johnston*\nAccount Executive | Rippling\n<https://inbox.rippling.com/a"
+    sender: mykaelaajohnston@rippling.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T16:40:14.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: c7fe762a-5f2f-41db-88f3-af415855f848
+    subject_line: New vehicle movement request from Glyn Hopkin
+    summary: null
+    snippet: "Hello from Jigcar\n\n\nOn behalf of Glyn Hopkin\n\n\nCould you kindly arrange transport for the vehicle detailed below:\n\n\n\nUnique Identifier            01KYSYBNDS9YXTDKQRHFR0QFFF\nVin                          211668\nReg                          \nMake and model"
+    sender: movement@mail.jigcar.com
+    recipients[6]: elliott@jigcar.com,kyleigh.hughes@groupecat.com,emily.clements@groupecat.com,peter.wilcox@glynhopkin.com,movements.cvt@groupecat.com,michael.chinery@glynhopkin.com
+    sent_at: "2026-07-30T16:40:13.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9c462535-b01e-4d8a-8562-610d95b5eca7
+    subject_line: New vehicle movement request from Glyn Hopkin
+    summary: null
+    snippet: "Hello from Jigcar\n\n\nOn behalf of Glyn Hopkin\n\n\nCould you kindly arrange transport for the vehicle detailed below:\n\n\n\nUnique Identifier            01KYSY42CW0DRAARQKJA30C2QE\nVin                          210937\nReg                          -\nMake and model"
+    sender: movement@mail.jigcar.com
+    recipients[6]: jamie.slaughter@glynhopkin.com,emily.clements@groupecat.com,movements.cvt@groupecat.com,peter.wilcox@glynhopkin.com,kyleigh.hughes@groupecat.com,elliott@jigcar.com
+    sent_at: "2026-07-30T16:36:05.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: c8b73648-72ce-40e3-a5c3-f5d09c170561
+    subject_line: Distributor search U.S. automotive
+    summary: null
+    snippet: "Good morning Elliott,\n\nFor UK automotive suppliers, finding reliable partners in the US, the Middle East or Asia is complex without the right local network without an established local network.\n\nIA International Advisors has supported automotive and mobil"
+    sender: guglielmo@teaminternationaladvisors.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T16:27:00.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 3d8ee806-f0d9-4860-9d35-4d68461364d7
+    subject_line: "Accepted: Jigcar - Co-Buyer [in person - Aldershot]"
+    summary: null
+    snippet: "[https://dev.caboodlecode.co.uk/drive-web/assets/email_footer2.jpg]\n<https://www.drivemotorretail.co.uk>Drive Motor Retail/ <https://www.drivemotorretail.co.uk> Facebook/ <https://www.facebook.com/DriveMotorRetailVauxhall/> Twitter/ <https://twitter.com/d"
+    sender: kevinparkinson@drivemotorretail.co.uk
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T16:26:26.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: aa71f45e-da99-42aa-812d-e89cdfb2c342
+    subject_line: New vehicle movement request from Glyn Hopkin
+    summary: null
+    snippet: "Hello from Jigcar\n\n\nOn behalf of Glyn Hopkin\n\n\nCould you kindly arrange transport for the vehicle detailed below:\n\n\n\nUnique Identifier            01KYSX8KDVJSGSJ23VG89P3D5F\nVin                          246492\nReg                          -\nMake and model"
+    sender: movement@mail.jigcar.com
+    recipients[6]: adam.gray@glynhopkin.com,movements.cvt@groupecat.com,elliott@jigcar.com,kyleigh.hughes@groupecat.com,emily.clements@groupecat.com,peter.wilcox@glynhopkin.com
+    sent_at: "2026-07-30T16:21:04.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: e7d11e17-4e75-4f8f-b3c4-e752f29d2d1b
+    subject_line: "Re: 31 March 2025 Repayment & Agent Authorisation [MHA-DMS.FID2191115]"
+    summary: null
+    snippet: "Hi all,\n\nAdditionally, I just saw a letter with a cheque from HMRC for the £67k\nwhich is great. However, can we please ensure bank details are issued with\nthe next submission, as paying a cheque in with the banks we use is a huge\nfaff!\n\nElliott\n\nOn Thu, 3"
+    sender: elliott@jigcar.com
+    recipients[6]: ryan.sleet@mha.co.uk,joel.walsh@mha.co.uk,will.goodman@jigcar.com,kanika.mishrapathak@mha.co.uk,neil.green@mha.co.uk,hannah.collins@mha.co.uk
+    sent_at: "2026-07-30T16:19:40.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: f4190c5f-f00f-4142-bbf8-68103d704daf
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Josh Palmer is my display manager, and Rob Mitchell takes the reigns when josh is off, so id imagine they're probably the best 2 people.\r\n\r\nJoshua.palmer@bigmotoringworld.co.uk\r\nRobert.mitchell@bigmotoringworld.co.uk\r\n\r\nWould it be possible to add people"
+    sender: tom.chapman@bigmotoringworld.co.uk
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T16:17:43.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: f52b8d20-9bf8-4b56-9998-5d4d9953f652
+    subject_line: I Build This Inside Billionaire Family Offices Every Day
+    summary: null
+    snippet: "View this email in your browser (https://mailchi.mp/48ed6d3f4c20/angelo-robles-sfo-continuity-family-office-masterclass-13879133?e=de2be71f9a)\n\nHello \n\nI Build This Inside Billionaire Family Offices Every Day\n\nEvery sophisticated family office in the worl"
+    sender: angelo@angelorobles.email
+    recipients[2]: angelo@angelorobles.email,elliott@jigcar.com
+    sent_at: "2026-07-30T16:15:52.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 05e02a09-4002-4097-906d-5749cba01bbd
+    subject_line: "Automatic reply: 31 March 2025 Repayment & Agent Authorisation [MHA-DMS.FID2191115]"
+    summary: null
+    snippet: "Thank you for your email, ﻿I am currently out of the office until Friday 31st July and I will respond to your email as soon as possible on my return.\r\n\r\nIf your query is urgent, please contact the office on 01908 662255.\r\n\r\n\r\nKind Regards,\r\n\r\nHannah\r\n\r\nHa"
+    sender: hannah.collins@mha.co.uk
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T16:13:30.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: a3dbc3c5-821a-4bbe-8cde-87ab2b884d0b
+    subject_line: "Re: 31 March 2025 Repayment & Agent Authorisation [MHA-DMS.FID2191115]"
+    summary: null
+    snippet: "Apologies Will it actually has come - pls see attached\n\n\n\n\n\nElliott Perks\n*Co-Founder & CEO*\n\n\n📞\n+447900811609 🔗 jigcar.com <https://www.jigcar.com/>\n\n*💬 Book a slot in my calendar here\n<https://calendar.app.google/G6byZcEwJCrGRY7DA>    *\n\nOn Thu, Jul"
+    sender: elliott@jigcar.com
+    recipients[6]: will.goodman@jigcar.com,kanika.mishrapathak@mha.co.uk,hannah.collins@mha.co.uk,neil.green@mha.co.uk,joel.walsh@mha.co.uk,ryan.sleet@mha.co.uk
+    sent_at: "2026-07-30T16:12:36.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 154c93a3-2ab5-4e09-ac3d-894df36eb336
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Tom,\n\nOkay great. It can be multiple emails so let me know who is best to receive\nthem and I'll get it added!\n\nBest,\n\nOn Thu, 30 Jul 2026 at 17:10, Tom Chapman <\nTom.Chapman@bigmotoringworld.co.uk> wrote:\n\n> Ok no worries.\n>\n> Yeah, we'll go with the a"
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: tom.chapman@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T16:11:45.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 44ded76a-6919-42cf-a2d4-9696143e9275
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Ok no worries.\r\n\r\nYeah, we'll go with the afternoon email please.\r\n\r\nWho will the emails be sent to?\r\n\r\n\r\n\r\n\r\nTom Chapman\r\nT 01732220555  W bigmotoringworld.co.uk\r\nThis e-mail is confidential and intended solely for the use of the individual to whom it is"
+    sender: tom.chapman@bigmotoringworld.co.uk
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T16:10:07.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 76b6c49e-fc04-4497-bf70-4c62d8078de0
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Tom,\n\nNo problem at all!\n\nUnfortunately, it's currently only optional to have one or the other. We\nmay build the option to have both down the line, but for now it isn't\nin the roadmap!I will suggest it to the team though.\n\nWorth noting that the other s"
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: tom.chapman@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T16:05:41.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: e8375e40-88b9-4bae-9eb7-62f7df3fd113
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Craig,\n\nGreat thank you. I've set that up so you should both hopefully start\nreceiving them from tomorrow.\n\nBest,\n\nOn Thu, 30 Jul 2026 at 16:57, Craig Langford <\nCraig.Langford@bigmotoringworld.co.uk> wrote:\n\n> Hi,\n>\n> Yes that would be great, please i"
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: craig.langford@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T16:03:36.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: c1cdc7b5-c06f-4793-9ef8-3580250e0523
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Dario,\n\nAll done!\n\nThank you,\n\nOn Thu, 30 Jul 2026 at 16:25, dario vieira <\ndario.vieira@bigmotoringworld.co.uk> wrote:\n\n> Hi Bianca\n>\n> Sorry for late reply\n>\n> Can you have this set up for the day before.\n>\n> Thanks\n>\n> Dario Vieira\n>\n> Sales General"
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: dario.vieira@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T16:01:16.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 8c577430-793c-46a9-9cf4-5a40666045c9
+    subject_line: Jigcar update
+    summary: null
+    snippet: "________________________________________________________________________________\nMicrosoft Teams meeting\nJoin: https://teams.microsoft.com/meet/327113014391370?p=abfFpL9WVRLaz04MjG\nMeeting ID: 327 113 014 391 370\nPasscode: Ct3sw6tB\n_______________________"
+    sender: cjohnson@hendy-group.com
+    recipients[5]: jcrowther@hendy-group.com,rupert@jigcar.com,kstoimenov@hendy-group.com,wfreemantle3@hendy-group.com,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T15:57:59.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: fcffe460-6471-4ef6-b3a3-21db1608f4fd
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi,\r\n\r\nYes that would be great, please include myself and gary.fivash@bigmotoringworld.co.uk if we can go for the day before at 3pm that would be great.\r\n\r\nthanks,\r\n\r\nCraig Langford\r\nSales General Manager\r\nT 01733530916  W bigmotoringworld.co.uk\r\nThis e-m"
+    sender: craig.langford@bigmotoringworld.co.uk
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T15:57:29.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: a613093d-001b-420d-a9ee-ac2897b27c59
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Craig,\n\nThanks for getting back to me. Yes, if you could please share the Display\nManager's email, I can get this set up. Would you like them to receive this\non the day of or the day before? Also please let me know what time. Eg 4pm\nthe day before.\n\nTh"
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: craig.langford@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T15:52:44.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: d39455cc-ff87-4df7-b0f7-17dd4039081c
+    subject_line: Your latest Teamed invoice
+    summary: null
+    snippet: ""
+    sender: payroll@teamed.global
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T15:50:17.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: bc71745f-fc1f-490c-ba93-c8cbc4ad5ded
+    subject_line: Your latest Teamed invoice
+    summary: Your latest Teamed invoice is attached.
+    snippet: null
+    sender: payroll@teamed.global
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T15:46:31.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 3beba9e8-44a6-4afc-be74-36ae712447a1
+    subject_line: Congrats on the two new stores
+    summary: James Griffin from Jigcar offers a solution for managing inter-store vehicle movements and costs for dealer groups.
+    snippet: null
+    sender: james.griffin@jigcar.com
+    recipients[1]: thernandez@cardinaleway.com
+    sent_at: "2026-07-30T15:43:28.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 7ebfe3e2-1d7e-4b07-b697-546dbd739f9b
+    subject_line: Following up from LinkedIn
+    summary: James Griffin from Jigcar is following up on a LinkedIn connection to discuss costing and planning logistics movements between sites.
+    snippet: null
+    sender: james.griffin@jigcar.com
+    recipients[1]: daniel.turner@pattersoncheney.com.au
+    sent_at: "2026-07-30T15:34:57.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 0117249c-d5ae-463b-a645-635bddafeeeb
+    subject_line: jigcar.com vs gocomet.com
+    summary: Gbemisola offers SEO services to boost jigcar.com's organic growth and market share.
+    snippet: null
+    sender: gbemisola@wytlabsbrand.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T15:34:35.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 1d49ca33-36b2-44b8-8b32-b578e795c35f
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Biance,\r\n\r\nI would be interested in getting this setup, in particular for my Display manager. Do you require an email adress to add him?\r\n\r\nthanks,\r\n\r\nCraig Langford\r\nSales General Manager\r\nT 01733530916  W bigmotoringworld.co.uk\r\nThis e-mail is confid"
+    sender: craig.langford@bigmotoringworld.co.uk
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T15:33:31.000Z"
+  - mailbox_id: 1be86450-47f9-4a1e-9a3c-bdb4907b3ceb
+    email_id: 088a5021-1631-4658-9f6e-112b27bb6cd3
+    subject_line: "Re: FW: Jon Pollock - Jigcar update"
+    summary: Jon Pollock is available for a Co-Buyer demo on August 12th. Please suggest a time.
+    snippet: null
+    sender: jon.pollock@jigcar.com
+    recipients[3]: suraj.patel@jemca.co.uk,chris.white@jigcar.com,paul.edmonds@jemca.co.uk
+    sent_at: "2026-07-30T15:27:29.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 5daba4cf-4fec-4b4f-8025-46871b6e43c5
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Bianca\r\n\r\nSorry for late reply\r\n\r\nCan you have this set up for the day before.\r\n\r\nThanks\r\n\r\nDario Vieira\r\n\r\nSales General Manager - Enfield\r\n W bigmotoringworld.co.uk<https://uk.content.exclaimer.net/?url=https%3A%2F%2Fwww.bigmotoringworld.co.uk%2F%3Fu"
+    sender: dario.vieira@bigmotoringworld.co.uk
+    recipients[2]: tom.chapman@bigmotoringworld.co.uk,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T15:25:19.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 5ee5b4ab-594d-4007-b5d5-40203831b8fa
+    subject_line: "Re: Site Notifications"
+    summary: null
+    snippet: "Hi Bianca,\r\n\r\nSo sorry, I completely missed your first email.\r\n\r\nIs it possible to have both?\r\n\r\nOnly reason I ask is that some afternoons will get very busy and we may not be able to get ourselves sorted, and if we then have the email again in the mornin"
+    sender: tom.chapman@bigmotoringworld.co.uk
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T15:24:13.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 24bbb194-28a4-4f74-8722-dfde6e32ebb7
+    subject_line: "Re: Onboarding form ASAP"
+    summary: null
+    snippet: "Great, thank you for letting me know!\n\nBest,\n\nOn Thu, 30 Jul 2026 at 16:05, TVLNI Transport <transport@tvlni.com> wrote:\n\n> Hello\n>\n> This will be sent over to you tomorrow.\n>\n> Thanks\n>\n>\n> ------------------------------\n> *From:* Bianca Monteiro <bianca"
+    sender: bianca.monteiro@jigcar.com
+    recipients[2]: transport@tvlni.com,nick@tvlni.com
+    sent_at: "2026-07-30T15:17:33.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: d22e4e90-f586-49f0-8002-08e4a3ff891d
+    subject_line: "Re: Site Notifications"
+    summary: Bianca Monteiro is following up on a previous email about site notifications and wants to finalize the remaining ones.
+    snippet: null
+    sender: bianca.monteiro@jigcar.com
+    recipients[5]: dario.vieira@bigmotoringworld.co.uk,harps.dhaliwal@bigmotoringworld.co.uk,tom.chapman@bigmotoringworld.co.uk,mark.chalkly@bigmotoringworld.co.uk,craig.langford@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T15:15:20.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 5ae04dd7-98e5-475d-b4c8-f3e2beea0d8d
+    subject_line: "Re: Marriott"
+    summary: null
+    snippet: "send it to Robert     robert.rolfe@marriottmotorgroup.co.uk\n\nand of course happy to look at\n\nOn Thu, 30 Jul 2026 at 16:09, Elliott Perks <elliott@jigcar.com> wrote:\n\n> Thanks - can I have his email address? Will Cc you when I share the draft\n> contract. T"
+    sender: bob.oreilly@jigcar.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T15:14:59.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: f1c0dc87-1d94-40a4-b5da-84e065963314
+    subject_line: "Re: 31 March 2025 Repayment & Agent Authorisation [MHA-DMS.FID7055707]"
+    summary: null
+    snippet: "Hi Hannah,\n\nI would appreciate a response/idea of timeline here so we can keep\nmomentum. Pls let us know when you're able to book in Jigcar accounts.\n\nMany thanks,\nWill Goodman\n\nOn Thu, 9 Jul 2026 at 18:25, Will Goodman <will.goodman@jigcar.com> wrote:\n\n>"
+    sender: will.goodman@jigcar.com
+    recipients[7]: kanika.mishrapathak@mha.co.uk,joel.walsh@mha.co.uk,neil.green@mha.co.uk,ryan.sleet@mha.co.uk,hannah.collins@mha.co.uk,amrit@jigcar.com,elliott@jigcar.com
+    sent_at: "2026-07-30T15:12:49.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 44e57760-107d-4242-9053-009ffdfb4da0
+    subject_line: "Re: Jigcar check-in app for the retail sites"
+    summary: null
+    snippet: "Hi Michael,\n\n I hope you're well.\n\nTo ensure accurate Big Motoring World data flows through Jigcar, we need to\nget the retail sites up and running on the check-in app as soon as possible.\n\nI am free Monday (3rd) afternoon and most of the day this coming W"
+    sender: bianca.monteiro@jigcar.com
+    recipients[3]: rupert@jigcar.com,michael.gilligan@bigmotoringworld.co.uk,berkay.ozkan@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T15:12:22.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 1824dd40-1ffc-4161-8199-1d9e81a95463
+    subject_line: "Re: 31 March 2025 Repayment & Agent Authorisation [MHA-DMS.FID2191115]"
+    summary: Will Goodman is requesting a letter be resent to the new Eversholt Street address as it has not arrived.
+    snippet: null
+    sender: will.goodman@jigcar.com
+    recipients[6]: joel.walsh@mha.co.uk,hannah.collins@mha.co.uk,elliott@jigcar.com,ryan.sleet@mha.co.uk,kanika.mishrapathak@mha.co.uk,neil.green@mha.co.uk
+    sent_at: "2026-07-30T15:11:23.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 3ffc72b6-16c8-47c1-8463-bdd5286439bd
+    subject_line: "Re: Marriott"
+    summary: null
+    snippet: "Thanks - can I have his email address? Will Cc you when I share the draft\ncontract. That ok?\n\n\n\nElliott Perks\n*Co-Founder & CEO*\n\n\n📞\n+447900811609 🔗 jigcar.com <https://www.jigcar.com/>\n\n*💬 Book a slot in my calendar here\n<https://calendar.app.google/G"
+    sender: elliott@jigcar.com
+    recipients[1]: bob.oreilly@jigcar.com
+    sent_at: "2026-07-30T15:08:55.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: c17b1a08-2dee-4209-a7ca-32c9424ab6ea
+    subject_line: "Re: Onboarding form ASAP"
+    summary: TVLNI Transport will send the onboarding form tomorrow.
+    snippet: null
+    sender: transport@tvlni.com
+    recipients[2]: bianca.monteiro@jigcar.com,nick@tvlni.com
+    sent_at: "2026-07-30T15:05:22.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: ae969b1f-45b7-4ef9-9701-da1bed7e4e34
+    subject_line: Marriott
+    summary: "Bob O'Reilly discusses a new contract for FD, proposing a 2-month trial period with a refund option."
+    snippet: null
+    sender: bob.oreilly@jigcar.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T15:05:05.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9e586d6f-5d91-495d-b410-afe4aa46bbdf
+    subject_line: "Re: Groovin x Jigcar"
+    summary: Elliott Perks asks about inviting LinkedIn followers via MCP in Claude for the automotive industry.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: guillaume@groovin.ai
+    sent_at: "2026-07-30T14:59:56.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 22849b08-81b1-43e9-b40d-357556584a9b
+    subject_line: "Re: Onboarding form ASAP"
+    summary: null
+    snippet: "Hi both,\n\nCould I please get an update on this?\n\nMany thanks,\n\nOn Tue, 28 Jul 2026 at 14:48, Bianca Monteiro <bianca.monteiro@jigcar.com>\nwrote:\n\n> Hi Olivia,\n>\n> I hope you're having a good week.\n>\n> How are you getting on with filling in the onboarding"
+    sender: bianca.monteiro@jigcar.com
+    recipients[2]: transport@tvlni.com,nick@tvlni.com
+    sent_at: "2026-07-30T14:57:38.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 51cb77fb-6e04-41c9-b971-8c584e1e9585
+    subject_line: Chris catch up
+    summary: Microsoft Teams meeting invitation from Kevin Fisher.
+    snippet: null
+    sender: kfisher@hendy-group.com
+    recipients[2]: bianca.monteiro@jigcar.com,rupert@jigcar.com
+    sent_at: "2026-07-30T14:53:04.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9b9bfdf1-a3ce-49d5-84d9-8ece11b1a776
+    subject_line: "Re: Statement required"
+    summary: Finance team will send the required statement.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[3]: tmoran@hendy-group.com,elliot@jigcar.com,finance@jigcar.com
+    sent_at: "2026-07-30T14:51:50.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 985081c4-756e-4b3f-a2bc-6d8cb726d6b6
+    subject_line: Statement required
+    summary: null
+    snippet: "Good afternoon,\n\nCould you please send an up-to-date Statement of account to purchase.ledger@hendy-group.com to reconcile outstanding Invoices for payment.\n\nWe have a new process for our bacs payments which will not allow the payment to be released unless"
+    sender: tmoran@hendy-group.com
+    recipients[1]: elliot@jigcar.com
+    sent_at: "2026-07-30T14:51:13.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 645c263b-7acd-4aae-a804-44fd0e9b6e73
+    subject_line: "Re: Jigcar Co-Buyer: Stock Feed & Sales Data set up"
+    summary: Elliott Perks is asking Jonny if he can set up Google Analytics data alongside sales data.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[4]: rupert@jigcar.com,jonnymurray@availablecar.com,michaelbell@availablecar.com,wojciech.kumon@jigcar.com
+    sent_at: "2026-07-30T14:31:44.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: ae4b12fb-7bbc-4107-8c1b-8a458d23f0c5
+    subject_line: "Re: OCS Intelligence / Jigcar Co-Buyer"
+    summary: null
+    snippet: "Mon 10th anytime from 1 works - thanks\n\nOn Thu, 30 Jul 2026 at 10:35, John Law <john.law@ocsoftware.co.uk> wrote:\n\n> Apologies, I read the email incorrectly.  I am actually away all next\n> week.  What availability would you have w/c 10th?\n>\n>\n>\n> *From:*"
+    sender: elliott@jigcar.com
+    recipients[3]: john.law@ocsoftware.co.uk,julian.wheway@ocsoftware.co.uk,walid.benchaita@jigcar.com
+    sent_at: "2026-07-30T14:29:07.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 7edb50b1-cd98-4640-984f-a7bfd7cd0801
+    subject_line: "RE: Hendy @ Thu, 30 Jul 2026 14:20 – 14:42 (GMT+01)"
+    summary: null
+    snippet: "Thank you,\r\n\r\nGreat to meet you and appreciate the prompt response!\r\n\r\nLook forward to hearing more next month.\r\n\r\n\r\nOliver Halstead\r\nDivisional Financial Controller\r\nT: 023 8048 3113\r\nE: OHalstead@Hendy-Group.com\r\nW: www.hendy.co.uk\r\n\r\n\r\nThis message is"
+    sender: ohalstead@hendy-group.com
+    recipients[4]: bianca.monteiro@jigcar.com,awilson@hendy-group.com,kfisher@hendy-group.com,james.griffin@jigcar.com
+    sent_at: "2026-07-30T14:26:45.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 47c19f0b-bdef-459c-a4ba-f71e2561b6e9
+    subject_line: "RE: Hendy @ Thu, 30 Jul 2026 14:20 – 14:42 (GMT+01)"
+    summary: James Griffin will prioritize scoping a solution for mandatory invoice column adjustment.
+    snippet: null
+    sender: ohalstead@hendy-group.com
+    recipients[4]: james.griffin@jigcar.com,kfisher@hendy-group.com,awilson@hendy-group.com,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T14:26:45.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 48098c44-6793-473f-9636-027f7e01de53
+    subject_line: "Hendy @ Thu, 30 Jul 2026 14:20 – 14:42 (GMT+01)"
+    summary: null
+    snippet: "Hi Amy, Oliver,\n\nIt was nice to be introduced to you both.\n\nAs a quick update unfortunately the tag isn't something we can turn on as\nmandatory straight away but the team will scope out a proper solution that\nallows you to adjust the invoice to column dur"
+    sender: james.griffin@jigcar.com
+    recipients[4]: awilson@hendy-group.com,kfisher@hendy-group.com,ohalstead@hendy-group.com,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T14:21:19.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 0690b7e1-6e4b-4ebe-b178-a75156e6a360
+    subject_line: "Hendy @ Thu, 30 Jul 2026 14:20 – 14:42 (GMT+01)"
+    summary: null
+    snippet: "Hi Amy, Oliver,\n\nIt was nice to be introduced to you both.\n\nAs a quick update unfortunately the tag isn't something we can turn on as\nmandatory straight away but the team will scope out a proper solution that\nallows you to adjust the invoice to column dur"
+    sender: james.griffin@jigcar.com
+    recipients[4]: kfisher@hendy-group.com,ohalstead@hendy-group.com,bianca.monteiro@jigcar.com,awilson@hendy-group.com
+    sent_at: "2026-07-30T14:21:19.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 0c9f136b-8de5-47e6-acf7-cf721ab91a21
+    subject_line: "Accepted: Bruntingthorpe Logistics x Jigcar"
+    summary: null
+    snippet: ""
+    sender: gary.fell@bruntingthorpelogistics.com
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T14:11:37.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 015987f4-657d-4542-8194-2d79b51fdaf0
+    subject_line: "Updated invitation: Bruntingthorpe Logistics x Jigcar @ Fri 31 Jul 2026 14:00 - 14:30 (BST) (James Griffin)"
+    summary: null
+    snippet: "This event has been updated\nChanged: Time\n\n\nBruntingthorpe Logistics x Jigcar\nFriday 31 Jul 2026 ⋅ 14:00 – 14:30\nUnited Kingdom Time\n\nJoin with Google Meet\nhttps://meet.google.com/cbr-bkwn-kjc?hs=224\n\n\n\t\nJoin by phone\n(GB) +44 20 3957 3667\nPIN: 521031651"
+    sender: bianca.monteiro@jigcar.com
+    recipients[3]: james.griffin@jigcar.com,gary.fell@bruntingthorpelogistics.com,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T14:10:38.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 586dbea0-e45b-4d50-aeaf-0a66391d9d99
+    subject_line: "Accepted: Jigcar x Berkay: Data Sync"
+    summary: "Neil Smith accepted the meeting invite for Jigcar x Berkay: Data Sync."
+    snippet: null
+    sender: neil.smith@bigmotoringworld.co.uk
+    recipients[1]: bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T13:57:13.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 2b40af31-21c1-4afe-bd0a-a7c76eee2ed2
+    subject_line: Exhibition question
+    summary: null
+    snippet: "Hi Elliott,\n\nI wanted to make contact because we work with quite a few companies in automotive who are either new to exhibiting or expanding their show presence and the planning side of it can be more complex than expected.\n\nBlue Hawk Events takes care of"
+    sender: h.khan@bluehawkstandbuilder.co.uk
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T13:45:48.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9cf86677-c11e-4a82-a7d0-704602745184
+    subject_line: "441,078 New Fortunes Last Year. Most Will Not Survive the Century They Were Made In"
+    summary: null
+    snippet: "View this email in your browser (https://mailchi.mp/02f30e69e2fa/angelo-robles-sfo-continuity-family-office-masterclass-13879096?e=de2be71f9a)\n\nHello \n\nLast night, live, I delivered something no one has done before: a State of the Union for family offices"
+    sender: angelo@angelorobles.email
+    recipients[2]: elliott@jigcar.com,angelo@angelorobles.email
+    sent_at: "2026-07-30T13:45:35.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 6a0c3ecb-e99b-4a88-bd4d-b62353ecb9a2
+    subject_line: "Invitation: Jigcar/FSG: Onboarding Sync @ Thu 6 Aug 2026 2pm - 3pm (BST) (Bianca Monteiro)"
+    summary: null
+    snippet: "Jigcar/FSG: Onboarding Sync\nThursday 6 Aug 2026 ⋅ 2pm – 3pm\nUnited Kingdom Time\n\nJoin with Google Meet\nhttps://meet.google.com/hge-zqjs-uon?hs=224\n\n\n\t\nJoin by phone\n(GB) +44 20 3956 3153\nPIN: 618061534\n\nMore phone numbers\nhttps://tel.meet/hge-zqjs-uon?pin"
+    sender: luke.nogueira@jigcar.com
+    recipients[6]: luke.nogueira@jigcar.com,adam.bystran@jigcar.com,ibrahim.yilmazlar@jigcar.com,bianca.monteiro@jigcar.com,rupert@jigcar.com,accounts@fsgtransport.co.uk
+    sent_at: "2026-07-30T13:38:44.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 0dc47e1a-0bde-4074-8e8d-51b577616cb4
+    subject_line: Worth joining August 20?
+    summary: Sophia invites Elliott to a webinar on Aug 20 at 1 PM ET about digital lead intelligence for sales.
+    snippet: null
+    sender: sophia.merlino@netsoltech.us
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T13:28:18.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: ded1fed6-0ed3-4df5-9a83-736166a9dcb9
+    subject_line: meeting
+    summary: Microsoft Teams meeting link provided by Kevin Fisher.
+    snippet: null
+    sender: kfisher@hendy-group.com
+    recipients[1]: james.griffin@jigcar.com
+    sent_at: "2026-07-30T13:22:40.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: dc2fc6e9-9b16-41e4-9af8-300587b3fefb
+    subject_line: Hendy
+    summary: "Microsoft Teams meeting invitation with join link, meeting ID, and passcode."
+    snippet: null
+    sender: kfisher@hendy-group.com
+    recipients[1]: james.griffin@jigcar.com
+    sent_at: "2026-07-30T13:21:32.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 3f3b4d34-19e8-47f2-925f-ddead265f737
+    subject_line: "Re: Big Motoring World"
+    summary: "Elliott will analyze the current setup and discuss with Big, then propose next steps."
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[5]: denise@mobileservicesltd.co.uk,morgan@mobileservicesltd.co.uk,scottb@mobileservicesltd.co.uk,james.griffin@jigcar.com,jay@mobileservicesltd.co.uk
+    sent_at: "2026-07-30T13:17:00.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 132c5e7c-772d-4b02-9b20-d215be78e2a0
+    subject_line: "Re: Big Motoring World"
+    summary: "Elliott will analyze the current setup and discuss with Big, then provide next steps."
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[5]: jay@mobileservicesltd.co.uk,morgan@mobileservicesltd.co.uk,denise@mobileservicesltd.co.uk,scottb@mobileservicesltd.co.uk,james.griffin@jigcar.com
+    sent_at: "2026-07-30T13:17:00.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 81186763-6b28-4c9f-8ed3-5830a35fe284
+    subject_line: "Re: FW: Jigcar commercials"
+    summary: Lisa confirms training timing and asks if Chris needs access to the Kerridge system during his visit.
+    snippet: null
+    sender: lisa.virando@hrowen.co.uk
+    recipients[6]: karl.henderson@hrowen.co.uk,bianca.monteiro@jigcar.com,geoff@gcdconsulting.net,richard.brown@hrowen.co.uk,sean.nevatte@hrowen.co.uk,chris.white@jigcar.com
+    sent_at: "2026-07-30T13:15:14.000Z"
+  - mailbox_id: 1be86450-47f9-4a1e-9a3c-bdb4907b3ceb
+    email_id: 50139694-3e7a-4128-9cd0-b5cde5a65bc5
+    subject_line: "Re: FW: Jigcar commercials"
+    summary: Lisa confirms training timing and asks if Chris needs Kerridge system access for his visit.
+    snippet: null
+    sender: lisa.virando@hrowen.co.uk
+    recipients[6]: karl.henderson@hrowen.co.uk,geoff@gcdconsulting.net,chris.white@jigcar.com,bianca.monteiro@jigcar.com,richard.brown@hrowen.co.uk,sean.nevatte@hrowen.co.uk
+    sent_at: "2026-07-30T13:15:14.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 77471543-a6ce-4b54-9f90-b302b062b580
+    subject_line: Big Motoring World
+    summary: "Jay Lambert proposes contract rates for truck and car loads, detailing prices per load for various routes."
+    snippet: null
+    sender: jay@mobileservicesltd.co.uk
+    recipients[5]: scottb@mobileservicesltd.co.uk,james.griffin@jigcar.com,denise@mobileservicesltd.co.uk,morgan@mobileservicesltd.co.uk,elliott@jigcar.com
+    sent_at: "2026-07-30T13:10:00.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 0f1b0c65-0e69-4cb7-8a31-928604c6890f
+    subject_line: Big Motoring World
+    summary: "Jay Lambert provides a quote for truck and car transport services, detailing per-load pricing for various routes."
+    snippet: null
+    sender: jay@mobileservicesltd.co.uk
+    recipients[5]: elliott@jigcar.com,james.griffin@jigcar.com,morgan@mobileservicesltd.co.uk,denise@mobileservicesltd.co.uk,scottb@mobileservicesltd.co.uk
+    sent_at: "2026-07-30T13:10:00.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 974c7c0c-dcb6-43a0-9547-99abc2fb9b75
+    subject_line: Moving cars between your stores
+    summary: Elliott Perks from Jigcar introduces AI-native transport software for dealer groups to optimize car moves between stores.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: medinar@autonation.com
+    sent_at: "2026-07-30T13:04:24.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 73b079cd-ece5-4bc6-96ae-9b1c3cd560a1
+    subject_line: Moving cars between your stores
+    summary: Elliott Perks from Jigcar offers AI-native transport software for dealer groups to optimize car moves between stores.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: boundsm@autonation.com
+    sent_at: "2026-07-30T13:01:57.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: b81ac0bc-970d-4979-8d00-80bd8801e744
+    subject_line: Moving cars between your stores
+    summary: "Elliott Perks introduces Jigcar, AI-native transport software for dealer groups, and asks about current store transfer processes."
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: batar@autonation.com
+    sent_at: "2026-07-30T13:01:27.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: faa490d5-caf1-4d44-934a-ca7af672815a
+    subject_line: Driver Opportunity
+    summary: Bianca Monteiro from Jigcar wants to discuss how Steele Auto Group moves cars between rooftops.
+    snippet: null
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: cgadbois@steeleauto.com
+    sent_at: "2026-07-30T13:01:25.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: b20002e0-b66c-4abc-a4ee-e2cfa95e2ebd
+    subject_line: "Re: 10 meetings, zero risk"
+    summary: Sarah Mitchell from AZ Consulting Media offers a document explaining their service and asks for a response.
+    snippet: null
+    sender: sarah.m@azconsultingmedia.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T13:00:11.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 0d704cb1-fe1a-4e47-8119-0a7830fb1dbd
+    subject_line: Share request for ‘Lookers_Value_Case_Rollout_July2026’
+    summary: Simon Bottomley is requesting access to the presentation Lookers_Value_Case_Rollout_July2026.
+    snippet: null
+    sender: drive-shares-dm-noreply@google.com
+    recipients[2]: simonjbottomley@gmail.com,elliott@jigcar.com
+    sent_at: "2026-07-30T12:49:33.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 0dd705b3-594e-4f66-b1bb-7469eeee9e6d
+    subject_line: New vehicle movement request from Steven Eagell
+    summary: "Transport request for Toyota Yaris (GY74OCF) from Horsham to Tamworth, ready 31 July 2026."
+    snippet: null
+    sender: movement@mail.jigcar.com
+    recipients[3]: steveneagell@dandiautos.co.uk,ibrahim.khan@steveneagell.co.uk,elliott@jigcar.com
+    sent_at: "2026-07-30T12:49:07.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: c96aa424-64b3-48ca-956c-e2363d4be006
+    subject_line: "Re: Jigcar Demonstration"
+    summary: Elliott Perks acknowledged Nate's message regarding the Jigcar demonstration.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: nwintringer@westherr.com
+    sent_at: "2026-07-30T12:48:33.000Z"
+  - mailbox_id: 1be86450-47f9-4a1e-9a3c-bdb4907b3ceb
+    email_id: eca85858-a4a6-427a-a2fc-25c2b8ed47e9
+    subject_line: "Re: Lookers value case & commercials - for comment"
+    summary: Simon Bottomley confirms that the proposed changes are acceptable.
+    snippet: null
+    sender: sbottomley@leaconsulting.co.uk
+    recipients[6]: bob.oreilly@jigcar.com,chris.white@jigcar.com,luke.nogueira@jigcar.com,elliott@jigcar.com,rupert@jigcar.com,jon.pollock@jigcar.com
+    sent_at: "2026-07-30T12:48:11.000Z"
+  - mailbox_id: adec9444-78a1-42cf-840c-a5f2bd105497
+    email_id: 348fd6d1-7bdf-4b1b-a3db-b6745c7dad72
+    subject_line: "Re: Lookers value case & commercials - for comment"
+    summary: Simon Bottomley confirms that the proposed changes are acceptable.
+    snippet: null
+    sender: sbottomley@leaconsulting.co.uk
+    recipients[6]: rupert@jigcar.com,chris.white@jigcar.com,jon.pollock@jigcar.com,bob.oreilly@jigcar.com,luke.nogueira@jigcar.com,elliott@jigcar.com
+    sent_at: "2026-07-30T12:48:11.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 311beba3-4efe-465f-8759-9619c4651871
+    subject_line: "Re: Lookers value case & commercials - for comment"
+    summary: Simon Bottomley confirms that the provided information is acceptable.
+    snippet: null
+    sender: sbottomley@leaconsulting.co.uk
+    recipients[6]: jon.pollock@jigcar.com,bob.oreilly@jigcar.com,luke.nogueira@jigcar.com,chris.white@jigcar.com,rupert@jigcar.com,elliott@jigcar.com
+    sent_at: "2026-07-30T12:48:11.000Z"
+  - mailbox_id: 1be86450-47f9-4a1e-9a3c-bdb4907b3ceb
+    email_id: a01493e2-845c-48c1-9aa1-8a3da04fd5f7
+    subject_line: "Re: Jigcar Demonstration"
+    summary: Nate confirms Beth will lead decisions on Jigcar demo; Elliott awaits contract status.
+    snippet: null
+    sender: nwintringer@westherr.com
+    recipients[4]: chris.white@jigcar.com,elliott@jigcar.com,ebow@westherr.com,bhollis@westherr.com
+    sent_at: "2026-07-30T12:46:49.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9115cf7d-fd2c-4679-90d3-8479b876960d
+    subject_line: "Re: Jigcar Demonstration"
+    summary: Nate confirms Beth will lead decisions on Jigcar demo; Elliott awaits contract status.
+    snippet: null
+    sender: nwintringer@westherr.com
+    recipients[4]: bhollis@westherr.com,chris.white@jigcar.com,ebow@westherr.com,elliott@jigcar.com
+    sent_at: "2026-07-30T12:46:49.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 5d146dbd-9cea-427d-840b-b13406c4a22f
+    subject_line: "Fwd: Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: null
+    snippet: "FYI - please see below, particularly the Robsinsons piece. We are pushing\nMobile Services and Carlsons hard for rates this week, it hasn't been a\nquick / simple process for them to review the opportunity given the volume.\n\nElliott\n\n---------- Forwarded me"
+    sender: elliott@jigcar.com
+    recipients[1]: paul.fleming@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T12:46:05.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: f828f3c0-8584-4f07-94a6-6fb0de1a0fea
+    subject_line: "Re: Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: Neil Smith is onsite at Peterborough on Monday and proposes a meeting between 10am and 2pm.
+    snippet: null
+    sender: neil.smith@bigmotoringworld.co.uk
+    recipients[5]: james.griffin@jigcar.com,berkay.ozkan@bigmotoringworld.co.uk,bianca.monteiro@jigcar.com,rupert@jigcar.com,elliott@jigcar.com
+    sent_at: "2026-07-30T12:36:26.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: dc14b53e-432e-4f4b-bfd4-94c55138cebd
+    subject_line: "Re: Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: Neil is available for a meeting at Peterborough on Monday between 10am and 2pm.
+    snippet: null
+    sender: neil.smith@bigmotoringworld.co.uk
+    recipients[5]: elliott@jigcar.com,berkay.ozkan@bigmotoringworld.co.uk,bianca.monteiro@jigcar.com,james.griffin@jigcar.com,rupert@jigcar.com
+    sent_at: "2026-07-30T12:36:26.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 14bfba4b-cbd7-46e9-96de-954e7a09656f
+    subject_line: "Re: Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: Neil Smith is available for a meeting on Monday between 10am and 2pm at Peterborough.
+    snippet: null
+    sender: neil.smith@bigmotoringworld.co.uk
+    recipients[5]: bianca.monteiro@jigcar.com,elliott@jigcar.com,james.griffin@jigcar.com,berkay.ozkan@bigmotoringworld.co.uk,rupert@jigcar.com
+    sent_at: "2026-07-30T12:36:26.000Z"
+  - mailbox_id: 1be86450-47f9-4a1e-9a3c-bdb4907b3ceb
+    email_id: 86036a60-0373-4a2d-9298-c4e79b523b20
+    subject_line: "Re: Jigcar Demonstration"
+    summary: "Elliott asks about current position and timeframes for roll out, noting contract is signable pending logo usage."
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[4]: chris.white@jigcar.com,nwintringer@westherr.com,ebow@westherr.com,bhollis@westherr.com
+    sent_at: "2026-07-30T12:33:28.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 0569c742-85bb-45da-b0e4-88e763dc8499
+    subject_line: "Re: Jigcar Demonstration"
+    summary: Elliott asks for an update on the current position and timeframes for roll out. Contract is signable pending legal's logo usage comments.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[4]: chris.white@jigcar.com,ebow@westherr.com,nwintringer@westherr.com,bhollis@westherr.com
+    sent_at: "2026-07-30T12:33:28.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: d18285b7-a94a-40ad-8b4e-860ffaf50930
+    subject_line: "Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: "Update on data quality, specifically cost data and Robinsons movements. Reviewing how to filter out Robinson’s delivery events."
+    snippet: null
+    sender: rupert@jigcar.com
+    recipients[5]: james.griffin@jigcar.com,neil.smith@bigmotoringworld.co.uk,bianca.monteiro@jigcar.com,berkay.ozkan@bigmotoringworld.co.uk,elliott@jigcar.com
+    sent_at: "2026-07-30T12:32:43.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: d049512a-fa02-4773-8a7a-d096c6c4aadc
+    subject_line: "Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: "Update on data quality, specifically cost data and Robinsons movements. Reviewing how to filter out Robinson’s delivery events."
+    snippet: null
+    sender: rupert@jigcar.com
+    recipients[5]: james.griffin@jigcar.com,neil.smith@bigmotoringworld.co.uk,berkay.ozkan@bigmotoringworld.co.uk,elliott@jigcar.com,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T12:32:43.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 97bc3e61-4557-476c-948e-b5cb80327765
+    subject_line: "Update on Robinson’s data, cost data, retail check-in, and next steps"
+    summary: "Update on data quality, specifically cost data and Robinsons movements, with proposed solutions."
+    snippet: null
+    sender: rupert@jigcar.com
+    recipients[5]: james.griffin@jigcar.com,neil.smith@bigmotoringworld.co.uk,berkay.ozkan@bigmotoringworld.co.uk,elliott@jigcar.com,bianca.monteiro@jigcar.com
+    sent_at: "2026-07-30T12:32:43.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: e7335260-111f-4f4f-acfc-d78fde78b2f9
+    subject_line: ETA
+    summary: Alex Williams is asking for an ETA on a vehicle.
+    snippet: null
+    sender: alex.williams@glynhopkin.com
+    recipients[3]: kyleigh.hughes@groupecat.com,elliott@jigcar.com,emily.clements@groupecat.com
+    sent_at: "2026-07-30T12:32:29.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9ea55be0-7ac2-4551-a577-8b7c147594c4
+    subject_line: What makes graduates choose one employer over another?
+    summary: Will Sommerville offers recruitment services to help businesses attract graduate talent by showcasing their culture and opportunities.
+    snippet: null
+    sender: will.sommerville@sanctuarygraduates.co.uk
+    recipients[2]: elliott@jigcar.com,will.sommerville@sanctuarygraduates.co.uk
+    sent_at: "2026-07-30T12:31:11.000Z"
+  - mailbox_id: 1be86450-47f9-4a1e-9a3c-bdb4907b3ceb
+    email_id: d89f832d-c7cb-4ca0-8e91-482e5e477246
+    subject_line: "Re: Lookers value case & commercials - for comment"
+    summary: Elliott Perks is making amendments based on feedback.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[6]: rupert@jigcar.com,chris.white@jigcar.com,luke.nogueira@jigcar.com,jon.pollock@jigcar.com,sbottomley@leaconsulting.co.uk,bob.oreilly@jigcar.com
+    sent_at: "2026-07-30T12:28:31.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: d04db1d5-4602-4f55-9bdd-3c3ffb8515e4
+    subject_line: "Re: Lookers value case & commercials - for comment"
+    summary: Elliott Perks is making amendments based on feedback.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[6]: sbottomley@leaconsulting.co.uk,chris.white@jigcar.com,luke.nogueira@jigcar.com,rupert@jigcar.com,bob.oreilly@jigcar.com,jon.pollock@jigcar.com
+    sent_at: "2026-07-30T12:28:31.000Z"
+  - mailbox_id: adec9444-78a1-42cf-840c-a5f2bd105497
+    email_id: 07727ef8-a5d0-4568-93a2-396959701599
+    subject_line: "Re: Lookers value case & commercials - for comment"
+    summary: Elliott Perks is making amendments based on feedback.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[6]: chris.white@jigcar.com,bob.oreilly@jigcar.com,luke.nogueira@jigcar.com,rupert@jigcar.com,sbottomley@leaconsulting.co.uk,jon.pollock@jigcar.com
+    sent_at: "2026-07-30T12:28:31.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 23cba503-ac53-40db-bd69-551e55277f38
+    subject_line: New vehicle movement request from Glyn Hopkin
+    summary: null
+    snippet: "Hello from Jigcar\n\n\nOn behalf of Glyn Hopkin\n\n\nCould you kindly arrange transport for the vehicle detailed below:\n\n\n\nUnique Identifier            01KYSFY2TQ9Q4A325P4PDDP413\nVin                          368406\nReg                          \nMake and model"
+    sender: movement@mail.jigcar.com
+    recipients[6]: elliott@jigcar.com,emily.clements@groupecat.com,alex.williams@glynhopkin.com,peter.wilcox@glynhopkin.com,kyleigh.hughes@groupecat.com,movements.cvt@groupecat.com
+    sent_at: "2026-07-30T12:28:08.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: 8c155a9c-e36f-414a-a01f-8d5b55abde56
+    subject_line: "Re: Invoice Query"
+    summary: null
+    snippet: "🙏\n\nBianca Monteiro reacted via Gmail\n<https://www.google.com/gmail/about/?utm_source=gmail-in-product&utm_medium=et&utm_campaign=emojireactionemail#app>\n\nOn Thu, 30 Jul 2026 at 12:26, Ben Hoare <BenH@focusvm.co.uk> wrote:\n\n> Hi,\n>\n>\n>\n> Good, a little bi"
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: benh@focusvm.co.uk
+    sent_at: "2026-07-30T12:26:09.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: ad5c18fe-ea71-4219-a881-072150f7f30f
+    subject_line: "Updated invitation: Jigcar x Berkay: Data Sync @ Mon 3 Aug 2026 13:30 - 14:00 (BST) (James Griffin)"
+    summary: null
+    snippet: "This event has been updated\nChanged: Time\n\n\nJigcar x Berkay: Data Sync\nMonday 3 Aug 2026 ⋅ 13:30 – 14:00\nUnited Kingdom Time\n\nJoin with Google Meet\nhttps://meet.google.com/kkf-pbsn-kwz?hs=224\n\n\n\t\nJoin by phone\n(GB) +44 20 3937 3571\nPIN: 183786378\n\nMore ph"
+    sender: bianca.monteiro@jigcar.com
+    recipients[5]: james.griffin@jigcar.com,berkay.ozkan@bigmotoringworld.co.uk,rupert@jigcar.com,bianca.monteiro@jigcar.com,lewis.evans@jigcar.com
+    sent_at: "2026-07-30T12:25:59.000Z"
+  - mailbox_id: 16107f9e-8a1a-4536-8af7-7c771e88b5d4
+    email_id: a3948e36-870d-46de-92c0-51761bbbf079
+    subject_line: Call Now
+    summary: Bianca Monteiro is asking if you can still join a call.
+    snippet: null
+    sender: bianca.monteiro@jigcar.com
+    recipients[1]: berkay.ozkan@bigmotoringworld.co.uk
+    sent_at: "2026-07-30T12:06:54.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 9b816b0f-999b-44c2-b14d-63719ef93c22
+    subject_line: "Re: Cars moving between recon and your stores"
+    summary: Elliott Perks explains how the optimizer plans driver shifts and transporter loads to cover more store moves.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: andy@vinart.com
+    sent_at: "2026-07-30T12:04:55.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: 8128162c-4b23-4b9f-99d2-b18246924a11
+    subject_line: "Re: More moves per shift from the fleet you run"
+    summary: Elliott explains how fleet optimization increases margin by aligning driver shifts with work and reducing deadhead.
+    snippet: null
+    sender: elliott@jigcar.com
+    recipients[1]: tpacini@steponeauto.com
+    sent_at: "2026-07-30T12:04:24.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: d67b240e-0584-4487-846a-77b3c4e49cd9
+    subject_line: Thought this might resonate
+    summary: Bradley Woor shares a case study on improving Google Ads performance and offers a free review.
+    snippet: null
+    sender: bradley@bwdigitalads.com
+    recipients[1]: elliott@jigcar.com
+    sent_at: "2026-07-30T12:02:06.000Z"
+  - mailbox_id: 8a34bb31-3418-4ab1-845d-dcde3d806477
+    email_id: 6f30de96-0585-47e6-80a9-8941fdcebe2b
+    subject_line: "Invitation: James / Ibrahim - LaaS Experiments @ Fri 31 Jul 2026 10:15 - 10:45 (BST) (James Griffin)"
+    summary: null
+    snippet: "James / Ibrahim - LaaS Experiments\nFriday 31 Jul 2026 ⋅ 10:15 – 10:45\nUnited Kingdom Time\n\nJoin with Google Meet\nhttps://meet.google.com/sgo-xbff-juw?hs=224\n\n\n\t\nJoin by phone\n(GB) +44 20 3956 7218\nPIN: 990986504\n\nMore phone numbers\nhttps://tel.meet/sgo-xb"
+    sender: ibrahim.yilmazlar@jigcar.com
+    recipients[2]: james.griffin@jigcar.com,ibrahim.yilmazlar@jigcar.com
+    sent_at: "2026-07-30T11:49:20.000Z"
+  - mailbox_id: 2578ff13-40d5-4eee-84b5-fc2a550df4dd
+    email_id: bb5048dd-d453-48e2-b63c-e30201f8f034
+    subject_line: New vehicle movement request from Steven Eagell
+    summary: "Transport request for Toyota C-HR (FP74ZGA) from Steven Eagell, collect 31 July, deliver by 04 Aug."
+    snippet: null
+    sender: movement@mail.jigcar.com
+    recipients[3]: daniel.perry@steveneagell.co.uk,elliott@jigcar.com,steveneagell@dandiautos.co.uk
+    sent_at: "2026-07-30T11:45:13.000Z"
+has_more: true
+next_cursor: ABeTmr05N1ymxt7F-wP9sJp7InNlbnRfYXQiOiIyMDI2LTA3LTMwVDExOjQ1OjEzLjAwMDAwMDAwMFoiLCJlbWFpbF9oZWFkZXJfaWQiOiJiYjUwNDhkZC1kNDUzLTQ4ZTItYjYzYy1lMzAyMDFmOGYwMzQifQ
