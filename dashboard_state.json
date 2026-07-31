@@ -161,8 +161,8 @@
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
    "Rupert_groovin": "live: LinkedIn messages are attributed to him from the note body",
-   "allo_reconciled": "25 call records regrouped per day, reconciled against allo_get_team_analytics for 1-31 Jul at 11:55 with no change: Luke 10, Elliott 9, James 4, Chris 2, Bianca 0. No calls placed today.",
-   "email_28jul": "30 Jul is carried forward complete from the morning run's state; 31 Jul was paged from midnight to 11:45 UTC, has_more false",
+   "allo_reconciled": "26 call records regrouped per day and reconciled against allo_get_team_analytics for 1-31 Jul at 12:25 with no discrepancy: Luke 11, Elliott 9, James 4, Chris 2, Bianca 0. The one new record is an INBOUND call to Luke on 30 Jul at 18:53, during his booked leave, so it is his line ringing rather than outbound effort.",
+   "email_28jul": "30 Jul is carried forward complete; 31 Jul was re-paged from midnight to 12:08 UTC across contiguous pages with has_more false, adding eleven sends made since the 11:58 build",
    "leave_today": "Zelt read this run: Luke Nogueira on booked leave (30 Jul to 1 Aug), Krzysztof Burka and Eerik Saksi off the scorecard",
    "stage_rename": "Attio renamed the shut-off stage 'Non-ICP' to 'Contacted - no outcome' today. The same 8 record ids sit in it and none moved, so both the pull and the stored baseline are normalised through one alias map and the diff records no move for them"
   },
@@ -198,16 +198,16 @@
     "ok"
    ]
   },
-  "updated": "31 Jul 2026, 11:58",
+  "updated": "31 Jul 2026, 12:28",
   "workspace": [
    {
     "name": "Attio",
-    "note": "263 deals, 251 tasks and 2,616 notes via REST; 580 invitation and chat note bodies fetched with no errors and every event attributed to a named rep. Email search paged 31 Jul end to end to 11:45 UTC, has_more false",
+    "note": "285 deals, 251 tasks and 2,616 notes via REST; 509 invitation and 70 chat note bodies fetched with no errors and every event attributed to a named rep. Email search paged 31 Jul end to end to 12:08 UTC, has_more false",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "240 meetings parsed, 1 Jun to 31 Jul; today's Thurlow Nunn design-partner sync counts (open deal at Proposal), the WSG Co-Buyer demo is excluded on the same basis as the 28 Jul Euston meeting: warranty provider, no deal on the domain yet",
+    "note": "240 meetings parsed, 1 Jun to 31 Jul, unchanged since 11:58; today's Thurlow Nunn design-partner sync counts (open deal at Proposal), the WSG Co-Buyer demo is excluded as a warranty provider with no deal on the domain yet",
     "status": "ok"
    },
    {
@@ -220,9 +220,9 @@
  "coverage": {
   "attendance_note": "activity is measured against working days attended, so booked leave is never counted as inactivity; a half day still counts as attended",
   "calls_covered_from": "2026-07-21",
-  "calls_source": "Allo per-seat call records (25 calls 2026-07-21 to 2026-07-29); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
+  "calls_source": "Allo per-seat call records (26 calls 2026-07-21 to 2026-07-30); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-31T00:00:00.000Z to 2026-07-31T11:45:56.000Z and carried forward 7 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-31T00:00:00.000Z to 2026-07-31T12:08:57.000Z and carried forward 7 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
   "email_split_join": "203 domains resolve to a deal; 122 of 129 open deals are joinable and 100.0% by pipeline value",
@@ -296,38 +296,7 @@
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 105 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [
-   {
-    "date": "2026-07-31",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Garber Automotive Group - Buy Signal (Transporter + Driver hire)",
-    "owner": "Rupert",
-    "record_id": "92e8652e",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-07-31",
-    "from": "Nurture",
-    "kind": "progressed",
-    "name": "Jemca",
-    "owner": "Jon Pollock",
-    "record_id": "9aa24821",
-    "to": "Demo",
-    "value": 25000.0
-   },
-   {
-    "date": "2026-07-31",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "OpenRoad Auto Group - NewRoads Buy Signal",
-    "owner": "Rupert",
-    "record_id": "cfa90e9b",
-    "to": "Qualification",
-    "value": 0.0
-   }
-  ],
+  "stage_diff": [],
   "stage_moves_accumulated": 37,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
@@ -369,6 +338,14 @@
    "2026-07-29": [
     0,
     5,
+    0,
+    0,
+    0,
+    0
+   ],
+   "2026-07-30": [
+    0,
+    1,
     0,
     0,
     0,
@@ -549,9 +526,9 @@
    "2026-07-31": [
     1,
     0,
-    3,
     4,
-    16,
+    4,
+    26,
     2
    ]
   },
@@ -665,9 +642,9 @@
    "2026-07-31": [
     1,
     0,
-    1,
+    2,
     0,
-    8,
+    17,
     0
    ]
   },
@@ -1669,7 +1646,7 @@
   }
  },
  "last_run": "2026-07-31",
- "last_run_stamp": "31 Jul 2026, 11:58",
+ "last_run_stamp": "31 Jul 2026, 12:28",
  "leave": {
   "Bianca": [
    "2026-07-27",
