@@ -17,7 +17,7 @@ actually paged are recomputed; earlier days are carried forward from the previou
 state so the store accumulates a day per run, and the window is written out so the
 dashboard labels it. A day outside the window must read as a floor, never a zero.
 """
-import re, json, glob, os, collections, sys
+import re, json, glob, os, collections, sys, datetime
 
 SP = os.environ.get("JIGCAR_SP") or os.path.dirname(os.path.abspath(__file__))
 REPS = ["Chris", "Luke", "James", "Bianca", "Elliott", "Rupert"]
@@ -26,8 +26,16 @@ TEAM = {"chris.white@jigcar.com": "Chris", "luke.nogueira@jigcar.com": "Luke",
         "elliott@jigcar.com": "Elliott", "rupert@jigcar.com": "Rupert"}
 RANK = {"open": 3, "won": 2, "closed": 1}
 STATES = ["open", "won", "closed", "none", "internal"]
-# Days this run paged continuously. Anything outside is carried forward, not zeroed.
-FRESH_FROM = os.environ.get("JIGCAR_EMAIL_FRESH_FROM", "2026-07-27")
+# The first day this run paged continuously. Days before it are carried forward from
+# the previous state; days from it onward are rebuilt from the pages on disk. Set it
+# to the OLDEST day the run actually paged end to end, and never earlier: a day at or
+# after FRESH_FROM that no page covers is neither carried nor rebuilt, so it does not
+# fall back to the stored figure, it disappears from the store altogether.
+# The default is today for that reason. It used to be a literal, frozen at the day the
+# file was written, so a run that forgot the env var would have silently deleted every
+# stored day from that literal up to yesterday. Defaulting to today is the conservative
+# failure: at worst this run under-covers today, and no history is lost.
+FRESH_FROM = os.environ.get("JIGCAR_EMAIL_FRESH_FROM") or datetime.date.today().isoformat()
 
 dom = json.load(open(f"{SP}/raw/domain_deal.json"))
 

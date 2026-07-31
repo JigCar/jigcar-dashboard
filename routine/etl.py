@@ -9,8 +9,15 @@ Run order: parse_granola.py -> etl.py -> render.py -> qa.py -> slack_messages.py
 import json, collections, datetime, os, re, sys
 
 SP = os.environ.get("JIGCAR_SP") or os.path.dirname(os.path.abspath(__file__))
-RUN_DATE = os.environ.get("JIGCAR_RUN_DATE", "2026-07-27")
-RUN_STAMP = os.environ.get("JIGCAR_RUN_STAMP", "27 Jul 2026, 15:45")
+# The run date defaults to TODAY, never to a literal. Both of these were once frozen
+# at the day the file was written, so a run that forgot the env var would silently
+# publish the whole dashboard dated to that day: wrong leave, wrong "off today",
+# wrong period boundaries, wrong diff date on every stage move. Nothing in QA can
+# catch it, because a fully-populated page dated last week parses perfectly. The
+# env vars stay so a rerun can reproduce an earlier day deliberately.
+_now = datetime.datetime.now()
+RUN_DATE = os.environ.get("JIGCAR_RUN_DATE") or _now.strftime("%Y-%m-%d")
+RUN_STAMP = os.environ.get("JIGCAR_RUN_STAMP") or _now.strftime("%d %b %Y, %H:%M")
 QUARTER_TARGET = 400000                      # Q3 2026. One editable constant per quarter.
 REPS = ["Chris", "Luke", "James", "Bianca", "Elliott", "Rupert"]
 IDX = {r: i for i, r in enumerate(REPS)}
