@@ -135,6 +135,31 @@ HEAD = r'''<!DOCTYPE html>
   #movTable td .mdelta{font-weight:700;margin-left:6px}
   .dup{color:var(--bright)} .ddown{color:var(--red)} .dflat,.dneutral{color:var(--muted)}
   #movTable td.mna{color:#6a6a6a;font-size:11.5px;font-style:italic}
+  /* What moved tab: KPI strip + per-rep cards */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:4px 0 8px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+  .kpi .kl{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+  .kpi .kv{font-size:23px;font-weight:700;letter-spacing:-.4px;margin:2px 0}
+  .kpi .kd{font-size:11px;color:var(--muted)}
+  .kpi .kd b{font-weight:700}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .repgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:820px){.repgrid{grid-template-columns:1fr}}
+  .repcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+  .repcard .rhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+  .repcard .rhead b{font-size:14.5px}
+  .repcard .ratt{font-size:11px;color:var(--muted)}
+  .repcard .ratt.leave{color:var(--amber)}
+  .repcard .rwin{font-size:12.5px;color:var(--bright);font-weight:600;padding:2px 0}
+  .repcard .rmv{font-size:12.5px;color:var(--muted);padding:2px 0}
+  .repcard .rmv b{color:var(--text);font-weight:600}
+  .repcard .rmv .to{color:var(--bright)} .repcard .rmv .to.off{color:var(--amber)}
+  .repcard .rnone{font-size:12px;color:#6a6a6a;font-style:italic;padding:2px 0}
+  .repcard .ract{margin-top:9px;padding-top:8px;border-top:1px solid #242424;font-size:11.5px;color:var(--muted);line-height:1.7}
+  .repcard .ract b{color:var(--text)}
+  .movothers{margin-top:12px;font-size:12.5px;color:var(--muted)}
+  .movothers b{color:var(--text)}
   @media(max-width:560px){.actbar-row{grid-template-columns:22px 64px 1fr 50px}.actbar-row.cw{grid-template-columns:22px 64px 1fr 76px}.actbar-att{display:none}}
   .chartbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 16px;margin:16px 0}
   .chartbox h3{margin:0 0 12px;font-size:13.5px;font-weight:600}
@@ -226,6 +251,7 @@ HEAD = r'''<!DOCTYPE html>
 
   <div class="tabs" id="tabs">
     <button data-t="momentum" class="on">Momentum</button>
+    <button data-t="moved">What moved</button>
     <button data-t="board">Leaderboard &amp; bonus</button>
   </div>
   <div class="ctxtitle" id="ctxTitle"></div>
@@ -256,18 +282,6 @@ HEAD = r'''<!DOCTYPE html>
     <div class="chartbox">
       <h3 id="acqTitle"></h3>
       <canvas id="acqChart" height="90"></canvas>
-    </div>
-
-    <h2><span class="bar"></span>What moved</h2>
-    <p class="lead">Pipeline movement as the stage diff measured it, then the pace of work period on period. Comparisons use completed working days only, like for like, and a cell only shows a number when both periods sit fully inside that metric's coverage, so a widening coverage window can never read as growth.</p>
-    <div class="chartbox">
-      <h3>Stage moves, day by day <span class="pill grey" id="movLogBadge"></span></h3>
-      <div id="movLog"></div>
-    </div>
-    <div class="chartbox" style="margin-top:12px">
-      <h3>Team movement</h3>
-      <div style="overflow-x:auto"><table id="movTable"><tbody></tbody></table></div>
-      <div class="note" id="movNote" style="margin-top:10px"></div>
     </div>
 
     <div class="filterbar">
@@ -359,6 +373,38 @@ HEAD = r'''<!DOCTYPE html>
     <table id="bonusChanTable"><tbody></tbody></table>
     <h2 style="font-size:16px;margin-top:24px"><span class="bar"></span>Outbound bonus earned this quarter</h2>
     <table class="lb" id="bonusBonusTable"><tbody></tbody></table>
+  </div>
+
+  <div id="liveMoved">
+    <p class="lead" style="margin-top:6px">What each person moved, over a window short enough to act on. Yesterday is the last complete working day, so a Monday shows Friday. Week to date includes today and says so. Nothing here reaches back further than two weeks.</p>
+    <div class="filterbar">
+      <div class="toggle" id="movToggle">
+        <button data-p="yesterday">Yesterday</button>
+        <button data-p="week" class="on">This week</button>
+        <button data-p="lastweek">Last week</button>
+      </div>
+      <div class="range" id="movRange"></div>
+    </div>
+    <div class="kpis" id="movKpis"></div>
+    <h2><span class="bar"></span>By person <span class="pill grey">stage moves, then the work behind them</span></h2>
+    <div class="repgrid" id="movReps"></div>
+    <div id="movOthers"></div>
+    <div class="note" id="movCtx" style="margin-top:14px"></div>
+
+    <h2 style="margin-top:26px"><span class="bar"></span>Detail</h2>
+    <div class="chartbox">
+      <h3>Stage moves, day by day <span class="pill grey" id="movLogBadge"></span></h3>
+      <div id="movLog"></div>
+    </div>
+    <div class="chartbox" style="margin-top:12px">
+      <h3>Team movement, period on period</h3>
+      <div style="overflow-x:auto"><table id="movTable"><tbody></tbody></table></div>
+      <div class="note" id="movNote" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div id="archMoved">
+    <div class="note warn" style="font-size:13px;margin-top:10px">Movement is measured live by the stage diff, run to run. Archived quarters carry their frozen totals but no day-by-day move log, so this tab reads on the live quarter only.</div>
   </div>
 
   <div id="archMomentum">
@@ -781,6 +827,97 @@ document.querySelectorAll('#actToggle button').forEach(b=>{
     b.classList.add('on'); actMetric=b.dataset.m; try{ renderActivityBoard(); }catch(e){ console.error('render failed: activity',e); } };
 });
 
+// ===== What moved tab: short-period, per-rep view =====
+// Three windows only (yesterday / week to date / last week), so the view never
+// reaches back far enough to be noise. Everything numeric arrives from the ETL or
+// the daily store; this arranges it per rep. Plain HTML, CDN-proof.
+let movP='week';
+function aggRange(key,a,b){
+  const out=[0,0,0,0,0,0]; const m=daily[key]||{};
+  for(const d in m){ if(d>=a&&d<=b){ m[d].forEach((v,i)=>out[i]+=v); } }
+  return out;
+}
+function renderMoved(){
+  const P=MOVEMENT.periods.find(p=>p.key===movP);
+  const [a,b]=P.range;
+  const gbp=v=>'£'+Math.round(v).toLocaleString('en-GB');
+  const covFrom={}; MOVEMENT.rows.forEach(r=>{covFrom[r.key]=r.coveredFrom;});
+  document.getElementById('movRange').textContent=P.label;
+
+  // KPI strip. Week-in-progress tiles carry a progress note, never a delta: a
+  // half-built day compared against a complete one is the lie this tab avoids.
+  const KL={progressed:'Deals progressed',shutoff:'Shut off',wonGBP:'Closed won',deals:'New deals',meetings:'Sales meetings'};
+  document.getElementById('movKpis').innerHTML=Object.keys(KL).map(k=>{
+    const c=P.kpi[k]; const f=v=>k==='wonGBP'?gbp(v):String(v);
+    if(c.naValue!==undefined)
+      return '<div class="kpi"><div class="kl">'+KL[k]+'</div><div class="kv m">n/a</div><div class="kd">'+c.naValue+'</div></div>';
+    let sub;
+    if(c.progress!==undefined) sub=c.progress;
+    else if(c.na!==undefined) sub=c.na;
+    else{
+      const d=c.cur-c.prev;
+      const cls=d===0?'dflat':(c.valence===0?'dneutral':(d>0?'dup':'ddown'));
+      const arrow=d===0?'level':(d>0?'&#9650; ':'&#9660; ')+f(Math.abs(d));
+      sub='<b class="'+cls+'">'+arrow+'</b> vs '+P.prevLabel;
+    }
+    return '<div class="kpi"><div class="kl">'+KL[k]+'</div><div class="kv">'+f(c.cur)+'</div><div class="kd">'+sub+'</div></div>';
+  }).join('');
+
+  // One card per rep: their stage moves and wins in the window, then the work
+  // behind them on one line, then attendance so a quiet card reads against leave.
+  const moves=STAGE_MOVES.filter(m=>m.date>=a&&m.date<=b);
+  const wins=MOVEMENT.wonDeals.filter(w=>w.date>=a&&w.date<=b);
+  const actKeys=[['meetings','mtgs'],['calls','calls'],['emailsDeal','emails (deal)'],['liConnDeal','LI req (deal)'],['tasks','tasks']];
+  const cards=reps.map((r,i)=>{
+    const mv=moves.filter(m=>m.owner===r);
+    const wn=wins.filter(w=>w.owner===r);
+    const act={}; actKeys.forEach(([k])=>{act[k]=aggRange(k,a,b)[i];});
+    const score=[wn.reduce((s,w)=>s+w.arr,0),mv.filter(m=>m.kind==='progressed').length,
+                 actKeys.reduce((s,[k])=>s+act[k],0)];
+    return {r,i,mv,wn,act,score};
+  }).sort((x,y)=> y.score[0]-x.score[0] || y.score[1]-x.score[1] || y.score[2]-x.score[2]);
+  document.getElementById('movReps').innerHTML=cards.map(c=>{
+    const att=P.attendance[c.r], wd=P.workdays;
+    const attTxt=att+' of '+wd+' working day'+(wd===1?'':'s')+' attended';
+    const lines=[]
+      .concat(c.wn.map(w=>'<div class="rwin">&#127942; '+w.name+' closed won . '+gbp(w.arr)+'</div>'))
+      .concat(c.mv.map(m=>'<div class="rmv"><b>'+m.name+'</b> '+m.from+
+        ' <span class="to'+(m.kind==='shutoff'?' off':'')+'">&rarr; '+m.to+'</span>'+
+        (m.value>0?' . '+gbp(m.value):'')+'</div>'));
+    const actTxt=actKeys.map(([k,lbl])=>{
+      if(k==='calls'&&c.r==='Rupert') return 'calls n/a';
+      if(covFrom[k]&&a<covFrom[k]) return lbl+' n/a';
+      return '<b>'+c.act[k]+'</b> '+lbl;
+    }).join(' &middot; ');
+    return '<div class="repcard"><div class="rhead"><b>'+c.r+'</b>'+
+      '<span class="ratt'+(att<wd?' leave':'')+'">'+attTxt+'</span></div>'+
+      (lines.length?lines.join('')
+        :(a<MOVEMENT.diffFrom
+          ?'<div class="rnone">Stage moves were not yet measured in this window (diff began '+MOVEMENT.diffFrom+').</div>'
+          :'<div class="rnone">No stage moves in this window.</div>'))+
+      '<div class="ract">'+actTxt+'</div></div>';
+  }).join('');
+
+  // Back-book moves stay visible rather than vanishing: not ranked, just listed.
+  const other=moves.filter(m=>reps.indexOf(m.owner)<0);
+  document.getElementById('movOthers').innerHTML=other.length
+    ? '<div class="movothers"><strong>Outside the scorecard:</strong> '+
+      other.map(m=>'<b>'+m.name+'</b> ('+m.owner+') '+m.from+' &rarr; '+m.to+
+        (m.value>0?' . '+gbp(m.value):'')).join('; ')+'.</div>'
+    : '';
+
+  document.getElementById('movCtx').innerHTML='<strong>'+P.label+'.</strong> '+
+    (P.complete?'Complete working days only.':'In progress: includes today, which is not a full day yet, so no comparison is drawn.')+
+    ' Stage moves are observed by the diff (since '+MOVEMENT.diffFrom+') and attributed to the deal owner. '+
+    'Activity lines use the same definitions and coverage as the scorecard; n/a means the window opens before that metric’s coverage does. '+
+    'Attendance comes from the Zelt leave calendar, so a quiet card on fewer days attended is leave, not idleness.';
+}
+document.querySelectorAll('#movToggle button').forEach(bt=>{
+  bt.onclick=()=>{ document.querySelectorAll('#movToggle button').forEach(x=>x.classList.remove('on'));
+    bt.classList.add('on'); movP=bt.dataset.p;
+    try{ renderMoved(); }catch(e){ console.error('render failed: moved',e); } };
+});
+
 // ===== channel detail + direct outbound bonus basis (shared by live and archive) =====
 function renderChannels(deals,prefix){
   const el=id=>document.getElementById(id);
@@ -1111,23 +1248,25 @@ function onQuarterChange(){ applyView(); }
 function applyView(){
   const q=document.getElementById('quarter').value;
   const live=(q==='Q3-2026');
-  const key=(live?'live':'arch')+(state.tab==='momentum'?'Momentum':'Board');
-  ['liveMomentum','liveBoard','archMomentum','archBoard'].forEach(id=>{
+  const tabKey=state.tab==='momentum'?'Momentum':(state.tab==='moved'?'Moved':'Board');
+  const key=(live?'live':'arch')+tabKey;
+  ['liveMomentum','liveMoved','liveBoard','archMomentum','archMoved','archBoard'].forEach(id=>{
     document.getElementById(id).style.display = (id===key)?'block':'none';
   });
   const label = live ? 'Q3 2026 <b>live</b> . 1 Jul - 30 Sep'
     : (archives[q]? archives[q].label.replace(' . ',' . <b>')+'</b>' : q.replace('-',' '));
-  const tabName = state.tab==='momentum' ? 'Momentum' : 'Leaderboard &amp; bonus';
+  const tabName = state.tab==='momentum' ? 'Momentum' : (state.tab==='moved' ? 'What moved' : 'Leaderboard &amp; bonus');
   document.getElementById('ctxTitle').innerHTML=tabName+' &nbsp;.&nbsp; '+label;
   // A chart drawn inside a hidden tab renders at zero height, so every chart in the
   // now-visible container is (re)built here rather than once at load.
   const steps = live
     ? (state.tab==='momentum'
         ? [['banner',renderBanner],['revenue',renderRevenue],['acquisition',buildAcq],
-           ['movement',renderMovement],
            ['scorecard',render],['trend',buildTrend],['coverage',renderCoverage],['read',renderRead]]
-        : [['leaderboard',renderLeaderboard],['activity',renderActivityBoard],['bonus',()=>renderChannels(closedWonDeals,'bonus')]])
-    : [['archive',()=>renderArchive(q)]];
+        : state.tab==='moved'
+          ? [['moved',renderMoved],['movement',renderMovement]]
+          : [['leaderboard',renderLeaderboard],['activity',renderActivityBoard],['bonus',()=>renderChannels(closedWonDeals,'bonus')]])
+    : (state.tab==='moved' ? [] : [['archive',()=>renderArchive(q)]]);
   steps.forEach(([name,fn])=>{ try{ fn(); }catch(e){ console.error('render failed: '+name,e); } });
 }
 document.querySelectorAll('#tabs button').forEach(b=>{

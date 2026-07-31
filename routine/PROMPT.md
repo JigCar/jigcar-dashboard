@@ -386,18 +386,44 @@ A deal with no channel is `Unassigned` and **excluded from the qualifying total*
 do-not-pay-yet warning naming the deals, ARR and owner. Attribute by deal owner at close. Carry all
 of this through the archive quarters.
 
-**"What moved" section** (requested by the commercial director via the account owner, 29 Jul 2026).
-On the Momentum tab, directly after the revenue and acquisition panels and before the scorecard.
-Two parts, both plain HTML so a blocked chart CDN costs nothing, all numbers computed in `etl.py`
-and only drawn by the page:
+**"What moved" tab** (requested by the commercial director via the account owner, 29 Jul 2026;
+promoted to its own tab and rebuilt around the per-rep view, 30 Jul 2026). Third tab alongside
+Momentum and Leaderboard & bonus. Everything plain HTML so a blocked chart CDN costs nothing, all
+numbers computed in `etl.py` or aggregated from the daily store the page already carries.
 
-1. **Stage-move log, grouped by day**, newest first: every observed move with deal, owner,
+**A three-period filter scopes the top of the tab: Yesterday / This week / Last week — nothing
+reaches back further than two weeks, deliberately, so the view stays actionable rather than
+noisy.** Yesterday means the last COMPLETE working day, so a Monday shows Friday. This week is
+week to date including today and says so. Last week is the previous Mon-Sun.
+
+Top of tab, per selected period:
+
+1. **KPI strip**: deals progressed, shut off, closed won £, new deals, sales meetings. Complete
+   periods carry a delta against the previous comparable period; the in-progress week carries a
+   progress note ("4 of 5 working days, today still in flight") and NEVER a delta, because a
+   half-built day compared against a complete one is a lie. A period that opens before a metric's
+   coverage shows **n/a with the reason, not a number**: a tile reading 0 for a week the stage
+   diff did not exist would say "nothing progressed" when the truth is "nothing was measured".
+2. **One card per rep**, sorted by won £, then progressions, then activity: their wins and stage
+   moves in the window named deal by deal (green forward, amber shut-off), one activity line
+   (meetings, calls, deal emails, deal LI requests, tasks — per-metric n/a when the window opens
+   before coverage; Rupert's calls always n/a), and **days attended out of working days** in the
+   header so a quiet card reads against leave, never as idleness. An empty card in a window that
+   predates the diff says "not yet measured", not "no moves".
+3. **Back-book moves** listed under "Outside the scorecard" rather than vanishing.
+
+Below, as detail, the two original parts remain:
+
+4. **Stage-move log, grouped by day**, newest first: every observed move with deal, owner,
    from → to and value, with per-day totals (progressed, shut off, £ won). Lists every owner
    including the back book.
-2. **Team movement table**: rows are deals created, progressed, shut off, closed won £, sales
+5. **Team movement table**: rows are deals created, progressed, shut off, closed won £, sales
    meetings, calls, emails (deal), LI requests (deal), tasks completed. Three comparison columns:
    day on day (last two complete working days), week to date like for like (this week through
    yesterday vs the same weekdays of last week), and last full week vs the prior week.
+
+On an archived quarter the tab shows a one-line note: movement is measured live, run to run, and
+archives carry no day-by-day move log.
 
 Rules that must hold, in order of the damage breaking them does:
 

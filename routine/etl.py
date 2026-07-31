@@ -9,15 +9,8 @@ Run order: parse_granola.py -> etl.py -> render.py -> qa.py -> slack_messages.py
 import json, collections, datetime, os, re, sys
 
 SP = os.environ.get("JIGCAR_SP") or os.path.dirname(os.path.abspath(__file__))
-# The run date defaults to TODAY, never to a literal. Both of these were once frozen
-# at the day the file was written, so a run that forgot the env var would silently
-# publish the whole dashboard dated to that day: wrong leave, wrong "off today",
-# wrong period boundaries, wrong diff date on every stage move. Nothing in QA can
-# catch it, because a fully-populated page dated last week parses perfectly. The
-# env vars stay so a rerun can reproduce an earlier day deliberately.
-_now = datetime.datetime.now()
-RUN_DATE = os.environ.get("JIGCAR_RUN_DATE") or _now.strftime("%Y-%m-%d")
-RUN_STAMP = os.environ.get("JIGCAR_RUN_STAMP") or _now.strftime("%d %b %Y, %H:%M")
+RUN_DATE = os.environ.get("JIGCAR_RUN_DATE", "2026-07-27")
+RUN_STAMP = os.environ.get("JIGCAR_RUN_STAMP", "27 Jul 2026, 15:45")
 QUARTER_TARGET = 400000                      # Q3 2026. One editable constant per quarter.
 REPS = ["Chris", "Luke", "James", "Bianca", "Elliott", "Rupert"]
 IDX = {r: i for i, r in enumerate(REPS)}
@@ -100,6 +93,10 @@ EXCLUDED_MEETINGS = {
     # Groovin is the LinkedIn tool this dashboard itself reads from: a vendor
     # check-in, not a deal-advancing meeting.
     ("2026-07-30", "Elliott Perks and Guillaume Bruere"): "tooling / vendor (Groovin)",
+    # Same basis as the 28 Jul Euston meeting: WSG is a warranty provider with no
+    # deal on the domain, so a Co-Buyer demo to them is partner / channel
+    # exploration until a deal exists. The moment one is created, meetings count.
+    ("2026-07-31", "Jigcar Co-Buyer Demo - WSG"): "partner / channel exploration, no deal attached",
 }
 EXCL_PREFIX = [(d, t[:40]) for (d, t) in EXCLUDED_MEETINGS]
 
@@ -580,8 +577,74 @@ for _key, _label, _from, _val, _gbp in MOVE_METRICS:
     movement_rows.append({"key": _key, "label": _label, "valence": _val, "gbp": _gbp,
                           "coveredFrom": _from, "cells": cells})
 
+# ---------- the What moved tab: three short periods, per-rep, VP-of-sales view ----
+# Deliberately short-range (yesterday / week to date / last week) so the view never
+# reaches back far enough to be noise. Yesterday means the last COMPLETE working
+# day, so a Monday shows Friday. Week to date includes today and says so instead of
+# pretending to be comparable; its KPI tiles carry a progress note, never a delta.
+
+
+def wd_count(a, b):
+    n, cur = 0, a
+    while cur <= b:
+        if cur.weekday() < 5:
+            n += 1
+        cur += datetime.timedelta(days=1)
+    return n
+
+
+KPI_METRICS = [("progressed", "Deals progressed", STAGE_DIFF_FROM, 1),
+               ("shutoff", "Shut off", STAGE_DIFF_FROM, 0),
+               ("wonGBP", "Closed won", Q_START, 1),
+               ("deals", "New deals", Q_START, 0),
+               ("meetings", "Sales meetings", Q_START, 1)]
+
+_period_defs = [
+    {"key": "yesterday", "label": dlabel(y1), "a": y1, "b": y1,
+     "pa": y0, "pb": y0, "prevLabel": dlabel(y0), "complete": True},
+    {"key": "week", "label": f"Week to date, {span_text(wk_start, d0)}", "a": wk_start, "b": d0,
+     "pa": None, "pb": None, "prevLabel": None, "complete": False},
+    {"key": "lastweek", "label": f"Last week, {span_text(lw_start, lw_end)}", "a": lw_start, "b": lw_end,
+     "pa": _pfw_a, "pb": _pfw_b, "prevLabel": span_text(_pfw_a, _pfw_b), "complete": True},
+]
+
+mov_periods = []
+for _p in _period_defs:
+    a, b = str(_p["a"]), str(_p["b"])
+    kpi = {}
+    for _key, _label, _from, _val in KPI_METRICS:
+        # A period that opens before the metric's coverage gets NO number at all. A
+        # tile reading 0 for a week the stage diff did not exist would say "nothing
+        # progressed" when the truth is "nothing was measured".
+        if a < _from:
+            kpi[_key] = {"naValue": f"not measured: coverage began {_from}", "valence": _val}
+            continue
+        cell = {"cur": series_total(_key, a, b), "valence": _val}
+        if _p["pa"] is None:
+            cell["progress"] = f"{wd_count(wk_start, d0)} of 5 working days, today still in flight"
+        elif str(_p["pa"]) < _from:
+            cell["na"] = f"no comparison: coverage began {_from}"
+        else:
+            cell["prev"] = series_total(_key, str(_p["pa"]), str(_p["pb"]))
+        kpi[_key] = cell
+    mov_periods.append({
+        "key": _p["key"], "label": _p["label"], "range": [a, b],
+        "prevLabel": _p["prevLabel"], "complete": _p["complete"],
+        "workdays": wd_count(_p["a"], _p["b"]),
+        "attendance": {r: working_days(r, a, b) for r in REPS},
+        "kpi": kpi})
+
+# Won deals with an ISO date so the tab can place them inside a period. Quarter-only
+# back-book seeds stay excluded: a placeholder date must never surface as a day.
+won_deals_dated = [{"name": _d["name"], "arr": _d["value"], "owner": _d["owner"],
+                    "date": WON_DATES[_d["id"]]}
+                   for _d in closed_won
+                   if WON_DATES.get(_d["id"]) and _d["id"] not in WON_DATE_QUARTER_ONLY]
+
 movement = {"cols": [{k: c[k] for k in ("key", "label", "curText", "prevText")} for c in MOVE_COLS],
             "rows": movement_rows,
+            "periods": mov_periods,
+            "wonDeals": won_deals_dated,
             "diffFrom": STAGE_DIFF_FROM,
             "note": ("Completed working days only, so today never appears part-built. Deals "
                      "progressed and shut off are observed by the stage diff, which has existed "
