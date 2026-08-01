@@ -28,7 +28,11 @@ NAME_TO_REP = {
     "bianca monteiro": "Bianca", "elliott perks": "Elliott", "elliott": "Elliott",
     "rupert wood": "Rupert", "rupert": "Rupert",
 }
-SKIP = ("birthday", "work anniversary")
+# Zelt publishes celebration and milestone rows onto the same absence calendar. None of
+# them is an absence, and each would otherwise be read as a person on leave: the summary
+# carries no attendee, so person_of falls back to the whole summary string and invents a
+# colleague called "<Name>'s First Day" who then appears on the off-today line.
+SKIP = ("birthday", "work anniversary", "first day", "last day")
 
 
 def d(s):
