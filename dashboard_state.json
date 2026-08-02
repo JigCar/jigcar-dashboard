@@ -107,7 +107,7 @@
    "today": 0,
    "trailing7": 4,
    "week": 4,
-   "yesterday": 1
+   "yesterday": 0
   },
   "Chris": {
    "lastweek": 5,
@@ -116,7 +116,7 @@
    "today": 0,
    "trailing7": 5,
    "week": 5,
-   "yesterday": 1
+   "yesterday": 0
   },
   "Elliott": {
    "lastweek": 5,
@@ -125,7 +125,7 @@
    "today": 0,
    "trailing7": 5,
    "week": 5,
-   "yesterday": 1
+   "yesterday": 0
   },
   "James": {
    "lastweek": 4,
@@ -134,7 +134,7 @@
    "today": 0,
    "trailing7": 5,
    "week": 5,
-   "yesterday": 1
+   "yesterday": 0
   },
   "Luke": {
    "lastweek": 4,
@@ -152,7 +152,7 @@
    "today": 0,
    "trailing7": 5,
    "week": 5,
-   "yesterday": 1
+   "yesterday": 0
   }
  },
  "connectivity": {
@@ -161,10 +161,10 @@
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
    "Rupert_groovin": "live: LinkedIn invitations and messages are attributed to him from the note body",
-   "allo_reconciled": "allo_list_users confirmed 5 active seats. 26 call records regrouped per day and reconciled against allo_get_team_analytics for 21 Jul to 1 Aug with no discrepancy: Luke 11, Elliott 9, James 4, Chris 2, Bianca 0. No call has been logged since 30 Jul.",
-   "email_full_day": "31 Jul was paged from midnight to midnight and is now complete. Yesterday's 15:40 run had it only to 15:32, so 31 Jul reads higher today than it did last night. 1 Aug was paged from midnight to the run time and holds no team sends.",
-   "leave_today": "Zelt re-read this run: no scorecard colleague is on leave today. Krzysztof Burka is off, outside the scorecard. Luke Nogueira's 30 Jul to 1 Aug absence covered the last two working days.",
-   "weekend_run": "1 Aug is a Saturday. Today, yesterday and this-month all resolve to non-working days or a single weekend day, so near-zero activity is the expected reading rather than a signal. The quarter and week views carry the working-day figures."
+   "allo_reconciled": "allo_list_users confirmed 5 active seats. 26 call records regrouped per day and reconciled against allo_get_team_analytics for 1 Jul to 2 Aug with no discrepancy: Luke 11, Elliott 9, James 4, Chris 2, Bianca 0. No call has been logged since 30 Jul.",
+   "email_weekend": "1 Aug was paged from midnight to midnight and 2 Aug from midnight to the run time. Neither holds a single team send, which is an explicit zero across a paged weekend rather than a gap in coverage.",
+   "leave_today": "Zelt re-read this run: no scorecard colleague is on leave today. Krzysztof Burka is off, outside the scorecard. Bianca is booked off on 4 Aug and Chris on 7 Aug.",
+   "weekend_run": "2 Aug is a Sunday and 1 Aug a Saturday. Today, yesterday and this-week all resolve to non-working days, so zero activity is the expected reading rather than a signal. The month and quarter views carry the working-day figures."
   },
   "seats": {
    "Bianca": [
@@ -198,21 +198,21 @@
     "ok"
    ]
   },
-  "updated": "01 Aug 2026, 06:26",
+  "updated": "02 Aug 2026, 06:22",
   "workspace": [
    {
     "name": "Attio",
-    "note": "286 deals, 18,064 companies, 251 tasks (202 completed) and 2,644 notes via REST; 529 invitation and 72 chat note bodies fetched with no errors and every event attributed to a named rep. Email search paged 31 Jul end to end and 1 Aug to the run time, has_more false on the final page",
+    "note": "286 deals, 18,064 companies, 251 tasks (202 completed) and 2,655 notes via REST; 539 invitation and 73 chat note bodies fetched with no errors and every event attributed to a named rep. Email search paged 1 Aug end to end and 2 Aug to the run time, has_more false on the final page",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "150 meetings parsed, 1 Jul to 3 Aug. 1 Aug is a Saturday and holds no meetings, so no new include or exclude decision was needed this run; the audit list is unchanged from 31 Jul",
+    "note": "150 meetings parsed, 1 Jul to 3 Aug. 1 and 2 Aug are the weekend and hold no meetings, so no new include or exclude decision was needed this run; the audit list is unchanged from 31 Jul",
     "status": "ok"
    },
    {
     "name": "Apollo",
-    "note": "authenticated this run; sends route via the connected mailboxes and are counted there, never separately",
+    "note": "authenticated this run, profile returned; sends route via the connected mailboxes and are counted there, never separately",
     "status": "ok"
    }
   ]
@@ -222,12 +222,12 @@
   "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (26 calls 2026-07-21 to 2026-07-30); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-07-31T00:00:00.000Z to 2026-08-01T06:03:18.000Z and carried forward 7 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-01T00:00:00.000Z to 2026-08-02T06:20:00.000Z and carried forward 8 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
   "email_split_join": "203 domains resolve to a deal; 124 of 131 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
-  "email_split_to": "2026-08-01",
+  "email_split_to": "2026-08-02",
   "join_coverage": {
    "domains_resolving": 203,
    "joinable": 124,
@@ -296,28 +296,7 @@
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 105 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [
-   {
-    "date": "2026-08-01",
-    "from": "Nurture",
-    "kind": "progressed",
-    "name": "Carwow",
-    "owner": "Elliott",
-    "record_id": "73558889",
-    "to": "Qualification",
-    "value": 40000.0
-   },
-   {
-    "date": "2026-08-01",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "Steele Auto Group",
-    "owner": "Bianca",
-    "record_id": "c3c613a7",
-    "to": "Qualification",
-    "value": 0.0
-   }
-  ],
+  "stage_diff": [],
   "stage_moves_accumulated": 39,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
@@ -559,6 +538,14 @@
     0,
     0,
     0
+   ],
+   "2026-08-02": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "emailsCust": {
@@ -625,6 +612,14 @@
     0,
     0,
     0
+   ],
+   "2026-08-02": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "emailsDeal": {
@@ -685,6 +680,14 @@
     0
    ],
    "2026-08-01": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "2026-08-02": [
     0,
     0,
     0,
@@ -781,6 +784,14 @@
     1,
     0,
     7
+   ],
+   "2026-08-01": [
+    1,
+    1,
+    2,
+    0,
+    0,
+    1
    ]
   },
   "liAccDeal": {
@@ -847,6 +858,14 @@
     1,
     0,
     1
+   ],
+   "2026-08-01": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
    ]
   },
   "liConnAll": {
@@ -1012,7 +1031,7 @@
     0,
     0,
     3,
-    0
+    1
    ],
    "2026-07-22": [
     0,
@@ -1036,7 +1055,15 @@
     0,
     0,
     2,
-    0
+    1
+   ],
+   "2026-07-25": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
    ],
    "2026-07-27": [
     0,
@@ -1044,7 +1071,7 @@
     1,
     0,
     5,
-    1
+    2
    ],
    "2026-07-28": [
     1,
@@ -1052,7 +1079,7 @@
     0,
     0,
     2,
-    0
+    1
    ],
    "2026-07-29": [
     0,
@@ -1077,6 +1104,14 @@
     0,
     0,
     5
+   ],
+   "2026-08-01": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
    ]
   },
   "liMsgDeal": {
@@ -1546,8 +1581,8 @@
    ]
   }
  },
- "last_run": "2026-08-01",
- "last_run_stamp": "01 Aug 2026, 06:26",
+ "last_run": "2026-08-02",
+ "last_run_stamp": "02 Aug 2026, 06:22",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -1555,7 +1590,9 @@
    "2026-08-04"
   ],
   "Chris": [
-   "2026-08-07"
+   "2026-08-07",
+   "2026-08-12",
+   "2026-08-13"
   ],
   "Elliott": [],
   "James": [
@@ -1565,12 +1602,10 @@
    "2026-06-25",
    "2026-06-26",
    "2026-07-10",
-   "2026-07-24"
+   "2026-07-24",
+   "2026-08-15"
   ],
   "Luke": [
-   "2026-06-22",
-   "2026-06-23",
-   "2026-06-24",
    "2026-06-25",
    "2026-06-26",
    "2026-06-29",
@@ -1579,7 +1614,13 @@
    "2026-07-30",
    "2026-07-31"
   ],
-  "Rupert": []
+  "Rupert": [
+   "2026-08-10",
+   "2026-08-11",
+   "2026-08-12",
+   "2026-08-13",
+   "2026-08-14"
+  ]
  },
  "meeting_classification": {
   "excluded": {
@@ -1614,7 +1655,8 @@
   "2026-07-29": null,
   "2026-07-30": null,
   "2026-07-31": null,
-  "2026-08-01": null
+  "2026-08-01": null,
+  "2026-08-02": null
  },
  "pre_2026_won": [
   "12f2dbef",
@@ -2132,6 +2174,60 @@
    ]
   },
   "2026-08-01": {
+   "Buy Signal": [
+    24,
+    0.0
+   ],
+   "Churn": [
+    2,
+    54804.0
+   ],
+   "Closed Lost": [
+    20,
+    117000.0
+   ],
+   "Closed Won": [
+    16,
+    778500.0
+   ],
+   "Contacted - no outcome": [
+    8,
+    0.0
+   ],
+   "Contracts": [
+    4,
+    231600.0
+   ],
+   "Demo": [
+    18,
+    529000.0
+   ],
+   "New Lead": [
+    12,
+    168480.0
+   ],
+   "None": [
+    1,
+    0.0
+   ],
+   "Nurture": [
+    108,
+    2079600.0
+   ],
+   "Proposal": [
+    10,
+    508800.0
+   ],
+   "Qualification": [
+    58,
+    439000.0
+   ],
+   "Trial": [
+    5,
+    150000.0
+   ]
+  },
+  "2026-08-02": {
    "Buy Signal": [
     24,
     0.0
