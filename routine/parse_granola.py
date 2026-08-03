@@ -8,7 +8,7 @@ Path resolution, in order: argv[1], $JIGCAR_GRANOLA_FILE, else the newest
 mcp-Granola-list_meetings-*.txt under the tool-results directory. Hardcoding one
 dump path meant a later run silently re-parsed the previous run's pull.
 """
-import re, json, collections, os, sys, glob
+import re, json, collections, os, sys, glob, html
 
 SP = os.environ.get("JIGCAR_SP") or os.path.dirname(os.path.abspath(__file__))
 
@@ -48,13 +48,49 @@ for mid, title, date, parts in blocks:
     if not m:
         continue
     iso = "%04d-%02d-%02d" % (int(m.group(3)), MONTH[m.group(1)], int(m.group(2)))
+    # On 3 Aug 2026 the dump started HTML-escaping the participant block, so the
+    # addresses arrived as &lt;a@b.com&gt; and the angle-bracket pattern matched
+    # nothing at all. Every meeting parsed with zero attendees, which credits nobody
+    # and reads as a team that took no external meeting all quarter. Unescape first,
+    # which is a no-op on the older unescaped form, so both shapes parse.
+    parts = html.unescape(parts)
     emails = [e.strip().lower() for e in re.findall(r'<([^>]+@[^>]+)>', parts)]
     creator = None
     cm = re.search(r"([A-Za-z .'-]+)\(note creator\)[^<]*<([^>]+)>", parts)
     if cm:
         creator = cm.group(2).strip().lower()
-    meetings.append({"id": mid, "title": title.strip(), "date": iso,
-                     "emails": emails, "creator": creator})
+    # Titles are escaped in the same pass, and the exclusion list in etl.py is keyed
+    # by the plain title, so "Show &amp; Tell" has to come back as "Show & Tell" or a
+    # judged exclusion silently stops matching its meeting.
+    # Start time, kept as minutes past midnight in the dump's own local offset. The
+    # dump began carrying a clock time as well as a date, and it is the only signal
+    # that separates two notes on one meeting from two genuinely separate meetings
+    # with the same counterparty on the same day. -1 when the dump has no time.
+    tm = re.search(r'(\d{1,2}):(\d{2})\s*([AP]M)', date)
+    if tm:
+        _h = int(tm.group(1)) % 12 + (12 if tm.group(3) == "PM" else 0)
+        mins = _h * 60 + int(tm.group(2))
+    else:
+        mins = -1
+    meetings.append({"id": mid, "title": html.unescape(title).strip(), "date": iso,
+                     "mins": mins, "emails": emails, "creator": creator})
+
+# A dump whose meetings all parse with no participants is the same class of silent
+# failure as parsing no meetings, and it is worse to read: the page renders 154
+# meetings and credits nobody, so every scorecard row shows 0 sales meetings and it
+# looks like a quiet quarter rather than a broken parser. The 3 Aug 2026 escaping
+# change did exactly this and the 0-meeting guard above did not catch it.
+_with_emails = [m for m in meetings if m["emails"]]
+if meetings and not _with_emails:
+    raise SystemExit("parse_granola: parsed %d meetings but not one participant email. "
+                     "The participant format has probably changed again. Refusing to "
+                     "overwrite raw/granola.json: a dashboard that credits nobody for "
+                     "any meeting is a silent lie, not a quiet quarter." % len(meetings))
+if meetings and len(_with_emails) < 0.5 * len(meetings):
+    raise SystemExit("parse_granola: only %d of %d meetings have any participant email. "
+                     "That is too few to be real; the participant format has probably "
+                     "changed for a subset. Refusing to overwrite raw/granola.json."
+                     % (len(_with_emails), len(meetings)))
 
 os.makedirs(f"{SP}/raw", exist_ok=True)
 json.dump(meetings, open(f"{SP}/raw/granola.json", "w"), indent=0)

@@ -109,6 +109,11 @@ EXCLUDED_MEETINGS = {
     # deal on the domain, so a Co-Buyer demo to them is partner / channel
     # exploration until a deal exists. The moment one is created, meetings count.
     ("2026-07-31", "Jigcar Co-Buyer Demo - WSG"): "partner / channel exploration, no deal attached",
+    # Consultant to Sphere Global, an overlapping software vendor. He is contractually
+    # unable to work with Jigcar, the call covered a possible licensing partnership and
+    # offered introductions, and no deal or company exists on the address. Adviser plus
+    # partner exploration on both counts.
+    ("2026-08-03", "Introduction: Jigcar/Jason Blood"): "adviser / partner exploration, no deal attached",
 }
 EXCL_PREFIX = [(d, t[:40]) for (d, t) in EXCLUDED_MEETINGS]
 
@@ -116,25 +121,61 @@ gran = json.load(open(f"{SP}/raw/granola.json"))
 FIRST = {"chris.white@jigcar.com": "Chris", "luke.nogueira@jigcar.com": "Luke",
          "james.griffin@jigcar.com": "James", "bianca.monteiro@jigcar.com": "Bianca",
          "elliott@jigcar.com": "Elliott", "rupert@jigcar.com": "Rupert"}
-seen = set()
 meetings_daily = collections.defaultdict(z)
 inc_count = exc_count = internal_count = 0
+
+# One meeting can produce several notes, and they are grouped before anything is
+# counted so a Jigcar attendee is credited once per meeting, never once per note.
+#
+# Two notes are the same meeting when they share a date and either
+#   (a) the same title            - the usual case, one note per creator, or
+#   (b) the same external participant set and a start within SAME_MEETING_MINS.
+#
+# (b) exists because on 3 Aug 2026 one Big Motoring World call was written up twice,
+# as "Jigcar x Berkay: Data Sync" at 13:30 and "Big Motoring World" at 13:33, and
+# title-only dedupe counted it as two meetings, crediting Rupert, James and Bianca
+# twice each for one call. Across the whole quarter this rule merges that single pair
+# and nothing else, so it removes a double count without collapsing two genuine
+# meetings with one counterparty on one day. Attendees are credited from the UNION of
+# the group, because two creators can list slightly different participants and taking
+# only the first note would silently drop whoever the other one saw.
+SAME_MEETING_MINS = 30
+groups = []                              # [{date, mins, ext, titles, emails}]
 for m in gran:
     em = m["emails"]
     if not em or all(e.endswith("@jigcar.com") for e in em):
         internal_count += 1
         continue
-    key = (m["date"], m["title"])
-    if key in seen:                      # dedupe: one event per note-creator
-        continue
-    seen.add(key)
-    if any(m["date"] == d and m["title"][:40] == p for (d, p) in EXCL_PREFIX):
+    ext = frozenset(e for e in em if not e.endswith("@jigcar.com"))
+    mins = m.get("mins", -1)
+    hit = None
+    for g in groups:
+        if g["date"] != m["date"]:
+            continue
+        if m["title"] in g["titles"]:
+            hit = g
+            break
+        if g["ext"] == ext and mins >= 0 and g["mins"] >= 0 \
+                and abs(mins - g["mins"]) <= SAME_MEETING_MINS:
+            hit = g
+            break
+    if hit is None:
+        groups.append({"date": m["date"], "mins": mins, "ext": ext,
+                       "titles": {m["title"]}, "emails": set(em)})
+    else:
+        hit["titles"].add(m["title"])
+        hit["emails"].update(em)
+
+for g in groups:
+    # A judged exclusion matches on any title the meeting was written up under, so a
+    # second note under a different name cannot smuggle an excluded meeting back in.
+    if any(g["date"] == d and t[:40] == p for t in g["titles"] for (d, p) in EXCL_PREFIX):
         exc_count += 1
         continue
     inc_count += 1
-    for e in em:
+    for e in g["emails"]:
         if e in FIRST:
-            meetings_daily[m["date"]][IDX[FIRST[e]]] += 1
+            meetings_daily[g["date"]][IDX[FIRST[e]]] += 1
 
 # ---------- calls (Allo, per seat) ----------
 # One row per call record from allo_search_conversation_items, reconciled against
@@ -188,6 +229,21 @@ li_acc_all = _inv["accAll"]          # invitations accepted, i.e. connections ma
 li_acc_deal = _inv["accDeal"]
 li_msg_all = _msg["all"]
 li_msg_deal = _msg["deal"]
+
+# Whether every LinkedIn event this run could be attributed to a named rep. An event
+# whose note body did not come back is EXCLUDED rather than guessed, so it is a floor
+# on the person's real figure and the page has to say so.
+_unatt = {k: v for k, v in (_inv.get("unattributed") or {}).items() if v}
+if _unatt:
+    _parts = ", ".join(f"{v} {k}" for k, v in sorted(_unatt.items()))
+    LI_UNATTRIBUTED_NOTE = (
+        f"{_parts} event(s) could not be attributed to a named rep this run, because the "
+        "note body did not come back from Attio. They are excluded rather than guessed, "
+        "so the per-person LinkedIn figures are a floor by that many. Everything else is "
+        "read from the note body and deduped across the person and company copies.")
+else:
+    LI_UNATTRIBUTED_NOTE = ("none: every invitation sent and accepted is attributed to a named rep "
+                            "from the note body, deduped across the person and company copies")
 LI_NOTE_COVERED_FROM = "2026-07-21"
 LI_ATTRIBUTION = "read from the Groovin note body; no cadence-task proxy is used"
 
@@ -704,8 +760,12 @@ coverage = {
         "Groovin has since synced."),
     "tasks_dated_by": "completed_at from the Attio tasks API",
     "li_connects_attributed_by": LI_ATTRIBUTION,
-    "li_connect_gap": ("none: every invitation sent and accepted is attributed to a named rep from the "
-                       "note body, deduped across the person and company copies"),
+    # Built from the pull, never asserted. This read "none: every invitation ... is
+    # attributed" as a frozen sentence, and on 3 Aug 2026 one invitation body failed
+    # to fetch and went unattributed, so the page would have claimed full attribution
+    # while quietly dropping an event. A statement about the data has to come from the
+    # data.
+    "li_connect_gap": LI_UNATTRIBUTED_NOTE,
     "li_accepted_note": ("connections made lag the invitation that earned them, often by weeks, so a high "
                          "accepted count reflects earlier outreach rather than work done in the period"),
     "calls_source": (f"Allo per-seat call records ({_calls['total']} calls "
