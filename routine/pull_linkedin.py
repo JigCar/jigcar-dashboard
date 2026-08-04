@@ -11,9 +11,12 @@ never be used as a benchmark for these figures.
 Messages still come from the chat notes, because the attribute holds only the LAST
 message per contact and a thread needs every message dated individually.
 
-The invitation notes are parsed as a CROSS-CHECK, never merged into the count. The rep
-is in the note BODY for invitations, not the title, and reading only the title has
-caused a real mis-attribution, so bodies are fetched and parsed:
+The person-side invitation notes are UNIONED IN, joined to the attribute on the person
+record id so no name matching is involved. This matters because the attribute holds only
+the LAST invitation per contact: when a contact is invited again the earlier sender loses
+the credit, which cost Chris 3 of 15 and Elliott 8 of 64. The rep is in the note BODY for
+invitations, not the title, and reading only the title has caused a real mis-attribution,
+so bodies are fetched and parsed:
 
   sent      body "from <Rep> to <Contact>",  title is the bare
             string "LinkedIn invitation sent" with no rep in it at all
@@ -25,8 +28,9 @@ assigned the task rather than whoever sent the invitation, and it was wrong by a
 wide margin: one person read 12 connects against 3 actually sent, another 5
 against 32.
 
-Every event writes a person-side and a company-side note, so events are deduped
-on (date, rep, contact, kind). The company side supplies the deal join.
+Every event writes a person-side and a company-side note. Only the PERSON side is
+counted, because it carries the record id the join needs and counting both would double
+every figure. The company side still serves the deal split.
 """
 import json, os, re, collections, urllib.request, concurrent.futures as cf
 
@@ -152,8 +156,8 @@ RANK = {"open": 3, "won": 2, "closed": 1}
 # PRIMARY SOURCE: the Attio invitation record on the person, not the note.
 #
 # Groovin writes two things into Attio for an invitation: a note, and structured
-# attributes on the person record. The attributes are strictly better and are what
-# this routine now counts:
+# attributes on the person record. The attributes are the better source on every axis
+# except history, and are the base this routine counts from:
 #   - last_linkedin_invite_sent_at is the REAL send time to the millisecond, where a
 #     note can only be dated by when Groovin got round to writing it
 #   - last_linkedin_invite_sent_by is a workspace-member REFERENCE, so the rep is an
@@ -229,20 +233,24 @@ for kind, (ts_attr, actor_attr) in ATTR.items():
         if nm.get("full_name"):
             attr_names[(rep, kind)].add(nm["full_name"].strip().lower())
 
-# The notes are a CROSS-CHECK ONLY and are deliberately NOT merged into the count.
+# The notes are UNIONED IN, joined to the attribute by PERSON RECORD ID.
 #
-# Merging them was tried and rejected. Matching a note back to a person record means
-# comparing the contact name parsed out of prose against the record's full_name, and
-# that match is fragile: "Robert Ourisman Jr. ." against "Robert Ourisman Jr.", a
-# truncation, a middle name. It added 25 events against a real attribute-to-note gap of
-# 8, so it was inventing roughly 17 invitations out of punctuation and handing them to
-# named people. Overstating someone is worse than missing a rare repeat, so the metric
-# is the attribute alone and the divergence is published instead of patched over.
+# The attribute holds only the LAST invitation per contact, so when a contact is invited
+# again the earlier sender loses the credit entirely. That is not a rounding error: it
+# cost Chris 3 of 15, Elliott 8 of 64, James 2 and Rupert 3. Ignoring it understates
+# real work by a named person, which is the one thing this routine must never do.
 #
-# What the attribute genuinely cannot see: a SECOND invitation to a contact already
-# invited, because the timestamp is overwritten. The note stream keeps both, so the
-# gap below is the bound on how many repeats exist, and the page states it.
+# A first attempt matched notes to records by comparing the contact name parsed out of
+# prose against the record's full_name. That was rightly rejected: it is fragile enough
+# ("Robert Ourisman Jr. ." vs "Robert Ourisman Jr.") that it invented events. But the
+# name was never needed. A person-side note carries parent_record, which IS the person
+# record id the attribute is keyed on, so the join is exact and needs no name at all.
+#
+# Only the PERSON-side copy is counted. The company-side copy describes the same event
+# and has no person id, so counting it would double everything; it still serves the deal
+# join through deal_state.
 note_counts = {k: collections.Counter() for k in ATTR}
+note_only = []
 for n in inv_full:
     kind = "sent" if n["title"].endswith("sent") else "accepted"
     body = n.get("body") or ""
@@ -251,7 +259,30 @@ for n in inv_full:
     if not rep:
         unattributed[kind + "_note_unparsed"] += 1
         continue
+    if n["parent_object"] != "people":
+        continue
     note_counts[kind][rep] += 1
+    key = (rep, kind, n["parent_record"])
+    if key not in events:
+        note_only.append((key, n))
+
+# Resolve each recovered contact's company so its deal split uses the same
+# contact -> company -> strongest deal state join as every other (deal) metric.
+def company_of(rec_id):
+    try:
+        v = req(f"/objects/people/records/{rec_id}")["data"]["values"]
+        return (_v(v, "company") or {}).get("target_record_id")
+    except Exception:
+        return None
+
+
+with cf.ThreadPoolExecutor(max_workers=8) as ex:
+    _comps = list(ex.map(lambda kn: company_of(kn[0][2]), note_only))
+for (key, n), comp in zip(note_only, _comps):
+    rep, kind, rec_id = key
+    st = person_state(rec_id, comp)
+    events[key] = {"date": n["created"], "rep": rep, "kind": kind,
+                   "state": st if st else deal_state(n), "src": "note"}
 
 # Each note event is written twice, person-side and company-side, so the raw note
 # count is halved before it is compared with the attribute count.
@@ -340,18 +371,20 @@ dates = sorted({e["date"] for e in events.values()})
 recon = {}
 for kind in ATTR:
     recon[kind] = {"attribute": dict(attr_counts[kind]), "note": dict(note_counts[kind]),
-                   "note_minus_attribute": sum(note_counts[kind].values())
-                                          - sum(attr_counts[kind].values())}
+                   "recovered_from_notes": sum(1 for e in events.values()
+                                                 if e["kind"] == kind and e["src"] == "note")}
 json.dump({"sentAll": sent_all, "sentDeal": sent_deal,
            "accAll": acc_all, "accDeal": acc_deal,
            "covered_from": dates[0] if dates else None,
            "unattributed": dict(unattributed),
            "reconciliation": recon,
            "source": ("Attio invitation attributes on the person record "
-                      "(last_linkedin_invite_sent_at / _sent_by and the accepted pair), "
-                      "which carry the real send time and reference the sender by "
-                      "workspace-member id. Groovin notes are used as a cross-check and "
-                      "to recover repeat invitations the last-only attribute cannot hold."),
+                      "(last_linkedin_invite_sent_at / _sent_by and the accepted pair) "
+                      "unioned with the person-side Groovin notes, joined on the person "
+                      "record id so no name matching is involved. The attribute gives the "
+                      "real send time and id-based attribution; the notes recover events "
+                      "whose attribute was overwritten by a later invitation to the same "
+                      "contact, which would otherwise lose the earlier sender's credit."),
            "events": len(events)},
           open(f"{SP}/raw/li_invites.json", "w"), indent=1)
 json.dump({"all": msg_all, "deal": msg_deal,
@@ -376,10 +409,13 @@ print("unattributed:", dict(unattributed) or "none")
 for _k in ATTR:
     _a, _n = attr_counts[_k], note_counts[_k]
     _av, _nv = sum(_a.values()), sum(_n.values())
-    print(f"  {_k:9} attribute {_av:4} | note cross-check {_nv:4} | gap {_nv - _av}")
-    for _r in REPS:
-        if _a.get(_r, 0) != _n.get(_r, 0):
-            print(f"      {_r:8} attribute {_a.get(_r,0):3} vs note {_n.get(_r,0):3}")
+    _rec = sum(1 for e in events.values() if e["kind"] == _k and e["src"] == "note")
+    print(f"  {_k:9} attribute {_av:4} | person-side notes {_nv:4} | recovered from notes "
+          f"{_rec:3} | counted {_av + _rec:4}")
+    _by = collections.Counter(e["rep"] for e in events.values()
+                              if e["kind"] == _k and e["src"] == "note")
+    if _by:
+        print("      recovered per rep:", dict(_by))
 print(f"{'':9}" + "".join(f"{r:>9}" for r in REPS))
 for lbl, d in (("sent", sent_all), ("sent(deal)", sent_deal), ("accepted", acc_all),
                ("acc(deal)", acc_deal), ("msgs", msg_all), ("msgs(deal)", msg_deal)):

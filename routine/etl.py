@@ -790,14 +790,15 @@ coverage = {
     "li_source_note": (
         "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio "
         "person, which carries the real send time and names the sender by workspace-member id rather "
-        "than by parsing prose. The Groovin notes are held as an independent cross-check and are not "
-        "merged in: over this quarter the attribute counts {attr} invitations sent against {note} in "
-        "the notes, a gap of {gap}. The gap is the bound on repeat invitations, because the attribute "
-        "holds only the LAST invitation per contact, so inviting the same person twice is counted "
-        "once. Messages still come from the chat notes, which date each message individually."
-    ).format(attr=sum((_inv.get("reconciliation", {}).get("sent", {}).get("attribute") or {}).values()),
-             note=sum((_inv.get("reconciliation", {}).get("sent", {}).get("note") or {}).values()),
-             gap=_inv.get("reconciliation", {}).get("sent", {}).get("note_minus_attribute", 0)),
+        "than by parsing prose. That record holds only the LAST invitation per contact, so when a "
+        "contact is invited again the earlier sender loses the credit; the person-side Groovin notes "
+        "are therefore unioned in, joined on the person record id so no name matching is involved. "
+        "This quarter that recovers {rec} invitations sent and {reca} accepted that the record alone "
+        "had overwritten, giving {tot} sent in total. Messages come from the chat notes, which date "
+        "each message individually."
+    ).format(rec=_inv.get("reconciliation", {}).get("sent", {}).get("recovered_from_notes", 0),
+             reca=_inv.get("reconciliation", {}).get("accepted", {}).get("recovered_from_notes", 0),
+             tot=sum(sum(v) for v in li_conn_all.values())),
     "calls_source": (f"Allo per-seat call records ({_calls['total']} calls "
                      f"{_calls['covered_from']} to {_calls['covered_to']}); Rupert has no Allo account, "
                      "so his calls are always 0 and his seat reads na"),
