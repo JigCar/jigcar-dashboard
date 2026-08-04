@@ -104,55 +104,55 @@
    "lastweek": 4,
    "month": 1,
    "quarter": 23,
-   "today": 1,
-   "trailing7": 4,
+   "today": 0,
+   "trailing7": 3,
    "week": 1,
-   "yesterday": 0
+   "yesterday": 1
   },
   "Chris": {
    "lastweek": 5,
-   "month": 1,
-   "quarter": 24,
+   "month": 2,
+   "quarter": 25,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "Elliott": {
    "lastweek": 5,
-   "month": 1,
-   "quarter": 24,
+   "month": 2,
+   "quarter": 25,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "James": {
    "lastweek": 5,
-   "month": 1,
-   "quarter": 22,
+   "month": 2,
+   "quarter": 23,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "Luke": {
    "lastweek": 2,
-   "month": 1,
-   "quarter": 20,
+   "month": 2,
+   "quarter": 21,
    "today": 1,
    "trailing7": 3,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   },
   "Rupert": {
    "lastweek": 5,
-   "month": 1,
-   "quarter": 24,
+   "month": 2,
+   "quarter": 25,
    "today": 1,
    "trailing7": 5,
-   "week": 1,
-   "yesterday": 0
+   "week": 2,
+   "yesterday": 1
   }
  },
  "connectivity": {
@@ -161,13 +161,11 @@
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
    "Rupert_groovin": "live: LinkedIn invitations and messages are attributed to him from the note body",
-   "allo_reconciled": "allo_list_users confirmed 5 active seats. 28 call records regrouped per day and reconciled against allo_get_team_analytics for 1 Jul to 3 Aug with no discrepancy: Luke 12, Elliott 9, James 5, Chris 2, Bianca 0. Two calls were logged today, the first since 30 Jul.",
-   "granola_format": "the meeting dump started escaping participant addresses as &lt;name@domain&gt; today. The parser unescapes before matching and now fails loudly if a dump yields no participants at all, because the previous behaviour credited nobody for any meeting and read as a quiet quarter rather than a broken parse.",
-   "groovin_unattributed": "one invitation note body did not come back from Attio, so that single event is excluded rather than credited to a guess. Every other invitation, acceptance and message is attributed to a named rep.",
-   "leave_today": "Zelt re-read at 18:52: no scorecard colleague is on leave today. Eerik Saksi, Alexei Khmelev and Krzysztof Burka are off, all outside the scorecard. Bianca is booked off tomorrow and Chris on 7 Aug.",
-   "meeting_double_note": "today's Big Motoring World data review was written up as two Granola notes three minutes apart under different titles. Notes are now grouped by external participants and start time as well as by title, so one meeting credits each attendee once.",
-   "meeting_duplicate_attendee": "the 7 Jul Big Motoring World / Robinsons note lists Elliott twice in its participant string, and the previous build credited him twice for that one meeting. Attendees are now taken as a set, so his July meeting credits read 4 for that day rather than 5. The team's July total moves from 97 to 96 for the same reason: it is a correction, not a drop in activity.",
-   "rerun": "this is the second build today. The 08:00 run published before the working day began; this one covers it to 18:51. Today's metric row is overwritten, not added to."
+   "allo_reconciled": "allo_list_users confirmed 5 active seats. 28 call records pulled and regrouped per day, reconciled against allo_get_team_analytics for 1 Jul to 4 Aug with no discrepancy: Luke 12, Elliott 9, James 5, Chris 2, Bianca 0. No call has been logged yet today; the last was on 3 Aug.",
+   "email_window": "this run paged 4 Aug end to end and carried forward 11 earlier days. The four emails sent today are all inbound, so today is a real zero against a stated window, not an absence. 3 Aug is the previous run's figure, paged to 18:51 that evening",
+   "granola_today": "no meeting written up yet today; the dashboard's Today column is genuinely empty rather than unpulled",
+   "groovin_unattributed": "none: every one of the 352 deduped events parsed a named rep out of the note body or title",
+   "leave_today": "Bianca Monteiro is on booked paid time off today, so her row is expected to be quiet and she is not judged on it"
   },
   "seats": {
    "Bianca": [
@@ -201,16 +199,16 @@
     "ok"
    ]
   },
-  "updated": "03 Aug 2026, 19:06",
+  "updated": "04 Aug 2026, 06:28",
   "workspace": [
    {
     "name": "Attio",
-    "note": "293 deals, 19,018 companies, 277 tasks (213 completed) and 2,723 notes via REST. 584 of 585 invitation note bodies and all 77 chat notes fetched; one invitation body did not come back and that event is excluded rather than guessed. Email search paged 3 Aug midnight to 18:51 across two pages, has_more false",
+    "note": "293 deals, 19,019 companies, 277 tasks (214 completed) and 2,735 notes via REST. All 597 invitation note bodies and all 77 chat notes fetched with no errors, so every LinkedIn event is attributed from the body or title and none is guessed. Email search paged 4 Aug midnight to 06:27 in one page of 100, which reached back into 3 Aug, so today is covered end to end",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "154 meetings parsed, 1 Jul to 3 Aug. The dump began HTML-escaping participant addresses today, which made every meeting parse with no attendees; the parser now unescapes first and refuses to write a participant-free dump. One new external meeting counted, the Big Motoring World data review, written up twice under two titles and merged into one",
+    "note": "154 meetings parsed, 1 Jul to 3 Aug, 74 with an external participant. No meeting has been written up yet today, which is expected of an 08:00 run rather than a gap",
     "status": "ok"
    },
    {
@@ -225,12 +223,12 @@
   "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (28 calls 2026-07-21 to 2026-08-03); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-01T00:00:00Z to 2026-08-03T18:51:19Z and carried forward 8 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-04T00:00:00Z to 2026-08-04T06:27:05Z and carried forward 11 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
   "email_split_join": "210 domains resolve to a deal; 131 of 138 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
-  "email_split_to": "2026-08-03",
+  "email_split_to": "2026-08-04",
   "join_coverage": {
    "domains_resolving": 210,
    "joinable": 131,
@@ -294,44 +292,74 @@
   "join_note": "7 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
   "leave_source": "Zelt absence calendar; the Jigcar holidays calendar holds no events after mid-2025 and is not read",
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
-  "li_connect_gap": "1 sent event(s) could not be attributed to a named rep this run, because the note body did not come back from Attio. They are excluded rather than guessed, so the per-person LinkedIn figures are a floor by that many. Everything else is read from the note body and deduped across the person and company copies.",
+  "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
   "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
   "stage_diff": [
    {
-    "date": "2026-08-03",
+    "date": "2026-08-04",
     "from": "Buy Signal",
     "kind": "progressed",
-    "name": "Sci-Fleet Motors - Buy Signal (Brendale PDI sale-leaseback)",
-    "owner": "Chris",
-    "record_id": "5e69b37b",
+    "name": "Go Auto - Buy Signal (MB Calgary acquisition)",
+    "owner": "Elliott",
+    "record_id": "136319f5",
     "to": "Qualification",
     "value": 0.0
    },
    {
-    "date": "2026-08-03",
+    "date": "2026-08-04",
     "from": "Buy Signal",
     "kind": "progressed",
-    "name": "Midway Motors - Buy Signal (New Hutchinson KS CDJR store)",
-    "owner": "Chris",
-    "record_id": "9dd211ab",
+    "name": "Group 1 Automotive - Buy Signal (Kia Hub City Lubbock TX)",
+    "owner": "Elliott",
+    "record_id": "43fb29aa",
     "to": "Qualification",
     "value": 0.0
    },
    {
-    "date": "2026-08-03",
-    "from": "Qualification",
+    "date": "2026-08-04",
+    "from": "Buy Signal",
     "kind": "progressed",
-    "name": "Snows",
-    "owner": "Chris",
-    "record_id": "c15259da",
-    "to": "Demo",
-    "value": 80000.0
+    "name": "Step One Automotive Group - Buy Signal (Logistics Coordinator hire)",
+    "owner": "Elliott",
+    "record_id": "9812f9d1",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Vinart Dealerships - Buy Signal (Dealer Trade Driver hire)",
+    "owner": "Elliott",
+    "record_id": "a2e0e896",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "AutoNation - Buy Signal (Fletcher Jones luxury M&A)",
+    "owner": "Elliott",
+    "record_id": "bffe5d0c",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "McGrath Family of Dealerships",
+    "owner": "Elliott",
+    "record_id": "c5e0823a",
+    "to": "Qualification",
+    "value": 0.0
    }
   ],
-  "stage_moves_accumulated": 42,
+  "stage_moves_accumulated": 48,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -604,6 +632,14 @@
     18,
     10,
     2
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "emailsCust": {
@@ -684,6 +720,14 @@
     0,
     0,
     9,
+    0,
+    0
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    0,
+    0,
     0,
     0
    ]
@@ -767,6 +811,14 @@
     1,
     8,
     9,
+    0
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    0,
+    0,
+    0,
     0
    ]
   },
@@ -877,11 +929,19 @@
    ],
    "2026-08-03": [
     0,
-    1,
+    2,
     1,
     0,
     2,
-    2
+    3
+   ],
+   "2026-08-04": [
+    1,
+    0,
+    1,
+    0,
+    1,
+    1
    ]
   },
   "liAccDeal": {
@@ -1241,7 +1301,7 @@
     0,
     0,
     0,
-    1
+    3
    ]
   },
   "liMsgDeal": {
@@ -1520,6 +1580,14 @@
     0,
     0,
     0
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    0,
+    0,
+    6,
+    0
    ]
   },
   "shutoff": {
@@ -1730,23 +1798,33 @@
     9,
     0,
     0,
-    0,
+    1,
     0
    ]
   }
  },
- "last_run": "2026-08-03",
- "last_run_stamp": "03 Aug 2026, 19:06",
+ "last_run": "2026-08-04",
+ "last_run_stamp": "04 Aug 2026, 06:28",
  "leave": {
   "Bianca": [
    "2026-07-27",
    "2026-07-29",
-   "2026-08-04"
+   "2026-08-04",
+   "2026-08-20",
+   "2026-08-21",
+   "2026-08-22",
+   "2026-08-23",
+   "2026-08-24"
   ],
   "Chris": [
    "2026-08-07",
    "2026-08-12",
-   "2026-08-13"
+   "2026-08-13",
+   "2026-08-20",
+   "2026-08-21",
+   "2026-08-22",
+   "2026-08-23",
+   "2026-08-24"
   ],
   "Elliott": [],
   "James": [
@@ -1757,7 +1835,9 @@
    "2026-06-26",
    "2026-07-10",
    "2026-07-24",
-   "2026-08-15"
+   "2026-08-15",
+   "2026-08-17",
+   "2026-08-24"
   ],
   "Luke": [
    "2026-06-25",
@@ -1805,11 +1885,7 @@
   },
   {
    "half": null,
-   "person": "Eerik Saksi"
-  },
-  {
-   "half": null,
-   "person": "Alexei Khmelev"
+   "person": "Bianca"
   }
  ],
  "perf_flags": {
@@ -1820,7 +1896,8 @@
   "2026-07-31": null,
   "2026-08-01": null,
   "2026-08-02": null,
-  "2026-08-03": null
+  "2026-08-03": null,
+  "2026-08-04": null
  },
  "pre_2026_won": [
   "12f2dbef",
@@ -2256,6 +2333,66 @@
    "record_id": "c15259da",
    "to": "Demo",
    "value": 80000.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Go Auto - Buy Signal (MB Calgary acquisition)",
+   "owner": "Elliott",
+   "record_id": "136319f5",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Group 1 Automotive - Buy Signal (Kia Hub City Lubbock TX)",
+   "owner": "Elliott",
+   "record_id": "43fb29aa",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Step One Automotive Group - Buy Signal (Logistics Coordinator hire)",
+   "owner": "Elliott",
+   "record_id": "9812f9d1",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Vinart Dealerships - Buy Signal (Dealer Trade Driver hire)",
+   "owner": "Elliott",
+   "record_id": "a2e0e896",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "AutoNation - Buy Signal (Fletcher Jones luxury M&A)",
+   "owner": "Elliott",
+   "record_id": "bffe5d0c",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "McGrath Family of Dealerships",
+   "owner": "Elliott",
+   "record_id": "c5e0823a",
+   "to": "Qualification",
+   "value": 0.0
   }
  ],
  "stage_shape": {
@@ -2528,6 +2665,60 @@
     5,
     150000.0
    ]
+  },
+  "2026-08-04": {
+   "Buy Signal": [
+    23,
+    0.0
+   ],
+   "Churn": [
+    2,
+    54804.0
+   ],
+   "Closed Lost": [
+    20,
+    117000.0
+   ],
+   "Closed Won": [
+    16,
+    778500.0
+   ],
+   "Contacted - no outcome": [
+    8,
+    0.0
+   ],
+   "Contracts": [
+    4,
+    231600.0
+   ],
+   "Demo": [
+    19,
+    609000.0
+   ],
+   "New Lead": [
+    12,
+    168480.0
+   ],
+   "None": [
+    1,
+    0.0
+   ],
+   "Nurture": [
+    108,
+    2079600.0
+   ],
+   "Proposal": [
+    10,
+    508800.0
+   ],
+   "Qualification": [
+    65,
+    359000.0
+   ],
+   "Trial": [
+    5,
+    150000.0
+   ]
   }
  },
  "stage_snapshot": {
@@ -2658,7 +2849,7 @@
   },
   "136319f5": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "1376824c": {
@@ -2908,7 +3099,7 @@
   },
   "43fb29aa": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "446e041b": {
@@ -3358,7 +3549,7 @@
   },
   "9812f9d1": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "983579cf": {
@@ -3473,7 +3664,7 @@
   },
   "a2e0e896": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "a33e1ea3": {
@@ -3628,7 +3819,7 @@
   },
   "bffe5d0c": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "c0b92649": {
@@ -3658,7 +3849,7 @@
   },
   "c5e0823a": {
    "owner": "Elliott",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "c6fbe140": {

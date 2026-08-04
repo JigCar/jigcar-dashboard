@@ -83,6 +83,32 @@ def _named(ms):
                     for m in ms)
 
 
+def _hop_clause(to, ms):
+    """One clause for every deal that made the same hop.
+
+    A name earns its place by carrying a value. Six £0 deals with the same owner
+    named one by one is a wall of text on a phone and says nothing a count does
+    not, so the valued moves are named and the rest are collapsed onto a count
+    with the owner still attached. Nothing is dropped: every move is accounted
+    for in the clause, and the full list is on the page.
+    """
+    valued = [m for m in ms if m.get("value")]
+    zero = [m for m in ms if not m.get("value")]
+    parts = []
+    if valued:
+        parts.append(_named(valued))
+    if len(zero) == 1:
+        parts.append(f"{zero[0]['name']} ({zero[0]['owner']})")
+    elif zero:
+        owners = collections.Counter(m["owner"] for m in zero)
+        if len(owners) == 1:
+            parts.append(f"{word(len(zero), lower=True)} of {next(iter(owners))}'s deals")
+        else:
+            tally = ", ".join(f"{o} x{n}" for o, n in owners.most_common())
+            parts.append(f"{word(len(zero), lower=True)} deals ({tally})")
+    return " and ".join(parts) + f" into {to}"
+
+
 def moved_leadership():
     """Named, deal-level. Real changes only.
 
@@ -97,10 +123,7 @@ def moved_leadership():
     for m in progressed:
         by_hop.setdefault(m["to"], []).append(m)
     for to, ms in by_hop.items():
-        if len(ms) == 1:
-            bits.append(f"{_named(ms)} into {to}")
-        else:
-            bits.append(f"{word(len(ms), lower=True)} into {to}: {_named(ms)}")
+        bits.append(_hop_clause(to, ms))
     for m in shut:
         val = f" {money(m['value'])}" if m.get("value") else ""
         bits.append(f"{m['name']}{val} ({m['owner']}) shut off to {m['to']}")
