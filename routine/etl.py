@@ -234,18 +234,25 @@ li_msg_deal = _msg["deal"]
 # whose note body did not come back is EXCLUDED rather than guessed, so it is a floor
 # on the person's real figure and the page has to say so.
 _unatt = {k: v for k, v in (_inv.get("unattributed") or {}).items() if v}
-if _unatt:
+_metric_gap = {k: v for k, v in _unatt.items() if not k.endswith("_note_unparsed")}
+if _metric_gap:
+    _parts = ", ".join(f"{v} {k}" for k, v in sorted(_metric_gap.items()))
+    LI_UNATTRIBUTED_NOTE = (
+        f"{_parts}: that many invitation records carry a timestamp but no usable sender, so "
+        "they are excluded rather than guessed and the per-person figures are a floor by "
+        "that many.")
+elif _unatt:
     _parts = ", ".join(f"{v} {k}" for k, v in sorted(_unatt.items()))
     LI_UNATTRIBUTED_NOTE = (
-        f"{_parts} event(s) could not be attributed to a named rep this run, because the "
-        "note body did not come back from Attio. They are excluded rather than guessed, "
-        "so the per-person LinkedIn figures are a floor by that many. Everything else is "
-        "read from the note body and deduped across the person and company copies.")
+        "none: every invitation sent and accepted carries a sender referenced by "
+        f"workspace-member id, so nothing is guessed. ({_parts} in the note cross-check "
+        "only, which does not affect any count.)")
 else:
-    LI_UNATTRIBUTED_NOTE = ("none: every invitation sent and accepted is attributed to a named rep "
-                            "from the note body, deduped across the person and company copies")
-LI_NOTE_COVERED_FROM = "2026-07-21"
-LI_ATTRIBUTION = "read from the Groovin note body; no cadence-task proxy is used"
+    LI_UNATTRIBUTED_NOTE = ("none: every invitation sent and accepted carries a sender referenced "
+                            "by workspace-member id, so nothing is guessed")
+LI_NOTE_COVERED_FROM = _inv.get("covered_from") or "2026-07-14"
+LI_ATTRIBUTION = ("the Attio invitation record on the person, whose sender is a workspace-member "
+                  "reference; no name parsing and no cadence-task proxy")
 
 # ---------- deal-association join coverage (pull_attio.py) ----------
 # (deal) everywhere on the page means the counterparty's company has an OPEN deal.
@@ -768,22 +775,29 @@ coverage = {
     "li_connect_gap": LI_UNATTRIBUTED_NOTE,
     "li_accepted_note": ("connections made lag the invitation that earned them, often by weeks, so a high "
                          "accepted count reflects earlier outreach rather than work done in the period"),
-    # Measured 4 Aug 2026 against LinkedIn itself, not inferred. Groovin writes the
-    # invitation into Attio only for a profile PAIRED to a CRM contact with sync on;
-    # an invitation to an unpaired profile is sent on LinkedIn and never reaches Attio,
-    # so it cannot be counted here. On the one seat this session can read directly,
-    # Elliott's, LinkedIn held 122 still-pending sent invitations since 14 Jul of which
-    # only 57 were paired, while Attio recorded 61 sent. Every LinkedIn column is
-    # therefore a floor, and it is a floor that bites hardest on whoever prospects
-    # people who are not in Attio yet. Never read a low figure here as low effort.
-    "li_pairing_note": (
-        "LinkedIn counts only invitations to contacts Groovin has paired to an Attio record with "
-        "sync enabled. An invitation to an unpaired profile is sent on LinkedIn but writes no Attio "
-        "note, so it cannot be counted. Measured on 4 Aug 2026 against the one seat this routine can "
-        "read directly: LinkedIn held 122 still-pending sent invitations since 14 Jul, of which 57 "
-        "were paired, while Attio recorded 61 sent. So every LinkedIn column here is a floor rather "
-        "than a total, and it understates most for whoever prospects contacts who are not yet in "
-        "Attio. A low LinkedIn figure is evidence about Groovin pairing, not about effort."),
+    # Two independent Attio sources for the same events, published side by side rather
+    # than merged, because merging them meant matching a name parsed out of prose
+    # against a record's full_name and that invented events out of punctuation.
+    #
+    # An earlier build of this note asserted that every LinkedIn column was a floor,
+    # on the strength of comparing 122 pending invitations from the Groovin connector
+    # against 61 recorded in Attio. That comparison was invalid and the claim is
+    # withdrawn: the Groovin connector authenticates as ONE person's own LinkedIn
+    # account, so it says nothing about a colleague, and LinkedIn dates older pending
+    # invitations only to the week, which bunched older outreach into the window. The
+    # two Attio sources agree to within 8 events across five weeks, which is the real
+    # measure of confidence here.
+    "li_source_note": (
+        "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio "
+        "person, which carries the real send time and names the sender by workspace-member id rather "
+        "than by parsing prose. The Groovin notes are held as an independent cross-check and are not "
+        "merged in: over this quarter the attribute counts {attr} invitations sent against {note} in "
+        "the notes, a gap of {gap}. The gap is the bound on repeat invitations, because the attribute "
+        "holds only the LAST invitation per contact, so inviting the same person twice is counted "
+        "once. Messages still come from the chat notes, which date each message individually."
+    ).format(attr=sum((_inv.get("reconciliation", {}).get("sent", {}).get("attribute") or {}).values()),
+             note=sum((_inv.get("reconciliation", {}).get("sent", {}).get("note") or {}).values()),
+             gap=_inv.get("reconciliation", {}).get("sent", {}).get("note_minus_attribute", 0)),
     "calls_source": (f"Allo per-seat call records ({_calls['total']} calls "
                      f"{_calls['covered_from']} to {_calls['covered_to']}); Rupert has no Allo account, "
                      "so his calls are always 0 and his seat reads na"),

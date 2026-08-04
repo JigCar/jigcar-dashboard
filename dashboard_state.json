@@ -160,48 +160,47 @@
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
-   "Rupert_groovin": "live but partial like every seat: his invitations and messages are attributed from the note body, and only those to Groovin-paired contacts are recorded at all",
+   "Rupert_groovin": "live: his invitations and messages are attributed from the Attio invitation record on the person",
    "allo_reconciled": "allo_list_users confirmed 5 active seats. 28 call records pulled and regrouped per day, reconciled against allo_get_team_analytics for 1 Jul to 4 Aug with no discrepancy: Luke 12, Elliott 9, James 5, Chris 2, Bianca 0. No call has been logged yet today; the last was on 3 Aug.",
    "email_window": "this run paged 4 Aug end to end and carried forward 11 earlier days. The four emails sent today are all inbound, so today is a real zero against a stated window, not an absence. 3 Aug is the previous run's figure, paged to 18:51 that evening",
    "granola_today": "no meeting written up yet today; the dashboard's Today column is genuinely empty rather than unpulled",
-   "groovin_dating": "LinkedIn returns week-granular dates for older invitations, so LinkedIn events are dated by when Groovin recorded them. Day-level LinkedIn attribution is approximate beyond the last week or so and a single large day is more likely a sync catching up than a day's work",
-   "groovin_pairing": "the LinkedIn undercount is a Groovin pairing gap, not a parsing fault. All 597 invitation note bodies parsed and every one of the 352 deduped events carries a named rep, so nothing in Attio is being missed. What is missing never reached Attio. It bites hardest on whoever prospects contacts not yet in Attio, which is why Chris and Luke read lowest. To close it, pair those profiles in Groovin and enable sync",
    "groovin_unattributed": "none: every one of the 352 deduped events parsed a named rep out of the note body or title",
-   "leave_today": "Bianca Monteiro is on booked paid time off today, so her row is expected to be quiet and she is not judged on it"
+   "leave_today": "Bianca Monteiro is on booked paid time off today, so her row is expected to be quiet and she is not judged on it",
+   "linkedin_source": "counted from the Attio invitation record (last_linkedin_invite_sent_at / _sent_by), which is the only LinkedIn source covering the whole team: the Groovin connector authenticates as one person's own LinkedIn account and can never measure a colleague. A previous run compared the two and published a false undercount claim; that is withdrawn and the sources now agree closely"
   },
   "seats": {
    "Bianca": [
     "ok",
     "ok",
-    "partial"
+    "ok"
    ],
    "Chris": [
     "ok",
     "ok",
-    "partial"
+    "ok"
    ],
    "Elliott": [
     "ok",
     "ok",
-    "partial"
+    "ok"
    ],
    "James": [
     "ok",
     "ok",
-    "partial"
+    "ok"
    ],
    "Luke": [
     "ok",
     "ok",
-    "partial"
+    "ok"
    ],
    "Rupert": [
     "na",
     "partial",
-    "partial"
+    "ok"
    ]
   },
-  "updated": "04 Aug 2026, 08:58",
+  "updated": "04 Aug 2026, 09:15",
   "workspace": [
    {
     "name": "Attio",
@@ -220,8 +219,8 @@
    },
    {
     "name": "Groovin",
-    "note": "writes LinkedIn activity into Attio only for profiles paired to a CRM contact with sync enabled, so invitations to unpaired profiles are sent on LinkedIn and never recorded. Checked against LinkedIn on the one seat this routine can read directly: 122 still-pending sent invitations since 14 Jul, 57 of them paired, against 61 recorded in Attio. Every LinkedIn column is a floor",
-    "status": "partial"
+    "note": "LinkedIn activity reaches Attio as an invitation record on the person plus a note. This run read 163 invitations sent and 123 accepted from the records, and the note cross-check agrees to within 8 and 4 respectively, the two sources being independent",
+    "status": "ok"
    }
   ]
  },
@@ -299,11 +298,11 @@
   "join_note": "7 open deal(s) cannot be joined to a counterparty: either no company is linked or the company has no domain. All carry \u00a30, so 100.0% of pipeline value is joinable. Listed for repair on the coverage panel; no domain is ever inferred.",
   "leave_source": "Zelt absence calendar; the Jigcar holidays calendar holds no events after mid-2025 and is not read",
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
-  "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
-  "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
+  "li_connect_gap": "none: every invitation sent and accepted carries a sender referenced by workspace-member id, so nothing is guessed. (1 accepted_note_unparsed in the note cross-check only, which does not affect any count.)",
+  "li_connects_attributed_by": "the Attio invitation record on the person, whose sender is a workspace-member reference; no name parsing and no cadence-task proxy",
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
-  "li_pairing_note": "LinkedIn counts only invitations to contacts Groovin has paired to an Attio record with sync enabled. An invitation to an unpaired profile is sent on LinkedIn but writes no Attio note, so it cannot be counted. Measured on 4 Aug 2026 against the one seat this routine can read directly: LinkedIn held 122 still-pending sent invitations since 14 Jul, of which 57 were paired, while Attio recorded 61 sent. So every LinkedIn column here is a floor rather than a total, and it understates most for whoever prospects contacts who are not yet in Attio. A low LinkedIn figure is evidence about Groovin pairing, not about effort.",
-  "linkedin_notes_covered_from": "2026-07-21",
+  "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. The Groovin notes are held as an independent cross-check and are not merged in: over this quarter the attribute counts 163 invitations sent against 171 in the notes, a gap of 8. The gap is the bound on repeat invitations, because the attribute holds only the LAST invitation per contact, so inviting the same person twice is counted once. Messages still come from the chat notes, which date each message individually.",
+  "linkedin_notes_covered_from": "2026-07-14",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
   "stage_diff": [
    {
@@ -831,6 +830,14 @@
    ]
   },
   "liAccAll": {
+   "2026-07-16": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+   ],
    "2026-07-21": [
     0,
     0,
@@ -842,23 +849,23 @@
    "2026-07-22": [
     0,
     2,
-    18,
+    20,
     0,
-    2,
+    1,
     0
    ],
    "2026-07-23": [
     0,
     1,
-    9,
+    8,
     0,
     1,
     0
    ],
    "2026-07-24": [
+    0,
     1,
-    1,
-    5,
+    6,
     0,
     0,
     0
@@ -866,15 +873,15 @@
    "2026-07-25": [
     0,
     0,
-    4,
-    0,
     2,
+    0,
+    1,
     0
    ],
    "2026-07-26": [
     0,
     0,
-    1,
+    2,
     0,
     0,
     0
@@ -884,13 +891,13 @@
     0,
     4,
     0,
-    3,
-    0
+    4,
+    1
    ],
    "2026-07-28": [
     2,
     2,
-    3,
+    2,
     0,
     2,
     0
@@ -898,17 +905,17 @@
    "2026-07-29": [
     1,
     3,
-    7,
+    6,
     1,
     1,
-    1
+    0
    ],
    "2026-07-30": [
     1,
     3,
     3,
     0,
-    5,
+    4,
     3
    ],
    "2026-07-31": [
@@ -917,7 +924,7 @@
     6,
     1,
     0,
-    7
+    5
    ],
    "2026-08-01": [
     1,
@@ -933,22 +940,22 @@
     1,
     0,
     0,
-    1
+    2
    ],
    "2026-08-03": [
     0,
     2,
-    1,
+    2,
     0,
     2,
-    3
+    4
    ],
    "2026-08-04": [
     1,
     0,
-    1,
     0,
-    1,
+    0,
+    0,
     1
    ]
   },
@@ -956,15 +963,15 @@
    "2026-07-22": [
     0,
     0,
-    3,
+    5,
     0,
-    1,
+    0,
     0
    ],
    "2026-07-23": [
     0,
     0,
-    3,
+    1,
     0,
     0,
     0
@@ -977,13 +984,21 @@
     0,
     0
    ],
+   "2026-07-26": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
+   ],
    "2026-07-27": [
     0,
     0,
-    2,
+    1,
     0,
     1,
-    0
+    1
    ],
    "2026-07-28": [
     2,
@@ -996,17 +1011,17 @@
    "2026-07-29": [
     1,
     1,
-    2,
+    1,
     0,
     1,
-    1
+    0
    ],
    "2026-07-30": [
     1,
     0,
     1,
     0,
-    2,
+    1,
     1
    ],
    "2026-07-31": [
@@ -1030,8 +1045,8 @@
     1,
     1,
     0,
-    2,
-    0
+    1,
+    1
    ]
   },
   "liConnAll": {
@@ -1040,7 +1055,7 @@
     0,
     0,
     0,
-    5,
+    3,
     0
    ],
    "2026-07-22": [
@@ -1060,7 +1075,7 @@
     0
    ],
    "2026-07-24": [
-    1,
+    0,
     0,
     0,
     0,
@@ -1068,35 +1083,35 @@
     0
    ],
    "2026-07-27": [
-    1,
     0,
     0,
     0,
-    25,
+    0,
+    24,
     0
    ],
    "2026-07-28": [
     6,
     9,
-    8,
+    7,
     0,
-    21,
-    0
+    18,
+    1
    ],
    "2026-07-29": [
     0,
     0,
     3,
     1,
-    6,
-    9
+    5,
+    7
    ],
    "2026-07-30": [
-    4,
+    3,
     0,
     17,
     3,
-    0,
+    2,
     7
    ],
    "2026-07-31": [
@@ -1105,7 +1120,7 @@
     2,
     0,
     0,
-    20
+    19
    ],
    "2026-08-03": [
     0,
@@ -1114,6 +1129,14 @@
     0,
     2,
     9
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    2,
+    0,
+    0,
+    0
    ]
   },
   "liConnDeal": {
@@ -1122,7 +1145,7 @@
     0,
     0,
     0,
-    4,
+    2,
     0
    ],
    "2026-07-22": [
@@ -1141,20 +1164,12 @@
     0,
     0
    ],
-   "2026-07-24": [
-    1,
-    0,
-    0,
-    0,
-    0,
-    0
-   ],
    "2026-07-27": [
-    1,
     0,
     0,
     0,
-    24,
+    0,
+    23,
     0
    ],
    "2026-07-28": [
@@ -1162,23 +1177,23 @@
     8,
     5,
     0,
-    18,
-    0
+    16,
+    1
    ],
    "2026-07-29": [
     0,
     0,
-    0,
+    1,
     0,
     5,
-    7
+    5
    ],
    "2026-07-30": [
-    3,
+    2,
     0,
     2,
     3,
-    0,
+    2,
     3
    ],
    "2026-07-31": [
@@ -1195,6 +1210,14 @@
     0,
     0,
     2,
+    0
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    1,
+    0,
+    0,
     0
    ]
   },
@@ -1812,7 +1835,7 @@
   }
  },
  "last_run": "2026-08-04",
- "last_run_stamp": "04 Aug 2026, 08:58",
+ "last_run_stamp": "04 Aug 2026, 09:15",
  "leave": {
   "Bianca": [
    "2026-07-27",
