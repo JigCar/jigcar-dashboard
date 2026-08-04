@@ -168,6 +168,7 @@
    "groovin_toggle": "Chris toggled his Groovin connection off and on at midday. No invitation records or notes arrived as a result and nothing was deleted (note counts only grew). His 12 records all carry their original July send times",
    "groovin_unattributed": "none: every one of the 352 deduped events parsed a named rep out of the note body or title",
    "leave_today": "Bianca Monteiro is on booked paid time off today, so her row is expected to be quiet and she is not judged on it",
+   "linkedin_deal_audit": "audited 4 Aug evening: all 43 of today's invitation events were re-derived independently from the Attio records and reconciled event for event with the page. No event whose company holds an open deal was missed. One genuine undercount found and surfaced: a contact on the domainless duplicate company 'Vascor Transport Ltd' reads as no deal while the open VASCOR deal sits on 'VASCOR Logistics'. James's deal-associated LinkedIn today is largely 3PL outreach (ACERTUS, VASCOR), which counts because those hold open deals; that is the definition working, not a fault",
    "linkedin_source": "counted from the Attio invitation record on the person, unioned with the person-side Groovin notes on the person record id. Requests sent is a floor: Groovin only records sends to CRM-synced profiles, measured on Chris's own panel as 45 sent against 15 arriving. Connections made is complete. Toggling the Groovin connection off and on was tried today and backfills nothing; widening a seat's floor means syncing more profiles in Groovin"
   },
   "seats": {
@@ -202,7 +203,7 @@
     "partial"
    ]
   },
-  "updated": "04 Aug 2026, 19:06",
+  "updated": "04 Aug 2026, 19:16",
   "workspace": [
    {
     "name": "Attio",
@@ -310,6 +311,7 @@
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted carries a sender referenced by workspace-member id, so nothing is guessed",
   "li_connects_attributed_by": "the Attio invitation record on the person, whose sender is a workspace-member reference; no name parsing and no cadence-task proxy",
+  "li_join_gaps_note": "55 LinkedIn contacts this quarter carry a 'no deal' verdict that is a repairable data gap rather than a fact: the contact has no company on the person record, or the company record has no domain so it cannot join to a deal that may exist under a duplicate. Found live: an invitation to a contact on 'Vascor Transport Ltd' (no domain) read as no deal while the open VASCOR deal sat on 'VASCOR Logistics'. Repairing means adding the domain or merging the duplicate company in Attio. Affected: Rupert x30, James x16, Elliott x6, Luke x2, Chris x1.",
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. That record holds only the LAST invitation per contact, so the person-side Groovin notes are unioned in, joined on the person record id; this quarter that recovers 17 sent and 8 accepted, giving 208 sent in total. REQUESTS SENT IS A FLOOR ON EVERY SEAT: Groovin records an invitation in Attio only for a profile it syncs with the CRM, and a send to an unsynced profile never arrives. Measured on 4 Aug 2026 from a seat's own Groovin activity panel: Chris's panel showed 45 invitations sent while Attio held 15, so a low figure in this column is evidence about profile sync, not about effort. Connections made arrive complete, because an acceptance creates and pairs the CRM contact: the same panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date each message individually.",
   "linkedin_notes_covered_from": "2026-07-14",
@@ -1981,7 +1983,7 @@
   }
  },
  "last_run": "2026-08-04",
- "last_run_stamp": "04 Aug 2026, 19:06",
+ "last_run_stamp": "04 Aug 2026, 19:16",
  "leave": {
   "Bianca": [
    "2026-07-27",

@@ -773,6 +773,21 @@ coverage = {
         "Groovin has since synced."),
     "tasks_dated_by": "completed_at from the Attio tasks API",
     "li_connects_attributed_by": LI_ATTRIBUTION,
+    # A "no deal" verdict that is a data gap, not a fact: the contact has no company
+    # link, or sits on a company record with no domain, so it cannot join to a deal
+    # even when one exists under a duplicate record. Surfaced for repair, per spec.
+    **({"li_join_gaps_note": (
+        "{n} LinkedIn contacts this quarter carry a 'no deal' verdict that is a repairable data "
+        "gap rather than a fact: the contact has no company on the person record, or the company "
+        "record has no domain so it cannot join to a deal that may exist under a duplicate. "
+        "Found live: an invitation to a contact on 'Vascor Transport Ltd' (no domain) read as no "
+        "deal while the open VASCOR deal sat on 'VASCOR Logistics'. Repairing means adding the "
+        "domain or merging the duplicate company in Attio. Affected: {who}."
+    ).format(n=len(_inv.get("join_gaps") or []),
+             who=", ".join(f"{r} x{c}" for r, c in sorted(
+                 collections.Counter(g["rep"] for g in _inv.get("join_gaps") or []).items(),
+                 key=lambda kv: -kv[1])))}
+       if _inv.get("join_gaps") else {}),
     # Built from the pull, never asserted. This read "none: every invitation ... is
     # attributed" as a frozen sentence, and on 3 Aug 2026 one invitation body failed
     # to fetch and went unattributed, so the page would have claimed full attribution

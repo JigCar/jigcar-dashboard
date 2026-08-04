@@ -210,6 +210,13 @@ events = {}
 unattributed = collections.Counter()
 attr_counts = {k: collections.Counter() for k in ATTR}
 attr_names = collections.defaultdict(set)      # (rep, kind) -> contact names already counted
+# Contacts whose "no deal" verdict is a REPAIRABLE data gap rather than a fact: the
+# person has no company link, or the company record has no domain. A contact on a
+# domainless duplicate of a company that holds an open deal reads as "no deal" and
+# silently under-reports the sender, so these are surfaced for repair, never inferred.
+# Found live on 4 Aug 2026: Jon Flynn sat on "Vascor Transport Ltd" (no domain) while
+# James's open deal sat on "VASCOR Logistics" (vascor.com), costing James one (deal).
+join_gaps = []
 for kind, (ts_attr, actor_attr) in ATTR.items():
     for r in page_people(ts_attr):
         vals = r["values"]
@@ -226,12 +233,23 @@ for kind, (ts_attr, actor_attr) in ATTR.items():
         rec_id = r["id"]["record_id"]
         nm = _v(vals, "name") or {}
         comp = _v(vals, "company") or {}
+        st = person_state(rec_id, comp.get("target_record_id"))
         events[(rep, kind, rec_id)] = {
             "date": ts["value"][:10], "rep": rep, "kind": kind,
-            "state": person_state(rec_id, comp.get("target_record_id")), "src": "attribute"}
+            "state": st, "src": "attribute"}
         attr_counts[kind][rep] += 1
         if nm.get("full_name"):
             attr_names[(rep, kind)].add(nm["full_name"].strip().lower())
+        if st is None:
+            cid = comp.get("target_record_id")
+            cinfo = companies.get(cid, {}) if cid else {}
+            if not cid:
+                join_gaps.append({"contact": nm.get("full_name"), "rep": rep, "kind": kind,
+                                  "date": ts["value"][:10], "reason": "no company on the person record"})
+            elif not cinfo.get("domains"):
+                join_gaps.append({"contact": nm.get("full_name"), "rep": rep, "kind": kind,
+                                  "date": ts["value"][:10], "company": cinfo.get("name"),
+                                  "reason": "company record has no domain, so it cannot join to a deal"})
 
 # The notes are UNIONED IN, joined to the attribute by PERSON RECORD ID.
 #
@@ -385,6 +403,7 @@ json.dump({"sentAll": sent_all, "sentDeal": sent_deal,
                       "real send time and id-based attribution; the notes recover events "
                       "whose attribute was overwritten by a later invitation to the same "
                       "contact, which would otherwise lose the earlier sender's credit."),
+           "join_gaps": join_gaps,
            "events": len(events)},
           open(f"{SP}/raw/li_invites.json", "w"), indent=1)
 json.dump({"all": msg_all, "deal": msg_deal,
@@ -421,3 +440,7 @@ for lbl, d in (("sent", sent_all), ("sent(deal)", sent_deal), ("accepted", acc_a
                ("acc(deal)", acc_deal), ("msgs", msg_all), ("msgs(deal)", msg_deal)):
     print(f"{lbl:9}" + "".join(f"{x:>9}" for x in tot(d)))
 print("covered from:", dates[0] if dates else None, "to", dates[-1] if dates else None)
+if join_gaps:
+    print(f"repairable join gaps ({len(join_gaps)}): a 'no deal' verdict that is a data gap, not a fact")
+    for g in join_gaps[-8:]:
+        print(f"   {g['date']} {g['rep']:8} {str(g['contact'])[:26]:26} {g.get('company') or '-':28.28} {g['reason']}")
