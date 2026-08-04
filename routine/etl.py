@@ -817,13 +817,16 @@ coverage = {
         "than by parsing prose. That record holds only the LAST invitation per contact, so the "
         "person-side Groovin notes are unioned in, joined on the person record id; this quarter that "
         "recovers {rec} sent and {reca} accepted, giving {tot} sent in total. "
-        "REQUESTS SENT IS A FLOOR ON EVERY SEAT: Groovin records an invitation in Attio only for a "
-        "profile it syncs with the CRM, and a send to an unsynced profile never arrives. Measured on "
-        "4 Aug 2026 from a seat's own Groovin activity panel: Chris's panel showed 45 invitations "
-        "sent while Attio held 15, so a low figure in this column is evidence about profile sync, "
-        "not about effort. Connections made arrive complete, because an acceptance creates and pairs "
-        "the CRM contact: the same panel showed 7 accepted against 7 in Attio. Messages come from "
-        "the chat notes, which date each message individually."
+        "REQUESTS SENT IS A FLOOR ON EVERY SEAT, measured twice on 4 Aug 2026. Chris's own Groovin "
+        "panel showed 45 invitations sent while Attio held 15. Elliott's account sent 9 in one day "
+        "and Attio recorded 2 for him: four contacts were unpaired and wrote nothing, two were "
+        "paired and still wrote nothing, and one was credited to Luke, whose seat had invited the "
+        "same contact earlier the same day and the single last-invitation field can hold only one "
+        "sender. So a low figure in this column is evidence about Groovin-to-CRM sync, never about "
+        "effort, and when two seats work the same contact only one gets the credit. Connections "
+        "made arrive complete, because an acceptance creates and pairs the CRM contact: Chris's "
+        "panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date "
+        "each message individually."
     ).format(rec=_inv.get("reconciliation", {}).get("sent", {}).get("recovered_from_notes", 0),
              reca=_inv.get("reconciliation", {}).get("accepted", {}).get("recovered_from_notes", 0),
              tot=sum(sum(v) for v in li_conn_all.values())),
