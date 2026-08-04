@@ -164,43 +164,44 @@
    "allo_reconciled": "allo_list_users confirmed 5 active seats. 28 call records pulled and regrouped per day, reconciled against allo_get_team_analytics for 1 Jul to 4 Aug with no discrepancy: Luke 12, Elliott 9, James 5, Chris 2, Bianca 0. No call has been logged yet today; the last was on 3 Aug.",
    "email_window": "this run paged 4 Aug end to end and carried forward 11 earlier days. The four emails sent today are all inbound, so today is a real zero against a stated window, not an absence. 3 Aug is the previous run's figure, paged to 18:51 that evening",
    "granola_today": "no meeting written up yet today; the dashboard's Today column is genuinely empty rather than unpulled",
+   "groovin_toggle": "Chris toggled his Groovin connection off and on at midday. No invitation records or notes arrived as a result and nothing was deleted (note counts only grew). His 12 records all carry their original July send times",
    "groovin_unattributed": "none: every one of the 352 deduped events parsed a named rep out of the note body or title",
    "leave_today": "Bianca Monteiro is on booked paid time off today, so her row is expected to be quiet and she is not judged on it",
-   "linkedin_source": "counted from the Attio invitation record on the person, unioned with the person-side Groovin notes on the person record id. The record alone undercounts because it keeps only the LAST invitation per contact: re-inviting a contact silently erased the earlier sender, which cost Chris 3 of 15 and Elliott 8 of 64. The Groovin connector authenticates as one person's own LinkedIn account and is never used to measure a colleague"
+   "linkedin_source": "counted from the Attio invitation record on the person, unioned with the person-side Groovin notes on the person record id. Requests sent is a floor: Groovin only records sends to CRM-synced profiles, measured on Chris's own panel as 45 sent against 15 arriving. Connections made is complete. Toggling the Groovin connection off and on was tried today and backfills nothing; widening a seat's floor means syncing more profiles in Groovin"
   },
   "seats": {
    "Bianca": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Chris": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Elliott": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "James": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Luke": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Rupert": [
     "na",
     "partial",
-    "ok"
+    "partial"
    ]
   },
-  "updated": "04 Aug 2026, 10:12",
+  "updated": "04 Aug 2026, 10:33",
   "workspace": [
    {
     "name": "Attio",
@@ -219,8 +220,8 @@
    },
    {
     "name": "Groovin",
-    "note": "LinkedIn reaches Attio as an invitation record on the person plus a note. This run counted 179 invitations sent and 131 accepted: 163 and 123 from the records, plus 16 and 8 recovered from the person-side notes where a later invitation to the same contact had overwritten the record and the earlier sender would have lost the credit",
-    "status": "ok"
+    "note": "records an invitation in Attio only for a profile it syncs with the CRM, so requests sent is a floor on every seat. Evidenced 4 Aug from Chris's own Groovin activity panel: 45 invitations sent and 23 active profile syncs against 15 reaching Attio. Acceptances arrive complete because accepting creates and pairs the contact: 7 on his panel, 7 in Attio. This run counted 179 sent (163 records + 16 recovered from person-side notes) and 131 accepted",
+    "status": "partial"
    }
   ]
  },
@@ -232,16 +233,16 @@
   "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-04T00:00:00Z to 2026-08-04T06:27:05Z and carried forward 11 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "210 domains resolve to a deal; 131 of 138 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "210 domains resolve to a deal; 139 of 146 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-08-04",
   "join_coverage": {
-   "domains_resolving": 210,
-   "joinable": 131,
+   "domains_resolving": 218,
+   "joinable": 139,
    "joinable_pct_by_value": 100.0,
-   "joinable_value": 2026880.0,
-   "open_deals": 138,
-   "pipeline_value": 2026880.0,
+   "joinable_value": 2027680.0,
+   "open_deals": 146,
+   "pipeline_value": 2027680.0,
    "unjoinable": 7,
    "unjoinable_deals": [
     {
@@ -301,7 +302,7 @@
   "li_connect_gap": "none: every invitation sent and accepted carries a sender referenced by workspace-member id, so nothing is guessed",
   "li_connects_attributed_by": "the Attio invitation record on the person, whose sender is a workspace-member reference; no name parsing and no cadence-task proxy",
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
-  "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. That record holds only the LAST invitation per contact, so when a contact is invited again the earlier sender loses the credit; the person-side Groovin notes are therefore unioned in, joined on the person record id so no name matching is involved. This quarter that recovers 16 invitations sent and 8 accepted that the record alone had overwritten, giving 179 sent in total. Messages come from the chat notes, which date each message individually.",
+  "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. That record holds only the LAST invitation per contact, so the person-side Groovin notes are unioned in, joined on the person record id; this quarter that recovers 16 sent and 8 accepted, giving 179 sent in total. REQUESTS SENT IS A FLOOR ON EVERY SEAT: Groovin records an invitation in Attio only for a profile it syncs with the CRM, and a send to an unsynced profile never arrives. Measured on 4 Aug 2026 from a seat's own Groovin activity panel: Chris's panel showed 45 invitations sent while Attio held 15, so a low figure in this column is evidence about profile sync, not about effort. Connections made arrive complete, because an acceptance creates and pairs the CRM contact: the same panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date each message individually.",
   "linkedin_notes_covered_from": "2026-07-14",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
   "stage_diff": [
@@ -317,6 +318,26 @@
    },
    {
     "date": "2026-08-04",
+    "from": "Proposal",
+    "kind": "progressed",
+    "name": "FSG Transport",
+    "owner": "Luke",
+    "record_id": "3863d284",
+    "to": "Contracts",
+    "value": 8000.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Proposal",
+    "kind": "progressed",
+    "name": "CarSupermarket.com",
+    "owner": "Elliott",
+    "record_id": "3c5d9298",
+    "to": "Contracts",
+    "value": 90000.0
+   },
+   {
+    "date": "2026-08-04",
     "from": "Buy Signal",
     "kind": "progressed",
     "name": "Group 1 Automotive - Buy Signal (Kia Hub City Lubbock TX)",
@@ -329,9 +350,59 @@
     "date": "2026-08-04",
     "from": "Buy Signal",
     "kind": "progressed",
+    "name": "Critz Auto Group",
+    "owner": "Luke",
+    "record_id": "5067f870",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Hennessy Automobile Companies - Buy Signal (Transportation Manager ops signal)",
+    "owner": "Luke",
+    "record_id": "7fd696e4",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Suntrup Automotive Group",
+    "owner": "Luke",
+    "record_id": "860793a4",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Anderson Automotive Group",
+    "owner": "Luke",
+    "record_id": "8ff0571f",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
     "name": "Step One Automotive Group - Buy Signal (Logistics Coordinator hire)",
     "owner": "Elliott",
     "record_id": "9812f9d1",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Krause Auto Group",
+    "owner": "Luke",
+    "record_id": "a1bb94f0",
     "to": "Qualification",
     "value": 0.0
    },
@@ -364,9 +435,19 @@
     "record_id": "c5e0823a",
     "to": "Qualification",
     "value": 0.0
+   },
+   {
+    "date": "2026-08-04",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Tony White Group",
+    "owner": "Luke",
+    "record_id": "ce85471d",
+    "to": "Qualification",
+    "value": 0.0
    }
   ],
-  "stage_moves_accumulated": 48,
+  "stage_moves_accumulated": 56,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -548,6 +629,14 @@
     1,
     1,
     1,
+    0
+   ],
+   "2026-08-04": [
+    4,
+    1,
+    1,
+    1,
+    2,
     0
    ]
   },
@@ -1622,10 +1711,10 @@
    ],
    "2026-08-04": [
     0,
+    7,
     0,
     0,
-    0,
-    6,
+    7,
     0
    ]
   },
@@ -1839,11 +1928,19 @@
     0,
     1,
     0
+   ],
+   "2026-08-04": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0
    ]
   }
  },
  "last_run": "2026-08-04",
- "last_run_stamp": "04 Aug 2026, 10:12",
+ "last_run_stamp": "04 Aug 2026, 10:33",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -2385,6 +2482,26 @@
   },
   {
    "date": "2026-08-04",
+   "from": "Proposal",
+   "kind": "progressed",
+   "name": "FSG Transport",
+   "owner": "Luke",
+   "record_id": "3863d284",
+   "to": "Contracts",
+   "value": 8000.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Proposal",
+   "kind": "progressed",
+   "name": "CarSupermarket.com",
+   "owner": "Elliott",
+   "record_id": "3c5d9298",
+   "to": "Contracts",
+   "value": 90000.0
+  },
+  {
+   "date": "2026-08-04",
    "from": "Buy Signal",
    "kind": "progressed",
    "name": "Group 1 Automotive - Buy Signal (Kia Hub City Lubbock TX)",
@@ -2397,9 +2514,59 @@
    "date": "2026-08-04",
    "from": "Buy Signal",
    "kind": "progressed",
+   "name": "Critz Auto Group",
+   "owner": "Luke",
+   "record_id": "5067f870",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Hennessy Automobile Companies - Buy Signal (Transportation Manager ops signal)",
+   "owner": "Luke",
+   "record_id": "7fd696e4",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Suntrup Automotive Group",
+   "owner": "Luke",
+   "record_id": "860793a4",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Anderson Automotive Group",
+   "owner": "Luke",
+   "record_id": "8ff0571f",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
    "name": "Step One Automotive Group - Buy Signal (Logistics Coordinator hire)",
    "owner": "Elliott",
    "record_id": "9812f9d1",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Krause Auto Group",
+   "owner": "Luke",
+   "record_id": "a1bb94f0",
    "to": "Qualification",
    "value": 0.0
   },
@@ -2430,6 +2597,16 @@
    "name": "McGrath Family of Dealerships",
    "owner": "Elliott",
    "record_id": "c5e0823a",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-04",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Tony White Group",
+   "owner": "Luke",
+   "record_id": "ce85471d",
    "to": "Qualification",
    "value": 0.0
   }
@@ -2707,7 +2884,7 @@
   },
   "2026-08-04": {
    "Buy Signal": [
-    23,
+    25,
     0.0
    ],
    "Churn": [
@@ -2715,7 +2892,7 @@
     54804.0
    ],
    "Closed Lost": [
-    20,
+    21,
     117000.0
    ],
    "Closed Won": [
@@ -2727,8 +2904,8 @@
     0.0
    ],
    "Contracts": [
-    4,
-    231600.0
+    6,
+    329600.0
    ],
    "Demo": [
     19,
@@ -2747,11 +2924,11 @@
     2079600.0
    ],
    "Proposal": [
-    10,
-    508800.0
+    8,
+    411600.0
    ],
    "Qualification": [
-    65,
+    71,
     359000.0
    ],
    "Trial": [
@@ -2956,6 +3133,11 @@
    "stage": "Nurture",
    "value": 0.0
   },
+  "1d43996c": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "1e58853c": {
    "owner": "Elliott",
    "stage": "Nurture",
@@ -3088,8 +3270,8 @@
   },
   "3863d284": {
    "owner": "Luke",
-   "stage": "Proposal",
-   "value": 7200.0
+   "stage": "Contracts",
+   "value": 8000.0
   },
   "3a825192": {
    "owner": "Elliott",
@@ -3108,7 +3290,7 @@
   },
   "3c5d9298": {
    "owner": "Elliott",
-   "stage": "Proposal",
+   "stage": "Contracts",
    "value": 90000.0
   },
   "3e20a392": {
@@ -3188,7 +3370,7 @@
   },
   "5067f870": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "51769b24": {
@@ -3326,6 +3508,11 @@
    "stage": "Qualification",
    "value": 0.0
   },
+  "6593e64d": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "65f02c4c": {
    "owner": "Luke",
    "stage": "Nurture",
@@ -3391,6 +3578,11 @@
    "stage": "Contacted - no outcome",
    "value": 0.0
   },
+  "74f759da": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "75f9bc2a": {
    "owner": "Luke",
    "stage": "Demo",
@@ -3428,7 +3620,7 @@
   },
   "7fd696e4": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "8009f9a8": {
@@ -3473,7 +3665,7 @@
   },
   "860793a4": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "8679a4fb": {
@@ -3538,7 +3730,7 @@
   },
   "8ff0571f": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "90b51954": {
@@ -3584,6 +3776,11 @@
   "94f0b301": {
    "owner": "Luke",
    "stage": "Nurture",
+   "value": 0.0
+  },
+  "965ec95c": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "9812f9d1": {
@@ -3671,6 +3868,11 @@
    "stage": "New Lead",
    "value": 20000.0
   },
+  "a0b5f0b3": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "a0c9113f": {
    "owner": "Elliott",
    "stage": "Nurture",
@@ -3683,7 +3885,7 @@
   },
   "a1bb94f0": {
    "owner": "Luke",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "a2223c13": {
@@ -3881,6 +4083,11 @@
    "stage": "Nurture",
    "value": 60000.0
   },
+  "c2a8c5b9": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "c3c613a7": {
    "owner": "Bianca",
    "stage": "Qualification",
@@ -3953,6 +4160,11 @@
   },
   "ce85471d": {
    "owner": "Luke",
+   "stage": "Qualification",
+   "value": 0.0
+  },
+  "ce921828": {
+   "owner": "Bianca",
    "stage": "Buy Signal",
    "value": 0.0
   },
@@ -4151,6 +4363,11 @@
    "stage": "Buy Signal",
    "value": 0.0
   },
+  "ef1721a6": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "f05e16a4": {
    "owner": "Elliott",
    "stage": "Closed Won",
@@ -4205,6 +4422,11 @@
    "owner": "Luke",
    "stage": "Nurture",
    "value": 42000.0
+  },
+  "fa31f6ec": {
+   "owner": "James",
+   "stage": "Closed Lost",
+   "value": 0.0
   },
   "fad4e30f": {
    "owner": "Rupert",

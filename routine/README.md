@@ -103,12 +103,26 @@ interpreting connectivity status. It never invents a metric value.
 
   Crucially it is also the ONLY LinkedIn source that covers the whole team. The Groovin
   connector authenticates as one person's own LinkedIn account, so it can never see a
-  colleague's activity. **Do not compare a Groovin figure against an Attio figure.** A
-  build did exactly that and published a false claim: it read 122 pending invitations
-  off the Groovin connector, set them against 61 recorded in Attio, and concluded every
-  LinkedIn column was a floor understating by half. Both halves were wrong. The 122 were
-  one person's own account, and LinkedIn dates older pending invitations only to the
-  week, so weeks of earlier outreach bunched into the window. That claim is withdrawn.
+  colleague's activity. **Do not compare a Groovin connector figure against an Attio
+  figure.** A build did exactly that and published a claim on invalid evidence: it read
+  122 pending invitations off the connector, set them against 61 recorded in Attio, and
+  concluded every LinkedIn column was a floor. The 122 were one person's own account,
+  and LinkedIn dates older pending invitations only to the week, so weeks of earlier
+  outreach bunched into the window. That measurement was withdrawn.
+- **Requests sent IS a floor on every seat, and the valid evidence is a seat's own
+  Groovin "Sync status" panel**, which is per-account and authoritative. On 4 Aug 2026
+  Chris's panel showed 45 invitations sent and 23 active profile synchronizations while
+  Attio held 15 for him: two thirds of his sends never reached the CRM. The mechanism is
+  that Groovin writes the invitation into Attio only for a profile it syncs with the
+  CRM, so a send to an unsynced profile is never recorded. His acceptances matched
+  exactly (7 panel, 7 Attio), because an acceptance creates and pairs the CRM contact,
+  so CONNECTIONS MADE is treated as complete while REQUESTS SENT is a labelled floor.
+  Toggling the Groovin connection off and on does not backfill the missing sends (it
+  was tried that day; no records or notes arrived), and toggling off deletes imported
+  conversation notes, so do not advise it as a fix. Widening a seat's floor means
+  syncing more profiles in Groovin. The withdrawn-then-reinstated history above is kept
+  deliberately: the mechanism was right the first time, the measurement was not, and
+  the page must never state the caveat on connector-derived evidence again.
 - **The notes are a cross-check and are deliberately not merged into the count.**
   Merging was tried and rejected: matching a note to a person means comparing a name
   parsed out of prose against the record's `full_name`, and that match is fragile

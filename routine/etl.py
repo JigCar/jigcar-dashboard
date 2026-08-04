@@ -775,27 +775,34 @@ coverage = {
     "li_connect_gap": LI_UNATTRIBUTED_NOTE,
     "li_accepted_note": ("connections made lag the invitation that earned them, often by weeks, so a high "
                          "accepted count reflects earlier outreach rather than work done in the period"),
-    # Two independent Attio sources for the same events, published side by side rather
-    # than merged, because merging them meant matching a name parsed out of prose
-    # against a record's full_name and that invented events out of punctuation.
-    #
-    # An earlier build of this note asserted that every LinkedIn column was a floor,
-    # on the strength of comparing 122 pending invitations from the Groovin connector
-    # against 61 recorded in Attio. That comparison was invalid and the claim is
-    # withdrawn: the Groovin connector authenticates as ONE person's own LinkedIn
-    # account, so it says nothing about a colleague, and LinkedIn dates older pending
-    # invitations only to the week, which bunched older outreach into the window. The
-    # two Attio sources agree to within 8 events across five weeks, which is the real
-    # measure of confidence here.
+    # The floor caveat below has been asserted, withdrawn, and re-instated, and the
+    # history matters so it is not weakened again:
+    #   - First asserted on evidence that was invalid: 122 pending invitations read off
+    #     the Groovin CONNECTOR, which authenticates as one person's own LinkedIn and
+    #     says nothing about a colleague, with week-granular dates bunching old
+    #     outreach into the window. Withdrawn for that reason.
+    #   - Re-instated on 4 Aug 2026 on evidence that is valid: a seat's own Groovin
+    #     "Your activity" panel, which is per-account and authoritative. Chris's panel
+    #     showed 45 invitations sent and 23 active profile synchronizations while
+    #     Attio held 15 sent for him, so two thirds of his sends never reached the
+    #     CRM. His acceptances matched exactly, 7 in the panel and 7 in Attio, because
+    #     an acceptance creates and pairs the CRM contact.
+    # Mechanism: Groovin writes an invitation into Attio only for a profile it syncs
+    # with the CRM. A send to an unsynced profile happens on LinkedIn and is never
+    # recorded, so SENT is a floor on every seat, while ACCEPTED arrives complete.
     "li_source_note": (
         "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio "
         "person, which carries the real send time and names the sender by workspace-member id rather "
-        "than by parsing prose. That record holds only the LAST invitation per contact, so when a "
-        "contact is invited again the earlier sender loses the credit; the person-side Groovin notes "
-        "are therefore unioned in, joined on the person record id so no name matching is involved. "
-        "This quarter that recovers {rec} invitations sent and {reca} accepted that the record alone "
-        "had overwritten, giving {tot} sent in total. Messages come from the chat notes, which date "
-        "each message individually."
+        "than by parsing prose. That record holds only the LAST invitation per contact, so the "
+        "person-side Groovin notes are unioned in, joined on the person record id; this quarter that "
+        "recovers {rec} sent and {reca} accepted, giving {tot} sent in total. "
+        "REQUESTS SENT IS A FLOOR ON EVERY SEAT: Groovin records an invitation in Attio only for a "
+        "profile it syncs with the CRM, and a send to an unsynced profile never arrives. Measured on "
+        "4 Aug 2026 from a seat's own Groovin activity panel: Chris's panel showed 45 invitations "
+        "sent while Attio held 15, so a low figure in this column is evidence about profile sync, "
+        "not about effort. Connections made arrive complete, because an acceptance creates and pairs "
+        "the CRM contact: the same panel showed 7 accepted against 7 in Attio. Messages come from "
+        "the chat notes, which date each message individually."
     ).format(rec=_inv.get("reconciliation", {}).get("sent", {}).get("recovered_from_notes", 0),
              reca=_inv.get("reconciliation", {}).get("accepted", {}).get("recovered_from_notes", 0),
              tot=sum(sum(v) for v in li_conn_all.values())),
