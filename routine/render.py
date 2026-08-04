@@ -221,6 +221,8 @@ HEAD = r'''<!DOCTYPE html>
     </div>
   </div>
 
+  <div class="note warn" id="staleBanner" style="display:none"></div>
+
   <div class="conn" id="conn"></div>
 
   <div class="ask">
@@ -1002,6 +1004,30 @@ function renderConn(){
       <span><span class="cdot na"></span> no account</span>
     </div>`;
   document.getElementById('lastRefresh').textContent=RUN_STAMP;
+
+/* Staleness notice. This page is a static build and never re-fetches its data, so a
+   tab left open all morning keeps showing the figures it was built with, which is
+   exactly how a stale number gets read as a current one.
+
+   This compares BUILD STAMPS and nothing else. It fetches build.json, which carries
+   only the stamp of whatever is published on main, and if that differs from the stamp
+   baked into this page it says so and asks for a reload. It never refetches a metric,
+   never restamps the page, and on any failure it stays silent rather than claim
+   anything: a page that cannot reach GitHub knows nothing about its own freshness. */
+  (function(){
+    var el=document.getElementById('staleBanner');
+    if(!el||typeof fetch!=='function') return;
+    fetch('build.json?t='+Date.now(),{cache:'no-store'})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(d){
+        if(!d||!d.stamp||d.stamp===RUN_STAMP) return;
+        el.innerHTML='<strong>You are looking at an older build.</strong> This page was built '
+          +RUN_STAMP+' and a newer one was published '+d.stamp
+          +'. Reload to see it. Nothing on this page has refreshed by itself.';
+        el.style.display='';
+      })
+      .catch(function(){});
+  })();
 }
 
 function renderCoverage(){
@@ -1532,4 +1558,10 @@ subs={
 for k,v in subs.items(): out=out.replace(k,v)
 assert "__" not in out.replace("__proto__",""), [l for l in out.split("\n") if "__" in l][:3]
 open(f"{SP}/build/index-18.html","w",encoding="utf-8").write(out)
-print("written bytes:",len(out.encode()))
+# The stamp of this build, on its own, so a page that has been open for hours can ask
+# what is published without downloading the whole 148KB dashboard to find out.
+json.dump({"stamp":p["RUN_STAMP"],"date":p["RUN_DATE"],
+           "note":"the build stamp published on main. Used only so an open tab can tell "
+                  "the reader it is stale. It carries no metric data."},
+          open(f"{SP}/build/build.json","w"),indent=1)
+print("written bytes:",len(out.encode()),"| build.json stamp:",p["RUN_STAMP"])
