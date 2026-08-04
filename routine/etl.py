@@ -768,6 +768,22 @@ coverage = {
     "li_connect_gap": LI_UNATTRIBUTED_NOTE,
     "li_accepted_note": ("connections made lag the invitation that earned them, often by weeks, so a high "
                          "accepted count reflects earlier outreach rather than work done in the period"),
+    # Measured 4 Aug 2026 against LinkedIn itself, not inferred. Groovin writes the
+    # invitation into Attio only for a profile PAIRED to a CRM contact with sync on;
+    # an invitation to an unpaired profile is sent on LinkedIn and never reaches Attio,
+    # so it cannot be counted here. On the one seat this session can read directly,
+    # Elliott's, LinkedIn held 122 still-pending sent invitations since 14 Jul of which
+    # only 57 were paired, while Attio recorded 61 sent. Every LinkedIn column is
+    # therefore a floor, and it is a floor that bites hardest on whoever prospects
+    # people who are not in Attio yet. Never read a low figure here as low effort.
+    "li_pairing_note": (
+        "LinkedIn counts only invitations to contacts Groovin has paired to an Attio record with "
+        "sync enabled. An invitation to an unpaired profile is sent on LinkedIn but writes no Attio "
+        "note, so it cannot be counted. Measured on 4 Aug 2026 against the one seat this routine can "
+        "read directly: LinkedIn held 122 still-pending sent invitations since 14 Jul, of which 57 "
+        "were paired, while Attio recorded 61 sent. So every LinkedIn column here is a floor rather "
+        "than a total, and it understates most for whoever prospects contacts who are not yet in "
+        "Attio. A low LinkedIn figure is evidence about Groovin pairing, not about effort."),
     "calls_source": (f"Allo per-seat call records ({_calls['total']} calls "
                      f"{_calls['covered_from']} to {_calls['covered_to']}); Rupert has no Allo account, "
                      "so his calls are always 0 and his seat reads na"),

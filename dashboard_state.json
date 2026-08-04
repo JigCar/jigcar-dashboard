@@ -160,10 +160,12 @@
    "Bianca_allo": "seat active in allo_list_users, 0 calls in the period",
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
-   "Rupert_groovin": "live: LinkedIn invitations and messages are attributed to him from the note body",
+   "Rupert_groovin": "live but partial like every seat: his invitations and messages are attributed from the note body, and only those to Groovin-paired contacts are recorded at all",
    "allo_reconciled": "allo_list_users confirmed 5 active seats. 28 call records pulled and regrouped per day, reconciled against allo_get_team_analytics for 1 Jul to 4 Aug with no discrepancy: Luke 12, Elliott 9, James 5, Chris 2, Bianca 0. No call has been logged yet today; the last was on 3 Aug.",
    "email_window": "this run paged 4 Aug end to end and carried forward 11 earlier days. The four emails sent today are all inbound, so today is a real zero against a stated window, not an absence. 3 Aug is the previous run's figure, paged to 18:51 that evening",
    "granola_today": "no meeting written up yet today; the dashboard's Today column is genuinely empty rather than unpulled",
+   "groovin_dating": "LinkedIn returns week-granular dates for older invitations, so LinkedIn events are dated by when Groovin recorded them. Day-level LinkedIn attribution is approximate beyond the last week or so and a single large day is more likely a sync catching up than a day's work",
+   "groovin_pairing": "the LinkedIn undercount is a Groovin pairing gap, not a parsing fault. All 597 invitation note bodies parsed and every one of the 352 deduped events carries a named rep, so nothing in Attio is being missed. What is missing never reached Attio. It bites hardest on whoever prospects contacts not yet in Attio, which is why Chris and Luke read lowest. To close it, pair those profiles in Groovin and enable sync",
    "groovin_unattributed": "none: every one of the 352 deduped events parsed a named rep out of the note body or title",
    "leave_today": "Bianca Monteiro is on booked paid time off today, so her row is expected to be quiet and she is not judged on it"
   },
@@ -171,35 +173,35 @@
    "Bianca": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Chris": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Elliott": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "James": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Luke": [
     "ok",
     "ok",
-    "ok"
+    "partial"
    ],
    "Rupert": [
     "na",
     "partial",
-    "ok"
+    "partial"
    ]
   },
-  "updated": "04 Aug 2026, 06:28",
+  "updated": "04 Aug 2026, 08:58",
   "workspace": [
    {
     "name": "Attio",
@@ -215,6 +217,11 @@
     "name": "Apollo",
     "note": "authenticated this run, profile returned; sends route via the connected mailboxes and are counted there, never separately",
     "status": "ok"
+   },
+   {
+    "name": "Groovin",
+    "note": "writes LinkedIn activity into Attio only for profiles paired to a CRM contact with sync enabled, so invitations to unpaired profiles are sent on LinkedIn and never recorded. Checked against LinkedIn on the one seat this routine can read directly: 122 still-pending sent invitations since 14 Jul, 57 of them paired, against 61 recorded in Attio. Every LinkedIn column is a floor",
+    "status": "partial"
    }
   ]
  },
@@ -295,6 +302,7 @@
   "li_connect_gap": "none: every invitation sent and accepted is attributed to a named rep from the note body, deduped across the person and company copies",
   "li_connects_attributed_by": "read from the Groovin note body; no cadence-task proxy is used",
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
+  "li_pairing_note": "LinkedIn counts only invitations to contacts Groovin has paired to an Attio record with sync enabled. An invitation to an unpaired profile is sent on LinkedIn but writes no Attio note, so it cannot be counted. Measured on 4 Aug 2026 against the one seat this routine can read directly: LinkedIn held 122 still-pending sent invitations since 14 Jul, of which 57 were paired, while Attio recorded 61 sent. So every LinkedIn column here is a floor rather than a total, and it understates most for whoever prospects contacts who are not yet in Attio. A low LinkedIn figure is evidence about Groovin pairing, not about effort.",
   "linkedin_notes_covered_from": "2026-07-21",
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
   "stage_diff": [
@@ -1804,7 +1812,7 @@
   }
  },
  "last_run": "2026-08-04",
- "last_run_stamp": "04 Aug 2026, 06:28",
+ "last_run_stamp": "04 Aug 2026, 08:58",
  "leave": {
   "Bianca": [
    "2026-07-27",

@@ -91,6 +91,27 @@ interpreting connectivity status. It never invents a metric value.
   kind) and the company side supplies the deal join.
 - Connections made lag the invitation that earned them, often by weeks, so a high
   accepted count reflects earlier outreach rather than work done in the period.
+- **Every LinkedIn column is a floor, because of a Groovin pairing gap.** Groovin
+  writes the invitation into Attio only for a profile PAIRED to a CRM contact with
+  sync enabled (see `toggle_linkedin_sync`: enabling is what "tracks the LinkedIn
+  invitation/connection state in the CRM"). An invitation to an unpaired profile is
+  sent on LinkedIn and never writes a note, so it cannot be counted. Measured 4 Aug
+  2026 against LinkedIn on the one seat this routine can read directly: 122
+  still-pending sent invitations since 14 Jul, of which 57 were paired, against 61
+  sent recorded in Attio. So the true figure is at least double the recorded one on
+  the BEST-covered seat.
+  This is not a parsing fault and must not be "fixed" in the parser: all 597
+  invitation bodies parse and every one of the 352 deduped events carries a named rep,
+  so nothing present in Attio is missed. What is missing never arrived. It understates
+  most for whoever prospects contacts who are not yet in Attio, which is why Chris and
+  Luke read lowest. Every Groovin seat therefore reads `partial`, never `ok`, and a low
+  LinkedIn figure is evidence about pairing rather than about effort. Closing it means
+  pairing those profiles in Groovin and enabling sync, which is a Groovin action, not
+  a change to this routine.
+- LinkedIn returns week-granular dates for older invitations, so LinkedIn events are
+  dated by when Groovin recorded them. Day-level LinkedIn attribution is approximate
+  beyond roughly the last week, and one unusually large day is more likely a sync
+  catching up than a day's work. Do not let LinkedIn drive a celebration trigger.
 - The stage diff RECORDS moves for every owner, including the back-book owners, and
   only the per-person scorecard columns are restricted to the six. An earlier build
   dropped non-scorecard owners before recording the move, which hid a £36,000 deal
