@@ -88,10 +88,25 @@ def z():
     return [0] * 6
 
 
+# Mailbox WARM-UP traffic is excluded from the per-person tally and counted separately.
+# On 4 Aug 2026 Luke's mailbox began emitting deliverability warm-up mail: subjects
+# machine-tagged "... - wbx abc", recipients gmail addresses with fabricated names, and
+# scripted replies arriving back from the same addresses. Counting it would have shown
+# Luke on 23 sends of which 15 were a bot, flattering a named person with work nobody
+# did and eventually firing the celebration spike on an artefact. The marker is the
+# tool's own machine tag, so the rule is mechanical, and the excluded count is written
+# to coverage so the exclusion is visible rather than silent.
+WARMUP_RE = re.compile(r"- wbx [a-z]{3}$")
+warmup_daily = collections.defaultdict(z)
+
 tot_daily = collections.defaultdict(z)
 split_daily = collections.defaultdict(lambda: {s: [0] * 6 for s in STATES})
 for (s, subj, sent), rc in sends.items():
     if s not in TEAM:
+        continue
+    if subj and WARMUP_RE.search(subj):
+        if sent[:10] >= FRESH_FROM:
+            warmup_daily[sent[:10]][REPS.index(TEAM[s])] += 1
         continue
     day = sent[:10]
     # Only days this run paged END TO END are recomputed. A page that stops
@@ -143,6 +158,10 @@ split_to = max(_split_days) if _split_days else None
 # and reported no window at all when a page held no team sends.
 stamps = sorted(paged_bounds) or sorted(k[2] for k in sends)
 out = {"by_day": by_day, "deal": deal, "cust": cust,
+       "warmup_by_day": {d: v for d, v in sorted(warmup_daily.items())},
+       "warmup_note": ("deliverability warm-up mail (machine-tagged '- wbx abc' subjects to "
+                       "synthetic recipients) is excluded from every per-person figure and "
+                       "counted here instead; it is bot traffic, not outreach"),
        "split_by_day": {d: v for d, v in sorted(split_daily.items())},
        "split_from": split_from, "split_to": split_to,
        "paged_days": sorted(paged_days),
@@ -156,6 +175,11 @@ out = {"by_day": by_day, "deal": deal, "cust": cust,
 json.dump(out, open(f"{SP}/raw/emails.json", "w"), indent=1)
 
 print("=== EMAIL PULL ===")
+_wu = {d: v for d, v in sorted(warmup_daily.items())}
+if _wu:
+    print("warm-up mail excluded:", {d: sum(v) for d, v in _wu.items()},
+          "| per person:", {REPS[i]: sum(v[i] for v in _wu.values()) for i in range(6)
+                            if sum(v[i] for v in _wu.values())})
 print(f"records on disk: {len(sends)} | pages: {out['pages']}")
 print(f"pulled window: {out['pulled_from']} -> {out['pulled_to']}")
 print(f"recomputed from {FRESH_FROM}; carried forward: {out['carried_days']}")

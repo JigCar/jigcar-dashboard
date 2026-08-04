@@ -756,6 +756,12 @@ coverage = {
                    f"{len(_em['carried_days'])} earlier day(s). July days before "
                    f"{EMAIL_COVERED_FROM} are not covered and read as a floor, never as zero."),
     "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
+    # Present only when the pull actually saw warm-up traffic; absent otherwise, so the
+    # note never asserts a bot that has stopped existing.
+    **({"email_warmup_note": (
+        _em.get("warmup_note", "") + ". Excluded: " + ", ".join(
+            f"{d}: {sum(v)}" for d, v in sorted((_em.get("warmup_by_day") or {}).items())))}
+       if _em.get("warmup_by_day") else {}),
     "linkedin_notes_covered_from": LI_NOTE_COVERED_FROM,
     "li_message_basis": (
         "LinkedIn messages count individual messages sent by that person, each dated by its own "
