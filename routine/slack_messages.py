@@ -150,18 +150,35 @@ def moved_team():
 
 
 # ---------- deal risk: the single highest-value concern ----------
+# ONE item, the biggest, and its OWN slip. An earlier version named every stalled
+# contract in one "and" chain and gave them all the oldest slip in the set. On
+# 5 Aug 2026 that printed four deals as "past est close by 35 days" when only the
+# first was: the other three were 16, 16 and 4 days. A shared figure attached to
+# named deals is a false statement to leadership, and a four-deal chain buries the
+# one that matters behind an £8,000 deal. The rest are carried as a count, which
+# says there is a queue without asserting anything untrue about any member of it.
 stalled = sorted([d for d in payload["contractDeals"] if d.get("passed")], key=lambda d: -d["arr"])
 deal_risk = None
+
+
+def _slip(d, ref):
+    if not d.get("est_iso"):
+        return None
+    return (ref - datetime.date(*[int(x) for x in d["est_iso"].split("-")])).days
+
+
 if stalled:
     ref = datetime.date(*[int(x) for x in RUN_DATE.split("-")])
-    names = " and ".join(f"{d['name']} {money(d['arr'])}" for d in stalled)
-    # The oldest slip, not whichever happened to be read last.
-    slips = [(ref - datetime.date(*[int(x) for x in d["est_iso"].split("-")])).days
-             for d in stalled if d.get("est_iso")]
-    days = max(slips) if slips else None
-    daytxt = f"{word(days, lower=True) if days <= 10 else days} days" if days else "several days"
-    joiner = "both past est close by" if len(stalled) == 2 else "past est close by"
-    deal_risk = f"{names} {joiner} {daytxt}."
+    top = stalled[0]
+    days = _slip(top, ref)
+    daytxt = (f"{word(days, lower=True) if days <= 10 else days} days past est close"
+              if days else "past its est close date")
+    deal_risk = f"{top['name']} {money(top['arr'])} ({top['owner']}) is {daytxt}."
+    others = stalled[1:]
+    if others:
+        rest = sum(d["arr"] for d in others)
+        deal_risk += (f" {word(len(others))} more contract{'' if len(others) == 1 else 's'} "
+                      f"also past est close, {money(rest)} between them.")
 
 # ---------- performance risk: one person, role-aware, real threshold ----------
 # Threshold, never a ranking: zero on at least two of the three core outbound
