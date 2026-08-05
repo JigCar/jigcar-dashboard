@@ -300,10 +300,10 @@ HEAD = r'''<!DOCTYPE html>
     <div class="note" id="ctxNote"></div>
 
     <h2><span class="bar">1.</span> Metrics by person <span id="tblLabel" class="qbadge"></span> <span class="pill grey">summary</span></h2>
-    <p class="lead">Sales meetings count external meetings that move a deal forward (see the definition in coverage notes). Emails are sent emails from Attio across all connected mailboxes. LI connects / LI msgs show LinkedIn connections and messages as <strong>all (deal-associated)</strong>. Progressed / shut off attributed by deal owner. Closed won and contract out are quarter-level and do not move with the filter.</p>
+    <p class="lead">The two meeting columns count only meetings whose counterparty holds a deal being actively worked, Buy Signal through Proposal, split by that deal's Region in Attio. Closed Won account reviews, New Lead, Trial and Contracts meetings are outside both columns, so the pair is a strict subset of the wider Sales meetings figure on the cards and in the trend. <strong>The bracketed number is the part with no Region set in Attio</strong>, carried in the non-UK column because that is where an unset field falls; it is a gap to fill, not evidence of non-UK work. Emails are sent emails from Attio across all connected mailboxes. LI connects / LI msgs show LinkedIn connections and messages as <strong>all (deal-associated)</strong>. Progressed / shut off attributed by deal owner. Closed won and contract out are quarter-level and do not move with the filter.</p>
     <table id="summary">
       <thead><tr>
-        <th>Person</th><th>Sales mtgs</th><th>Calls</th><th>Emails (deal)</th><th>LI sent</th><th>LI conn</th><th>LI msgs</th><th>Tasks</th><th>Deals assigned</th><th>Progressed</th><th>Shut off</th><th>Contract out (£)</th><th>Closed won (£)</th>
+        <th>Person</th><th>Mtgs UK</th><th>Mtgs non-UK (unset)</th><th>Calls</th><th>Emails (deal)</th><th>LI sent</th><th>LI conn</th><th>LI msgs</th><th>Tasks</th><th>Deals assigned</th><th>Progressed</th><th>Shut off</th><th>Contract out (£)</th><th>Closed won (£)</th>
       </tr></thead>
       <tbody id="summaryBody"></tbody>
     </table>
@@ -611,6 +611,10 @@ function render(){
   document.getElementById('tblLabel').textContent=label;
 
   const mtgs=agg('meetings',v),calls=agg('calls',v),emails=agg('emails',v),tasks=agg('tasks',v),deals=agg('deals',v),prog=agg('progressed',v),shut=agg('shutoff',v);
+  // Meetings split by the counterparty's deal region, counting only meetings whose
+  // counterparty holds a deal from Buy Signal to Proposal. Both are strict subsets of
+  // mtgs, so mUK+mOth is normally LESS than mtgs and that is the point, not a bug.
+  const mUK=agg('meetingsUK',v),mOth=agg('meetingsOther',v),mUns=agg('meetingsUnset',v);
   const liCa=agg('liConnAll',v),liCd=agg('liConnDeal',v),liMa=agg('liMsgAll',v),liMd=agg('liMsgDeal',v);
   const emDeal=agg('emailsDeal',v),emCust=agg('emailsCust',v);
   const liAa=agg('liAccAll',v),liAd=agg('liAccDeal',v);
@@ -640,7 +644,9 @@ function render(){
       <div class="name">${r}${(function(){var o=offToday.filter(function(e){return e.person===r;})[0];
         return o?'<span class="leavetag">'+(o.half?'off '+o.half:'on leave')+'</span>':'';})()}</div>
       <div class="role">${roles[i]}</div>
-      <div class="stat"><span>Sales meetings</span><span class="v ${mtgs[i]?'g':'m'}">${mtgs[i]}</span></div>
+      <div class="stat"><span>Sales meetings <span class="m" style="font-weight:600">all</span></span><span class="v ${mtgs[i]?'g':'m'}">${mtgs[i]}</span></div>
+      <div class="stat"><span>… UK deal <span class="m" style="font-weight:600">BS-Prop</span></span><span class="v ${mUK[i]?'g':'m'}">${mUK[i]}</span></div>
+      <div class="stat"><span>… non-UK / unset <span class="m" style="font-weight:600">BS-Prop</span></span><span class="v ${mOth[i]?'g':'m'}">${mOth[i]} <span class="m" style="font-weight:600">(${mUns[i]} unset)</span></span></div>
       <div class="stat"><span>Calls</span><span class="v ${calls[i]?'':'m'}">${(connectivity.seats[r]||[])[0]==='na'?'n/a':calls[i]}</span></div>
       <div class="stat"><span>Emails <span class="m" style="font-weight:600">(live deal)</span></span><span class="v ${emails[i]?'g':'m'}">${emails[i]} <span class="m" style="font-weight:600">(${emDeal[i]})</span></span></div>
       <div class="stat"><span>… to customers</span><span class="v ${emCust[i]?'g':'m'}">${emCust[i]}</span></div>
@@ -657,10 +663,11 @@ function render(){
   });
 
   const tb=document.getElementById('summaryBody'); tb.innerHTML='';
-  const tot=[0,0,0,0,0,0,0,0,0,0,0,0];
+  const tot=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
   reps.forEach((r,i)=>{
     tb.innerHTML+=`<tr><td>${r}</td>
-      <td class="${mtgs[i]?'g':'m'}">${mtgs[i]}</td>
+      <td class="${mUK[i]?'g':'m'}">${mUK[i]}</td>
+      <td class="${mOth[i]?'g':'m'}">${mOth[i]} <span class="m">(${mUns[i]})</span></td>
       <td>${(connectivity.seats[r]||[])[0]==='na'?'<span class="m">n/a</span>':calls[i]}</td>
       <td class="${emails[i]?'g':'m'}">${emails[i]} <span class="m">(${emDeal[i]})</span></td>
       <td class="${liCa[i]?'':'m'}">${liCa[i]} <span class="m">(${liCd[i]})</span></td>
@@ -670,9 +677,9 @@ function render(){
       <td class="${prog[i]?'g':'m'}">${prog[i]}</td><td class="${shut[i]?'r':'m'}">${shut[i]}</td>
       <td class="${ocByRep[i]?'a':'m'}">${ocByRep[i]?'£'+ocByRep[i].toLocaleString():'£0'}</td>
       <td class="${cwByRep[i]?'g':'m'}">${cwByRep[i]?'£'+cwByRep[i].toLocaleString():'£0'}</td></tr>`;
-    tot[0]+=mtgs[i];tot[1]+=calls[i];tot[2]+=emails[i];tot[3]+=liCa[i];tot[11]+=liAa[i];tot[4]+=liMa[i];tot[5]+=tasks[i];tot[6]+=deals[i];tot[7]+=prog[i];tot[8]+=shut[i];tot[9]+=ocByRep[i];tot[10]+=cwByRep[i];
+    tot[12]+=mUK[i];tot[13]+=mOth[i];tot[14]+=mUns[i];tot[1]+=calls[i];tot[2]+=emails[i];tot[3]+=liCa[i];tot[11]+=liAa[i];tot[4]+=liMa[i];tot[5]+=tasks[i];tot[6]+=deals[i];tot[7]+=prog[i];tot[8]+=shut[i];tot[9]+=ocByRep[i];tot[10]+=cwByRep[i];
   });
-  tb.innerHTML+=`<tr><td class="total">Team</td><td class="total">${tot[0]}</td><td class="total">${tot[1]}</td><td class="total">${tot[2]}</td><td class="total">${tot[3]}</td><td class="total">${tot[11]}</td><td class="total">${tot[4]}</td><td class="total">${tot[5]}</td><td class="total">${tot[6]}</td><td class="total">${tot[7]}</td><td class="total">${tot[8]}</td><td class="total">£${tot[9].toLocaleString()}</td><td class="total">£${tot[10].toLocaleString()}</td></tr>`;
+  tb.innerHTML+=`<tr><td class="total">Team</td><td class="total">${tot[12]}</td><td class="total">${tot[13]} <span class="m">(${tot[14]})</span></td><td class="total">${tot[1]}</td><td class="total">${tot[2]}</td><td class="total">${tot[3]}</td><td class="total">${tot[11]}</td><td class="total">${tot[4]}</td><td class="total">${tot[5]}</td><td class="total">${tot[6]}</td><td class="total">${tot[7]}</td><td class="total">${tot[8]}</td><td class="total">£${tot[9].toLocaleString()}</td><td class="total">£${tot[10].toLocaleString()}</td></tr>`;
 
   document.getElementById('cmpTitle').textContent='Outreach comparison ('+viewLabel[v]+')';
   if(cmpChart)cmpChart.destroy();

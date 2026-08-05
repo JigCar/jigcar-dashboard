@@ -119,6 +119,7 @@ for r in raw_deals:
         "owner": actor_of(r, "owner"),
         "value": float(money or 0),
         "acq": option_of(r, "acquisition"),
+        "region": option_of(r, "region"),
         "created": (v1(r, "created_at") or "")[:10],
         "est_closed": est_close_of(r),
         "est_close_text": v1(r, "est_close_date"),
@@ -149,21 +150,49 @@ def state_of(stage):
 
 
 RANK = {"open": 3, "won": 2, "closed": 1}
+
+# ---- the narrower gate a sales meeting has to clear ----
+# A meeting counts only where the counterparty holds a deal actively being worked:
+# Buy Signal through Proposal. That deliberately excludes New Lead (nothing has
+# happened yet), Trial and Contracts (the selling is done), Closed Won (a customer,
+# so a recurring account review is service not pipeline) and every shut-off state.
+# It is a strict subset of the (deal) test above, which stays as it is: the two
+# answer different questions and must not be collapsed into one map.
+MEETING_STAGES = ["Buy Signal", "Qualification", "Demo", "Proposal"]
+MTG_RANK = {s: i for i, s in enumerate(MEETING_STAGES)}
+UK_REGION = "UK & I"
+
 domain_deal, person_deal = {}, {}
+domain_mtg = {}
 for d in deals:
     st = state_of(d["stage"])
+    elig = d["stage"] in MTG_RANK
     for cid in d["companies"]:
         for dom in companies.get(cid, {}).get("domains", []):
             cur = domain_deal.get(dom)
             if cur is None or RANK[st] > RANK[cur["state"]]:
                 domain_deal[dom] = {"state": st, "deal": d["name"], "owner": d["owner"],
                                     "stage": d["stage"], "value": d["value"]}
+            if not elig:
+                continue
+            # A company can hold several eligible deals. Pick deterministically: the
+            # furthest along, then the largest. Region is read off THAT deal, never
+            # merged across deals, so the bucket is traceable to one record.
+            key = (MTG_RANK[d["stage"]], d["value"])
+            prev = domain_mtg.get(dom)
+            if prev is None or key > (MTG_RANK[prev["stage"]], prev["value"]):
+                domain_mtg[dom] = {"deal": d["name"], "stage": d["stage"],
+                                   "owner": d["owner"], "value": d["value"],
+                                   "region": d["region"],
+                                   "uk": d["region"] == UK_REGION}
     for pid in d["people"]:
         cur = person_deal.get(pid)
         if cur is None or RANK[st] > RANK[cur["state"]]:
             person_deal[pid] = {"state": st, "deal": d["name"], "owner": d["owner"]}
 json.dump(domain_deal, open(f"{SP}/raw/domain_deal.json", "w"), indent=0)
 json.dump(person_deal, open(f"{SP}/raw/person_deal.json", "w"), indent=0)
+json.dump({"domains": domain_mtg, "stages": MEETING_STAGES, "uk_region": UK_REGION},
+          open(f"{SP}/raw/domain_meeting.json", "w"), indent=0)
 
 # ---------------- join coverage, reported on the page ----------------
 # Where a deal has no company, or the company has no domain, the join silently
@@ -225,6 +254,14 @@ json.dump(notes, open(f"{SP}/raw/notes.json", "w"), indent=0)
 print("=== ATTIO PULL ===")
 print("deals:", len(deals), "| companies:", len(companies), "| domains resolving:", len(domain_deal))
 print("stages:", dict(collections.Counter(d["stage"] for d in deals)))
+_mtg_deals = [d for d in deals if d["stage"] in MTG_RANK]
+print(f"meeting-eligible deals ({'/'.join(MEETING_STAGES)}):", len(_mtg_deals),
+      "| domains resolving to one:", len(domain_mtg))
+print("  region on those deals:", dict(collections.Counter(d["region"] or "(unassigned)"
+                                                           for d in _mtg_deals)))
+print("  meeting-eligible domains by bucket: UK",
+      sum(1 for v in domain_mtg.values() if v["uk"]),
+      "| non-UK/unassigned", sum(1 for v in domain_mtg.values() if not v["uk"]))
 print("open deals:", join_report["open_deals"], "joinable:", join_report["joinable"],
       f"({join_report['joinable_pct_by_value']}% by value)")
 for u in join_report["unjoinable_deals"]:

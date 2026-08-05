@@ -122,6 +122,24 @@ FIRST = {"chris.white@jigcar.com": "Chris", "luke.nogueira@jigcar.com": "Luke",
          "james.griffin@jigcar.com": "James", "bianca.monteiro@jigcar.com": "Bianca",
          "elliott@jigcar.com": "Elliott", "rupert@jigcar.com": "Rupert"}
 meetings_daily = collections.defaultdict(z)
+# The scorecard splits meetings by the counterparty's REGION, but only for meetings
+# whose counterparty holds a deal actively being worked (Buy Signal to Proposal).
+# Three series, all strict subsets of meetings_daily:
+#   meetingsUK    - eligible deal, region "UK & I"
+#   meetingsOther - eligible deal, any other region OR no region at all
+#   meetingsUnset - the no-region part of meetingsOther, published as the
+#                   parenthetical so an unset field can never masquerade as non-UK
+# meetings_daily itself keeps the WIDER definition on purpose: it is the basis for
+# the Slack performance threshold, the trend and the celebration spike. Judging a
+# person on the narrow figure would count a day of customer account reviews as zero
+# sales meetings and could flag them for it, which is exactly the failure this
+# routine must never make.
+_mtg = json.load(open(f"{SP}/raw/domain_meeting.json"))
+MTG_DOMAINS = _mtg["domains"]
+meetings_uk_daily = collections.defaultdict(z)
+meetings_other_daily = collections.defaultdict(z)
+meetings_unset_daily = collections.defaultdict(z)
+mtg_bucket_audit = []
 inc_count = exc_count = internal_count = 0
 
 # One meeting can produce several notes, and they are grouped before anything is
@@ -173,9 +191,35 @@ for g in groups:
         exc_count += 1
         continue
     inc_count += 1
+    # Which bucket, if any, this meeting's counterparty falls in. A meeting can list
+    # several external domains; resolve every one and let the eligible deals decide.
+    # UK wins over non-UK when both are present, because the meeting did involve a UK
+    # deal being worked and the alternative silently demotes it.
+    hits = [MTG_DOMAINS[d] for d in {e.split("@")[-1].lower() for e in g["emails"]
+                                     if not e.endswith("@jigcar.com")} if d in MTG_DOMAINS]
+    bucket = None
+    if hits:
+        if any(h["uk"] for h in hits):
+            bucket = "uk"
+        elif any(h["region"] for h in hits):
+            bucket = "other"
+        else:
+            bucket = "unset"
+        mtg_bucket_audit.append({"date": g["date"], "title": sorted(g["titles"])[0],
+                                 "bucket": bucket,
+                                 "deal": hits[0]["deal"], "stage": hits[0]["stage"],
+                                 "region": hits[0]["region"] or "(unassigned)"})
     for e in g["emails"]:
         if e in FIRST:
-            meetings_daily[g["date"]][IDX[FIRST[e]]] += 1
+            i = IDX[FIRST[e]]
+            meetings_daily[g["date"]][i] += 1
+            if bucket == "uk":
+                meetings_uk_daily[g["date"]][i] += 1
+            elif bucket == "other":
+                meetings_other_daily[g["date"]][i] += 1
+            elif bucket == "unset":
+                meetings_other_daily[g["date"]][i] += 1
+                meetings_unset_daily[g["date"]][i] += 1
 
 # ---------- calls (Allo, per seat) ----------
 # One row per call record from allo_search_conversation_items, reconciled against
@@ -351,7 +395,11 @@ for m in ALL_MOVES:
         WON_DATES[m["record_id"]] = m["date"]     # stamp the real won date on first entry
         newly_won.append(m)
 
-daily = {"meetings": dict(meetings_daily), "calls": calls_daily, "emails": emails_daily,
+daily = {"meetings": dict(meetings_daily),
+         "meetingsUK": dict(meetings_uk_daily),
+         "meetingsOther": dict(meetings_other_daily),
+         "meetingsUnset": dict(meetings_unset_daily),
+         "calls": calls_daily, "emails": emails_daily,
          "tasks": tasks_daily, "deals": dict(deals_daily), "progressed": dict(progressed_daily),
          "shutoff": dict(shutoff_daily), "liConnAll": li_conn_all, "liConnDeal": li_conn_deal,
          "liMsgAll": li_msg_all, "liMsgDeal": li_msg_deal,
@@ -742,8 +790,33 @@ for _d in deals:
 stage_shape = {**prev_shape, RUN_DATE: _today_shape}
 leave_summary = {r: sorted(k for k, v in leave_by_person.get(r, {}).items()) for r in REPS}
 
+_mtg_deals = [d for d in deals if d["stage"] in _mtg["stages"]]
+_mtg_region = collections.Counter(d["region"] or "(unassigned)" for d in _mtg_deals)
+_mtg_unset_named = sorted({d["name"] for d in _mtg_deals if not d["region"]})
+_mtg_by_bucket = collections.Counter(a["bucket"] for a in mtg_bucket_audit)
+
 coverage = {
     "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
+    "meeting_split_basis": (
+        "the two meeting columns count a meeting only where the counterparty holds a deal from "
+        + " to ".join([_mtg["stages"][0], _mtg["stages"][-1]])
+        + ", split by that deal's Region in Attio. Where a company holds several such deals the "
+        "furthest along wins, then the largest, so the bucket always traces to one record. "
+        "Meetings with Closed Won customers, and with deals at New Lead, Trial or Contracts, fall "
+        "outside both columns: the pair is a strict subset of the wider Sales meetings figure, not "
+        "a re-slicing of it."),
+    "meeting_split_counts": dict(_mtg_by_bucket),
+    "meeting_region_unset": len(_mtg_unset_named),
+    "meeting_region_note": (
+        f"REGION IS THE WEAK LINK IN THIS SPLIT. Of {len(_mtg_deals)} deals in the meeting window, "
+        f"{_mtg_region.get('UK & I', 0)} carry Region 'UK & I' and {_mtg_region.get('(unassigned)', 0)} "
+        f"carry no Region at all: {dict(_mtg_region)}. The unset ones are largely UK companies by "
+        f"name, so the non-UK column currently overstates non-UK work and the UK column understates "
+        f"it. The bracketed figure in that column is the unset portion, published separately so a "
+        f"blank field is never read as a non-UK deal. Setting Region on these deals in Attio is what "
+        f"fixes it: {', '.join(_mtg_unset_named[:24])}"
+        + (" and more" if len(_mtg_unset_named) > 24 else "")),
+    "meeting_split_audit": mtg_bucket_audit,
     "leave_source": ("Zelt absence calendar; the Jigcar holidays calendar holds no events after "
                      "mid-2025 and is not read"),
     "attendance_note": ("activity is measured against working days attended, so booked leave is "
@@ -817,16 +890,23 @@ coverage = {
         "than by parsing prose. That record holds only the LAST invitation per contact, so the "
         "person-side Groovin notes are unioned in, joined on the person record id; this quarter that "
         "recovers {rec} sent and {reca} accepted, giving {tot} sent in total. "
-        "REQUESTS SENT IS A FLOOR ON EVERY SEAT, measured twice on 4 Aug 2026. Chris's own Groovin "
-        "panel showed 45 invitations sent while Attio held 15. Elliott's account sent 9 in one day "
-        "and Attio recorded 2 for him: four contacts were unpaired and wrote nothing, two were "
-        "paired and still wrote nothing, and one was credited to Luke, whose seat had invited the "
-        "same contact earlier the same day and the single last-invitation field can hold only one "
-        "sender. So a low figure in this column is evidence about Groovin-to-CRM sync, never about "
-        "effort, and when two seats work the same contact only one gets the credit. Connections "
-        "made arrive complete, because an acceptance creates and pairs the CRM contact: Chris's "
-        "panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date "
-        "each message individually."
+        "REQUESTS SENT IS A FLOOR ON EVERY SEAT, and THE PER-PERSON SPLIT OF IT IS NOT SAFE TO "
+        "READ AS EFFORT. Re-measured contact by contact on 5 Aug 2026 against the connected Groovin "
+        "account, which is Elliott's. That account held 16 pending sent invitations that LinkedIn "
+        "dates to 4 Aug. Attio holds a 4 Aug invitation for four of them, and those four are "
+        "credited to THREE DIFFERENT PEOPLE: Samperi and Mariscal to Elliott, Gennetti to Luke, "
+        "Brost to James. All sixteen left one LinkedIn account, so one person sent them all and the "
+        "sender on the record is demonstrably not the sender. That is why Chris reads 1 and Elliott "
+        "reads 2 for 4 Aug while Attio's own daily totals put James on 16 and Luke on 9. Of the "
+        "twelve that produced no 4 Aug record, eight are profiles Groovin does not pair to the CRM "
+        "and carry no invitation field at all, two more are paired and still wrote nothing, and two "
+        "(Smith, Ritchie) carry a 3 Aug stamp instead, which also shows LinkedIn's pending date can "
+        "be a day out: all sixteen share one identical synthetic timestamp, so only the day is even "
+        "approximately reliable. Chris's own Groovin panel showed 45 sent against 15 in Attio on "
+        "4 Aug, and his account cannot be read from here at all, so his figure has no independent "
+        "check. Treat this column as a team-level floor. Connections made arrive complete, because "
+        "an acceptance creates and pairs the CRM contact: Chris's panel showed 7 accepted against 7 "
+        "in Attio. Messages come from the chat notes, which date each message individually."
     ).format(rec=_inv.get("reconciliation", {}).get("sent", {}).get("recovered_from_notes", 0),
              reca=_inv.get("reconciliation", {}).get("accepted", {}).get("recovered_from_notes", 0),
              tot=sum(sum(v) for v in li_conn_all.values())),
