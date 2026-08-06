@@ -907,7 +907,13 @@ coverage = {
         "be read from here at all, so his figure has no independent check. Read this column as a "
         "team-level floor, never as a ranking between people. Connections made arrive complete, "
         "because an acceptance creates and pairs the CRM contact: Chris's panel showed 7 accepted "
-        "against 7 in Attio. Messages come from the chat notes, which date each message individually."
+        "against 7 in Attio. Messages come from the chat notes, which date each message individually. "
+        "Groovin shipped a fix on 6 Aug 2026 that should log every MCP-sent invitation into Attio "
+        "with a note and the invitation attributes. It does not backfill: the 4 Aug gaps are "
+        "permanent, and as of 6 Aug afternoon the newest unpaired sends from the connected account "
+        "still had no Attio record, so the fix is not yet confirmed from this side. This caveat "
+        "relaxes only when a full day of sends reconciles clean against a seat's own Groovin "
+        "account, and the one-credit-per-contact limit stands regardless of the fix."
     ).format(rec=_inv.get("reconciliation", {}).get("sent", {}).get("recovered_from_notes", 0),
              reca=_inv.get("reconciliation", {}).get("accepted", {}).get("recovered_from_notes", 0),
              tot=sum(sum(v) for v in li_conn_all.values())),

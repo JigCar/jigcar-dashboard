@@ -212,3 +212,30 @@ coverage predates the range, so nothing needs editing as coverage accumulates.
    well as the connector panel. `etl.py` now validates this and exits non-zero.
 
 Neither was caught by static QA. Both are caught by `qa_browser.mjs`.
+
+## Groovin fix of 6 Aug 2026: status and how to confirm it
+
+Groovin shipped a fix on 6 Aug that should write every MCP-sent invitation into
+Attio (note plus the invitation attributes). Verified the same afternoon:
+
+- **No backfill.** The six 4 Aug sends that wrote nothing still have nothing, and
+  Christopher Harper still has no person record. The 4 Aug gaps are permanent.
+- **Not yet confirmed forward.** The newest sends visible on the connected account
+  (List, Butt, Bigler, all unpaired) still had no Attio record at 14:03 UTC, but they
+  probably predate the fix and their send path (MCP vs extension) is unknowable from
+  here. Confirmation requires a controlled test: send one MCP invitation to an
+  UNPAIRED profile and check the person record within the hour, or reconcile a full
+  post-fix day against the seat's own Groovin panel.
+- **The one-credit-per-contact limit is not part of the fix** and gained two more
+  measured cases on 5 Aug: Mullins and Hughes, pending on the connected account, are
+  credited to Luke inside his 16:00-16:05 batch. Four such cases in two days. The
+  per-person split stays unreliable wherever seats share contacts, whatever the fix
+  does for the write path.
+- Guillaume also suggested an Attio "LinkedIn invitation history" text attribute
+  filled by a 2-step Attio workflow. The dashboard does NOT need it: the notes union
+  keyed on person record id already reconstructs history, and once the fix writes a
+  note per send that history is complete for MCP sends. The workflow only adds
+  in-Attio browsing convenience and has to be built in the Attio UI.
+
+Relax the floor caveat in `etl.py` (li_source_note) only on measurement, never on a
+vendor's word alone. The wording already carries the 6 Aug status.
