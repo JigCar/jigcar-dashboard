@@ -263,29 +263,45 @@ FOUR_WEEKS = 28
 # History depth is judged PER METRIC, not across all of them pooled. Pooling the
 # dates made 16 days of meetings plus 20 of tasks look like four weeks of both, so
 # the average branch fired on a metric that had nowhere near four weeks behind it.
+#
+# Calls belong here. CORE_METRICS is the PERFORMANCE threshold set, which the spec
+# fixes at exactly sales meetings, sent emails and completed tasks; the celebration
+# spike is not restricted to those, and calls is a first-class scorecard metric with
+# its own history. Leaving it out meant a genuine record calling day could not be
+# credited to anyone.
+SPIKE_METRICS = CORE_METRICS + ["calls"]
+# The spike is measured on the most recent COMPLETE day, not on the run date.
+# Triggers 1 and 2 read the stage-move log, where a move observed by this run is
+# stamped with the run date, so they already mean "since the last post". Activity is
+# dated by when it actually happened, so at 08:00 the run date holds almost nothing
+# and every spike silently failed to fire whatever the team had done. Measuring
+# yesterday makes trigger 3 mean the same window as the other two.
+SPIKE_VIEW = "yesterday"
+SPIKE_DAY = payload["ranges"][SPIKE_VIEW][1]
 spikes = []
-for m in CORE_METRICS:
+for m in SPIKE_METRICS:
     days = sorted(daily.get(m, {}))
     if len(days) < MIN_HISTORY_DAYS:
         continue                     # too thin to distinguish a spike from missing coverage
     if len(days) >= FOUR_WEEKS:
         # Double the person's own trailing four-week daily average.
         for i, name in enumerate(REPS):
-            today_v = agg(m, "today")[i]
-            past = [v[i] for d, v in daily[m].items() if d < RUN_DATE][-FOUR_WEEKS:]
+            day_v = agg(m, SPIKE_VIEW)[i]
+            past = [v[i] for d, v in daily[m].items() if d < SPIKE_DAY][-FOUR_WEEKS:]
             avg = sum(past) / len(past) if past else 0
-            if today_v >= SPIKE_FLOOR and avg and today_v >= 2 * avg:
-                spikes.append((name, m, today_v, "double their four-week average"))
+            if day_v >= SPIKE_FLOOR and avg and day_v >= 2 * avg:
+                spikes.append((name, m, day_v, "double their four-week average"))
     else:
         # Until the store holds four weeks of THIS metric, fire only on a genuine
         # same-day team record. Strictly greater: equalling the previous best is not
         # a record, and calling it one names someone for a claim that is not true.
         series = {d: sum(v) for d, v in daily[m].items()}
-        today_v = series.get(RUN_DATE, 0)
-        others = [v for d, v in series.items() if d != RUN_DATE]
-        if today_v >= SPIKE_FLOOR and others and today_v > max(others):
-            top_i = max(range(6), key=lambda i: agg(m, "today")[i])
-            spikes.append((REPS[top_i], m, agg(m, "today")[top_i], "a team record for a single day"))
+        day_v = series.get(SPIKE_DAY, 0)
+        others = [v for d, v in series.items() if d != SPIKE_DAY]
+        if day_v >= SPIKE_FLOOR and others and day_v > max(others):
+            top_i = max(range(6), key=lambda i: agg(m, SPIKE_VIEW)[i])
+            spikes.append((REPS[top_i], m, agg(m, SPIKE_VIEW)[top_i],
+                           "a team record for a single day"))
 
 celebration = None
 if won_today:
@@ -296,8 +312,9 @@ elif contract_today:
     celebration = f"📄 {m['name']} {money(m['value'])} out for contract, {m['owner']}."
 elif spikes:
     name, metric, v, basis = spikes[0]
-    lbl = {"meetings": "sales meetings", "emails": "emails", "tasks": "completed tasks"}[metric]
-    celebration = f"🔥 {name} ran {v} {lbl} today, {basis}."
+    lbl = {"meetings": "sales meetings", "emails": "emails",
+           "tasks": "completed tasks", "calls": "calls"}[metric]
+    celebration = f"🔥 {name} made {v} {lbl} yesterday, {basis}."
 
 # ---------- connector failure, which owns line 3 on a partial run ----------
 # On a partial run where a build did publish, the failure replaces deal risk. A
@@ -384,8 +401,9 @@ if __name__ == "__main__":
                                                 else f"team record ({len(daily.get(m, {}))}d history)"
                                                 if len(daily.get(m, {})) >= MIN_HISTORY_DAYS
                                                 else "too thin, skipped")
-                                            for m in CORE_METRICS}))
-    print("metric history depth: " + str({m: len(daily.get(m, {})) for m in CORE_METRICS}))
+                                            for m in SPIKE_METRICS}))
+    print("metric history depth: " + str({m: len(daily.get(m, {})) for m in SPIKE_METRICS}))
+    print(f"spike measured on: {SPIKE_DAY} ({SPIKE_VIEW})")
     print(f"perf candidates: {[(c['name'], c['zeros'], str(c['attended']) + 'd attended') for c in cands]}")
     print(f"perf skipped by the leave gate: {skipped}")
     print(f"off today: {[(e['person'], e['half'] or 'full') for e in state.get('off_today', [])] or 'nobody'}")
