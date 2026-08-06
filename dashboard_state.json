@@ -63,7 +63,7 @@
     {
      "created": 7,
      "name": "Chris",
-     "value": 168000.0
+     "value": 162000.0
     }
    ],
    "closedWon": [
@@ -90,12 +90,12 @@
     }
    ],
    "createdCount": 15,
-   "createdPipeline": 312000.0,
+   "createdPipeline": 306000.0,
    "label": "Q2 2026 (Apr - Jun) . reconstructed archive",
    "outcomes": {
-    "Live (New Lead to Contracts)": 6,
+    "Live (New Lead to Contracts)": 5,
     "Lost / no outcome": 2,
-    "Nurture": 7
+    "Nurture": 8
    }
   }
  },
@@ -203,7 +203,7 @@
     "partial"
    ]
   },
-  "updated": "06 Aug 2026, 14:29",
+  "updated": "06 Aug 2026, 15:32",
   "workspace": [
    {
     "name": "Attio",
@@ -232,20 +232,20 @@
   "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (59 calls 2026-07-21 to 2026-08-06); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-05T00:00:00Z to 2026-08-06T14:23:52Z and carried forward 13 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-05T00:00:00Z to 2026-08-06T15:27:47Z and carried forward 13 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "244 domains resolve to a deal; 162 of 170 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "244 domains resolve to a deal; 160 of 168 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
   "email_split_to": "2026-08-06",
-  "email_warmup_note": "deliverability warm-up mail (machine-tagged '- wbx abc' subjects to synthetic recipients) is excluded from every per-person figure and counted here instead; it is bot traffic, not outreach. Excluded: 2026-08-06: 15",
+  "email_warmup_note": "deliverability warm-up mail (machine-tagged '- wbx abc' subjects to synthetic recipients) is excluded from every per-person figure and counted here instead; it is bot traffic, not outreach. Excluded: 2026-08-06: 16",
   "join_coverage": {
    "domains_resolving": 244,
-   "joinable": 162,
+   "joinable": 160,
    "joinable_pct_by_value": 100.0,
-   "joinable_value": 2006680.0,
-   "open_deals": 170,
-   "pipeline_value": 2006680.0,
+   "joinable_value": 2000680.0,
+   "open_deals": 168,
+   "pipeline_value": 2000680.0,
    "unjoinable": 8,
    "unjoinable_deals": [
     {
@@ -315,8 +315,8 @@
   "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
   "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. That record holds only the LAST invitation per contact, so the person-side Groovin notes are unioned in, joined on the person record id; this quarter that recovers 18 sent and 8 accepted, giving 251 sent in total. REQUESTS SENT IS A FLOOR ON EVERY SEAT, and THE PER-PERSON SPLIT UNDERSTATES ANY SEAT THAT SHARES CONTACTS WITH A COLLEAGUE. Re-measured contact by contact on 5 Aug 2026 against the connected Groovin account, which is Elliott's. That account held 16 pending sent invitations that LinkedIn dates to 4 Aug. Attio holds a 4 Aug invitation for only four of them, and credits two to Elliott, one to Luke (Gennetti) and one to James (Brost). Two causes, both structural. First, eight of the sixteen went to profiles Groovin does not pair to the CRM: they have an Attio person record but no invitation field at all, so the send was never written anywhere. Second, the record holds only the LAST invitation per contact and can name only one sender, so where two seats invite the same contact the earlier send is overwritten and one person loses the credit entirely. That is the most likely reading of Gennetti and Brost, whom Luke and James were working the same day. Two more (Smith, Ritchie) carry a 3 Aug stamp, and all sixteen pendings share one identical synthetic timestamp, so LinkedIn's pending date is reliable only to about the day. Chris's own Groovin panel showed 45 sent against 15 in Attio on 4 Aug, and his LinkedIn account cannot be read from here at all, so his figure has no independent check. Read this column as a team-level floor, never as a ranking between people. Connections made arrive complete, because an acceptance creates and pairs the CRM contact: Chris's panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date each message individually. Groovin shipped a fix on 6 Aug 2026 that should log every MCP-sent invitation into Attio with a note and the invitation attributes. It does not backfill: the 4 Aug gaps are permanent, and as of 6 Aug afternoon the newest unpaired sends from the connected account still had no Attio record, so the fix is not yet confirmed from this side. This caveat relaxes only when a full day of sends reconciles clean against a seat's own Groovin account, and the one-credit-per-contact limit stands regardless of the fix.",
   "linkedin_notes_covered_from": "2026-07-14",
-  "meeting_region_note": "REGION IS THE WEAK LINK IN THIS SPLIT. Of 147 deals in the meeting window, 4 carry Region 'UK & I' and 38 carry no Region at all: {'Canada': 10, 'Australia': 11, 'USA': 84, 'UK & I': 4, '(unassigned)': 38}. The unset ones are largely UK companies by name, so the non-UK column currently overstates non-UK work and the UK column understates it. The bracketed figure in that column is the unset portion, published separately so a blank field is never read as a non-UK deal. Setting Region on these deals in Attio is what fixes it: ACV Logistics, Arnold Clark, Birchwood, Boar Vehicle Logistics, Carwow, D&I, DMN Logistics Ltd, Drayton Motors, Drift Bridge, Drive Motor Retail, Ecomotive (Transported), Elevate Logistics, G&K Logistics, Grainger, Group 1 Automotive, Hartwell, Jemca, John Grose Group, Listers, Lookers, MVT Logistics, Mannheim Logistics Services, Mobile Services, NVD and more",
-  "meeting_region_unset": 38,
+  "meeting_region_note": "REGION IS THE WEAK LINK IN THIS SPLIT. Of 145 deals in the meeting window, 4 carry Region 'UK & I' and 37 carry no Region at all: {'Canada': 10, 'Australia': 11, 'USA': 83, 'UK & I': 4, '(unassigned)': 37}. The unset ones are largely UK companies by name, so the non-UK column currently overstates non-UK work and the UK column understates it. The bracketed figure in that column is the unset portion, published separately so a blank field is never read as a non-UK deal. Setting Region on these deals in Attio is what fixes it: ACV Logistics, Arnold Clark, Birchwood, Boar Vehicle Logistics, Carwow, D&I, DMN Logistics Ltd, Drayton Motors, Drift Bridge, Drive Motor Retail, Ecomotive (Transported), Elevate Logistics, G&K Logistics, Grainger, Group 1 Automotive, Hartwell, Jemca, John Grose Group, Listers, Lookers, MVT Logistics, Mannheim Logistics Services, Mobile Services, NVD and more",
+  "meeting_region_unset": 37,
   "meeting_split_audit": [
    {
     "bucket": "uk",
@@ -465,46 +465,56 @@
   "stage_diff": [
    {
     "date": "2026-08-06",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "GLOVIS America",
-    "owner": "James",
-    "record_id": "6d042ad7",
-    "to": "Qualification",
+    "from": "Qualification",
+    "kind": "shutoff",
+    "name": "Dimmitt Automotive Group",
+    "owner": "Chris",
+    "record_id": "1aae4121",
+    "to": "Contacted - no outcome",
     "value": 0.0
    },
    {
     "date": "2026-08-06",
     "from": "Buy Signal",
     "kind": "progressed",
-    "name": "Healey Brothers",
-    "owner": "Luke",
-    "record_id": "8679a4fb",
-    "to": "Qualification",
-    "value": 0.0
-   },
-   {
-    "date": "2026-08-06",
-    "from": "Buy Signal",
-    "kind": "progressed",
-    "name": "ACERTUS",
-    "owner": "James",
-    "record_id": "bd1f1fb2",
+    "name": "Holler-Classic Family of Dealerships - Buy Signal (Columbia SC Nissan/INFINITI acquisition)",
+    "owner": "Chris",
+    "record_id": "9a766c2a",
     "to": "Qualification",
     "value": 0.0
    },
    {
     "date": "2026-08-06",
     "from": "Qualification",
+    "kind": "shutoff",
+    "name": "Ogilvie Fleet",
+    "owner": "Chris",
+    "record_id": "e9a737be",
+    "to": "Nurture",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-06",
+    "from": "Buy Signal",
     "kind": "progressed",
-    "name": "Patterson Cheney Cars & Trucks",
-    "owner": "James",
-    "record_id": "e9d9d512",
-    "to": "Demo",
+    "name": "Huffines Auto Group - Buy Signal (In-house driver/mover fleet)",
+    "owner": "Chris",
+    "record_id": "ead1f3af",
+    "to": "Qualification",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-06",
+    "from": "Buy Signal",
+    "kind": "progressed",
+    "name": "Ferman Automotive Group - Buy Signal (Dealer Trade Driver hire)",
+    "owner": "Chris",
+    "record_id": "fe20cd68",
+    "to": "Qualification",
     "value": 0.0
    }
   ],
-  "stage_moves_accumulated": 82,
+  "stage_moves_accumulated": 87,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -843,11 +853,11 @@
     5
    ],
    "2026-08-06": [
-    13,
+    20,
     0,
     4,
-    7,
-    18,
+    8,
+    20,
     4
    ]
   },
@@ -952,7 +962,7 @@
     0,
     0,
     0,
-    5,
+    6,
     3,
     0
    ]
@@ -1055,11 +1065,11 @@
     2
    ],
    "2026-08-06": [
-    8,
+    12,
     0,
     4,
     2,
-    14,
+    16,
     1
    ]
   },
@@ -1471,7 +1481,7 @@
     0
    ],
    "2026-07-28": [
-    5,
+    4,
     8,
     5,
     0,
@@ -1955,6 +1965,14 @@
     4,
     1,
     1
+   ],
+   "2026-08-06": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "meetingsOther": {
@@ -2205,7 +2223,7 @@
     0
    ],
    "2026-08-06": [
-    4,
+    7,
     6,
     3,
     0,
@@ -2231,7 +2249,7 @@
     0
    ],
    "2026-08-06": [
-    1,
+    3,
     0,
     0,
     0,
@@ -2457,7 +2475,7 @@
     0
    ],
    "2026-08-06": [
-    0,
+    5,
     0,
     3,
     0,
@@ -2467,7 +2485,7 @@
   }
  },
  "last_run": "2026-08-06",
- "last_run_stamp": "06 Aug 2026, 14:29",
+ "last_run_stamp": "06 Aug 2026, 15:32",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -2530,8 +2548,8 @@
    "2026-08-03|Introduction: Jigcar/Jason Blood": "adviser / partner exploration, no deal attached"
   },
   "excluded_count": 15,
-  "included_count": 62,
-  "internal_only_count": 94
+  "included_count": 63,
+  "internal_only_count": 95
  },
  "off_today": [],
  "perf_flags": {
@@ -3381,6 +3399,56 @@
    "record_id": "e9d9d512",
    "to": "Demo",
    "value": 0.0
+  },
+  {
+   "date": "2026-08-06",
+   "from": "Qualification",
+   "kind": "shutoff",
+   "name": "Dimmitt Automotive Group",
+   "owner": "Chris",
+   "record_id": "1aae4121",
+   "to": "Contacted - no outcome",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-06",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Holler-Classic Family of Dealerships - Buy Signal (Columbia SC Nissan/INFINITI acquisition)",
+   "owner": "Chris",
+   "record_id": "9a766c2a",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-06",
+   "from": "Qualification",
+   "kind": "shutoff",
+   "name": "Ogilvie Fleet",
+   "owner": "Chris",
+   "record_id": "e9a737be",
+   "to": "Nurture",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-06",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Huffines Auto Group - Buy Signal (In-house driver/mover fleet)",
+   "owner": "Chris",
+   "record_id": "ead1f3af",
+   "to": "Qualification",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-06",
+   "from": "Buy Signal",
+   "kind": "progressed",
+   "name": "Ferman Automotive Group - Buy Signal (Dealer Trade Driver hire)",
+   "owner": "Chris",
+   "record_id": "fe20cd68",
+   "to": "Qualification",
+   "value": 0.0
   }
  ],
  "stage_shape": {
@@ -3764,7 +3832,7 @@
   },
   "2026-08-06": {
    "Buy Signal": [
-    30,
+    27,
     0.0
    ],
    "Churn": [
@@ -3780,7 +3848,7 @@
     778500.0
    ],
    "Contacted - no outcome": [
-    9,
+    10,
     0.0
    ],
    "Contracts": [
@@ -3800,7 +3868,7 @@
     0.0
    ],
    "Nurture": [
-    108,
+    109,
     2100600.0
    ],
    "Proposal": [
@@ -3808,12 +3876,12 @@
     390600.0
    ],
    "Qualification": [
-    89,
+    90,
     359000.0
    ],
    "Trial": [
     5,
-    150000.0
+    144000.0
    ]
   }
  },
@@ -4010,7 +4078,7 @@
   },
   "1aae4121": {
    "owner": "Chris",
-   "stage": "Qualification",
+   "stage": "Contacted - no outcome",
    "value": 0.0
   },
   "1aaf4015": {
@@ -4760,7 +4828,7 @@
   },
   "9a766c2a": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "9aa24821": {
@@ -5036,7 +5104,7 @@
   "c0b92649": {
    "owner": "Chris",
    "stage": "Trial",
-   "value": 36000.0
+   "value": 30000.0
   },
   "c15259da": {
    "owner": "Chris",
@@ -5320,7 +5388,7 @@
   },
   "e9a737be": {
    "owner": "Chris",
-   "stage": "Qualification",
+   "stage": "Nurture",
    "value": 0.0
   },
   "e9d9d512": {
@@ -5335,7 +5403,7 @@
   },
   "ead1f3af": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "eb443fa1": {
@@ -5445,7 +5513,7 @@
   },
   "fe20cd68": {
    "owner": "Chris",
-   "stage": "Buy Signal",
+   "stage": "Qualification",
    "value": 0.0
   },
   "fea11459": {

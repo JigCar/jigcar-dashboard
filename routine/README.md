@@ -51,8 +51,17 @@ Pull steps first. Each writes only to `raw/`, so a transform never calls an API.
    relative one becomes `file://build/...`, which fails as ERR_INVALID_URL. Never run
    `playwright install`; `PLAYWRIGHT_BROWSERS_PATH` already points at the bundled
    Chromium at `/opt/pw-browsers/chromium`.
+4c. `verify_publish.py` - run AFTER the push to main. Confirms the raw CDN serves
+   this build's stamp AND that the github-pages deployment for the pushed SHA
+   reaches `success`. The raw check alone passed on 6 Aug 2026 while the live site
+   was six hours stale, because three consecutive Pages deployments failed on
+   GitHub's side; only the deployment status sees that. Non-zero exit means NOT
+   published: leave everything intact, report it, and do not post to Slack. A
+   failed deploy with a matching raw stamp is a Pages outage, not a repo fault -
+   the live site keeps the last good build and the commit normally goes live when
+   Pages recovers.
 5. `slack_messages.py` - builds the two per-channel messages and prints them for
-   review before anything is posted.
+   review before anything is posted. Runs only after `verify_publish.py` exits 0.
 
 All of these read `JIGCAR_SP` for the working directory, so a run is reproducible
 from any checkout.

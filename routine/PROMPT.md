@@ -84,14 +84,26 @@ Confirm both before anything else and report which one is missing.
   collision to overwrite.
 
 **Verifying the publish.** The sandbox cannot reach `jigcar.github.io`, so a failed fetch of that
-URL is not a failed publish. Verify against `main`:
+URL is not a failed publish. Run `routine/verify_publish.py` after the push; it performs both
+checks below and the routine may claim the dashboard is live only when it exits 0:
 
-1. Fetch `https://raw.githubusercontent.com/JigCar/jigcar-dashboard/main/index-18.html`.
-2. Confirm the **embedded last-refreshed timestamp matches this run**. File size is not proof, and
-   neither is the commit response, because a commit can succeed on a branch Pages never serves.
-3. The raw CDN lags: expect to poll for up to two minutes, and confirm against the Contents API if
-   in doubt. Only when the timestamp matches has the dashboard published. If it never matches,
-   report it and do not post to Slack.
+1. **Content on `main`.** Fetch
+   `https://raw.githubusercontent.com/JigCar/jigcar-dashboard/main/index-18.html` and confirm the
+   **embedded last-refreshed timestamp matches this run**. File size is not proof, and neither is
+   the commit response, because a commit can succeed on a branch Pages never serves. The raw CDN
+   lags: expect to poll for up to two minutes.
+2. **The Pages deployment for the pushed commit reaches `success`.** Poll the `github-pages`
+   environment on `api.github.com/repos/.../deployments` for HEAD's SHA. The raw check alone is
+   blind to this: on 6 Aug 2026 three consecutive Pages deployments failed on GitHub's side (build
+   job fine, deploy job timing out after 10 minutes), so `main` and the raw CDN both served the new
+   build while the live site was six hours stale. A terminal `failure`, `error` or `inactive` for
+   this SHA, or no `success` within the poll budget, means NOT published.
+
+If check 1 fails, the push did not land where Pages serves from: report it and do not post to
+Slack. If check 1 passes and check 2 fails, GitHub Pages is unhealthy rather than the repo: each
+failed deployment cancels itself, so the live site keeps the last good build rather than going
+blank, and the commit normally goes live when Pages recovers. Leave everything intact, report
+which build the live site is stuck on, and do not post to Slack for this build.
 
 Configuration:
 
