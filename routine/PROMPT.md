@@ -217,7 +217,9 @@ outbound seat every Monday for having done nothing by 09:00.
 - **Calls** — Allo calls for that seat.
 - **Emails (deal)** — sent emails from Attio across all connected mailboxes where the sender is a
   team Jigcar address, de-duped by (sender, subject, sent_at). Apollo sends route through the same
-  mailboxes, so do not count Apollo separately. Shown as `total (live deal)` with a customer figure
+  mailboxes, so do not count Apollo separately. **Deliverability warm-up mail is excluded** by its
+  machine tag (subjects ending `- wbx abc`, synthetic gmail recipients) and counted separately in
+  coverage: it is bot traffic, and counting it showed a person on 23 sends of which 15 were a bot. Shown as `total (live deal)` with a customer figure
   on its own line. See the email split below.
 - **LI requests sent (deal)** — LinkedIn connection requests sent.
 - **LI connections made (deal)** — invitations accepted.
@@ -303,29 +305,51 @@ so they overflow to disk and parse them, rather than reading hundreds of emails 
 Note **Rupert's own mailbox is not connected**. His sends are visible only where a teammate was a
 recipient, so his email figure is a floor and his Email seat reads `partial`.
 
-### 3. LinkedIn attribution (Groovin → Attio notes)
+### 3. LinkedIn attribution (Attio invitation records, notes as the history)
 
-Groovin writes LinkedIn activity into Attio as notes authored by the app, in person/company pairs.
-**Count the event once**, deduped on (date, rep, contact, kind); the company side supplies the deal
-join.
+**Count invitations from the structured invitation record on the Attio person**, not from note
+prose: `last_linkedin_invite_sent_at` / `last_linkedin_invite_sent_by` and the accepted pair
+(`last_linkedin_invite_accepted_at` / `_inviter`). The timestamp is the real send time and the
+sender is a workspace-member reference, so attribution needs no name parsing. Filter server-side
+on the timestamp (`POST /v2/objects/people/records/query`).
 
-**The rep is in the note body, not the title, for invitations.** This is the single most important
-detail in this section, and reading only the title has caused a real mis-attribution:
+**The record holds only the LAST invitation per contact**, so union in the person-side Groovin
+notes, joined on the person record id (`parent_record` on a person-side note IS that id). This
+recovers repeat invitations the record overwrote; it cost Chris 3 of 15 and Elliott 8 of 64 when
+skipped. **Never join notes to records by contact name**: name matching invented ~17 events out of
+punctuation and was removed. Count only the person-side note copy; the company-side copy is the
+same event and serves the deal join.
 
-- sent: body reads `from <Rep> to <Contact>`, title is the bare string `LinkedIn invitation sent`
-- accepted: body reads `<Rep> is now connected with <Contact>.`
-- messages: the rep is in the **title**, `1:1 LinkedIn chat | <Contact> with <Rep>`
-
-So requests sent, connections made and messages are **all** attributable per person from Attio
-alone. Fetch note bodies (`GET /v2/notes/<id>`) and parse them.
+For the note cross-check and messages, the rep is in the note **body** for invitations, not the
+title (`from <Rep> to <Contact>`; accepted reads `<Rep> is now connected with <Contact>.`), and in
+the **title** for messages (`1:1 LinkedIn chat | <Contact> with <Rep>`). Messages are counted per
+individual message by its own timestamp inside the chat-note body, never by the note's created
+date, which double-counted copies and credited years-old backfilled threads to the sync day.
 
 **Never fall back to counting cadence Touch-1 tasks.** That proxy credits whoever was assigned the
 task rather than whoever sent the invitation, and it was wrong by a wide margin: it showed one
 person on 12 connects against 3 actually sent, and another on 5 against 32.
 
-**Connections made lag** the invitation that earned them, often by weeks. A high accepted count
-reflects earlier outreach, not work done in the period. Say so on the page, or it flatters one
-person and penalises whoever is sending today.
+**Requests sent is a floor on every seat, and the per-person split understates any seat that
+shares contacts with a colleague.** Both measured, 4-5 Aug 2026: Chris's own Groovin panel showed
+45 sent against 15 in Attio (sends to profiles Groovin does not sync write nothing, and two paired
+contacts also wrote nothing); and the one-sender record means that when two seats invite the same
+contact the earlier sender loses the credit entirely, four cases in two days. Read the column as a
+team-level floor, never as a ranking between people, and say so on the page. **Connections made
+arrive complete** (an acceptance creates and pairs the contact; 7 = 7 on the seat measured) but
+**lag** the invitation that earned them, often by weeks: a high accepted count reflects earlier
+outreach, not work done in the period.
+
+**Never measure a person with the Groovin connector, and never set a connector figure against an
+Attio figure as a count.** The connector authenticates as one person's own LinkedIn account and
+says nothing about a colleague; LinkedIn's pending dates are synthetic and only day-accurate. A
+published claim built on that comparison had to be withdrawn. A seat's own Groovin Sync-status
+panel is valid evidence for that seat alone.
+
+**Groovin's fix of 6 Aug 2026** (every MCP-sent invitation logged with note plus attributes) is
+forward-only, backfills nothing, and stays unconfirmed until a full post-fix day reconciles clean
+against a seat's own panel. Relax the floor wording only on that measurement, never on a vendor's
+word, and the one-credit-per-contact limit stands regardless of it.
 
 ### 4. Connectivity reporting
 
@@ -679,8 +703,10 @@ daily read state a conclusion, not a topic label. Keep hard numbers separate fro
 - Every scorecard number traces to a pull or the state store.
 - Progressed, shut off and closed won come from the stage diff, attributed by owner.
 - Emails are the de-duped multi-mailbox count with a labelled live-deal / customer split.
-- LinkedIn requests sent, connections made and messages are each attributed per person **from the
-  note body or title**, deduped across the person and company copies, each with the deal split.
+- LinkedIn requests sent and connections made are attributed per person **from the invitation
+  record's workspace-member reference**, unioned with the person-side notes on the person record
+  id; messages from the chat-note bodies, each message by its own timestamp. Each with the deal
+  split, and the sent column labelled as a team-level floor.
 - Leave is read from Zelt, attendance drives any activity judgement, and nobody on leave is flagged.
 - Connectivity reflects the actual run.
 - Every closed won deal shows its acquisition channel, and the bonus basis reconciles: only
