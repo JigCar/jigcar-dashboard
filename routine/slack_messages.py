@@ -278,16 +278,35 @@ SPIKE_METRICS = CORE_METRICS + ["calls"]
 # yesterday makes trigger 3 mean the same window as the other two.
 SPIKE_VIEW = "yesterday"
 SPIKE_DAY = payload["ranges"][SPIKE_VIEW][1]
+# "Four weeks" means four weeks of CALENDAR days ending at the spike day, not the last
+# 28 rows in the store. Those are not the same thing and the difference names people
+# for things they did not do. Tasks are dated by completed_at, so the series carries
+# stale one-off completions going back to Dec 2024: 16 all-zero ancient days sat in
+# front of the real ones. len(store) reached 28, the average branch fired, and the
+# window [-28:] swept those zeros in, which pulled Chris's task average down from 5.09
+# to 2.07 and printed "6 completed tasks, double their four-week average" about a day
+# that was well under double. Anchoring the window to dates cannot be fooled that way:
+# an ancient zero is outside the last 28 days and simply never enters the mean.
+_sd = datetime.date(*[int(x) for x in SPIKE_DAY.split("-")])
+WINDOW_FROM = str(_sd - datetime.timedelta(days=FOUR_WEEKS))
+# A dense window is what "four weeks of history" actually requires. Inside 28 calendar
+# days there are at most ~20 working days, so demanding 28 observed days would mean the
+# average branch never fires; demanding a bare handful would let three sparse days pass
+# as a month. Observed days in the window is the honest measure of depth.
+MIN_DENSE_DAYS = 15
 spikes = []
+spike_depth = {}
 for m in SPIKE_METRICS:
-    days = sorted(daily.get(m, {}))
-    if len(days) < MIN_HISTORY_DAYS:
+    # Days actually observed inside the four-week window, before the spike day.
+    window = {d: v for d, v in daily.get(m, {}).items() if WINDOW_FROM <= d < SPIKE_DAY}
+    spike_depth[m] = len(window)
+    if len(window) < MIN_HISTORY_DAYS:
         continue                     # too thin to distinguish a spike from missing coverage
-    if len(days) >= FOUR_WEEKS:
-        # Double the person's own trailing four-week daily average.
+    if len(window) >= MIN_DENSE_DAYS:
+        # Double the person's own trailing four-week daily average, over the window only.
         for i, name in enumerate(REPS):
             day_v = agg(m, SPIKE_VIEW)[i]
-            past = [v[i] for d, v in daily[m].items() if d < SPIKE_DAY][-FOUR_WEEKS:]
+            past = [v[i] for v in window.values()]
             avg = sum(past) / len(past) if past else 0
             if day_v >= SPIKE_FLOOR and avg and day_v >= 2 * avg:
                 spikes.append((name, m, day_v, "double their four-week average"))
@@ -397,12 +416,14 @@ if __name__ == "__main__":
     print(f"connectors down: {down or 'none'} | line 3 = "
           f"{'partial-run failure' if partial_note else ('deal risk' if deal_risk else 'omitted')}")
     print(f"celebration trigger: {celebration!r}")
-    print("spike basis per metric: " + str({m: ("4wk avg" if len(daily.get(m, {})) >= FOUR_WEEKS
-                                                else f"team record ({len(daily.get(m, {}))}d history)"
-                                                if len(daily.get(m, {})) >= MIN_HISTORY_DAYS
+    print("spike basis per metric: " + str({m: ("4wk avg" if spike_depth.get(m, 0) >= MIN_DENSE_DAYS
+                                                else f"team record ({spike_depth.get(m, 0)}d in window)"
+                                                if spike_depth.get(m, 0) >= MIN_HISTORY_DAYS
                                                 else "too thin, skipped")
                                             for m in SPIKE_METRICS}))
-    print("metric history depth: " + str({m: len(daily.get(m, {})) for m in SPIKE_METRICS}))
+    print(f"spike window: {WINDOW_FROM} to {SPIKE_DAY} (exclusive); observed days per metric: "
+          + str(spike_depth) + f" | stored days per metric: "
+          + str({m: len(daily.get(m, {})) for m in SPIKE_METRICS}))
     print(f"spike measured on: {SPIKE_DAY} ({SPIKE_VIEW})")
     print(f"perf candidates: {[(c['name'], c['zeros'], str(c['attended']) + 'd attended') for c in cands]}")
     print(f"perf skipped by the leave gate: {skipped}")

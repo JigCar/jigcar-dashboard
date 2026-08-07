@@ -395,6 +395,37 @@ for m in ALL_MOVES:
         WON_DATES[m["record_id"]] = m["date"]     # stamp the real won date on first entry
         newly_won.append(m)
 
+# ---------- carry meeting days older than the Granola dump ----------
+# Every other metric is re-derived from a pull that spans the whole quarter: calls come
+# from an explicit 1 Jul date range, tasks and LinkedIn from the full Attio object, and
+# the stage series from the accumulated move log. Meetings are the exception. They are
+# rebuilt from one Granola dump, and list_meetings' default window is a ROLLING
+# last_30_days, so on 7 Aug 2026 the dump began on 8 Jul and 1 to 7 Jul had vanished.
+# Rebuilding the store from that dump alone would have silently written those days out
+# of the quarter, and a Q3 meetings total that shrinks every morning reads as a quiet
+# team rather than as a lost window. The pull now asks for an explicit quarter range;
+# this is the guard that makes a short dump harmless rather than invisible.
+#
+# Only days STRICTLY BEFORE the dump starts are carried. A day inside the span with no
+# meeting is a real zero and must stay zero, or a cancelled meeting would live forever.
+_gspan = {}
+try:
+    _gspan = json.load(open(f"{SP}/raw/granola_span.json"))
+except FileNotFoundError:
+    pass
+MEETING_SERIES = {"meetings": meetings_daily, "meetingsUK": meetings_uk_daily,
+                  "meetingsOther": meetings_other_daily, "meetingsUnset": meetings_unset_daily}
+mtg_carried = []
+if prev and _gspan.get("from"):
+    _pdm = _ps.get("daily_metrics") or {}
+    for _key, _series in MEETING_SERIES.items():
+        for _day, _row in (_pdm.get(_key) or {}).items():
+            if _day < _gspan["from"] and _day not in _series:
+                _series[_day] = list(_row)
+                if _key == "meetings":
+                    mtg_carried.append(_day)
+mtg_carried.sort()
+
 daily = {"meetings": dict(meetings_daily),
          "meetingsUK": dict(meetings_uk_daily),
          "meetingsOther": dict(meetings_other_daily),
@@ -797,6 +828,21 @@ _mtg_by_bucket = collections.Counter(a["bucket"] for a in mtg_bucket_audit)
 
 coverage = {
     "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
+    # The dump window is stated because meetings are the one metric with no independent
+    # source to fall back on. A reader who sees a Q3 meetings total needs to know whether
+    # the oldest days in it were re-derived this run or carried from an earlier one.
+    "meeting_dump_from": _gspan.get("from"),
+    "meeting_dump_to": _gspan.get("to"),
+    "meeting_dump_note": (
+        f"Granola was pulled for {_gspan.get('from') or 'an unknown start'} to "
+        f"{_gspan.get('to') or 'an unknown end'} and every day in that span is re-derived from "
+        "this run's dump. "
+        + (f"{len(mtg_carried)} earlier day(s) ({mtg_carried[0]} to {mtg_carried[-1]}) are carried "
+           "forward from the previous run, because they fall before the dump starts. "
+           if mtg_carried else "No day is carried forward: the dump covers the quarter to date. ")
+        + "list_meetings' default window is a rolling 30 days, so the pull asks for the quarter "
+          "explicitly and the carry-forward exists so a short dump can never write earlier days "
+          "down to zero."),
     "meeting_split_basis": (
         "the two meeting columns count a meeting only where the counterparty holds a deal from "
         + " to ".join([_mtg["stages"][0], _mtg["stages"][-1]])

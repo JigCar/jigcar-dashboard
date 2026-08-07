@@ -150,6 +150,27 @@ interpreting connectivity status. It never invents a metric value.
   moving into Contracts from the move log, from "what moved" and from the celebration
   trigger. It also skipped the won-date stamp, so a back-book owner closing a deal
   would never have been dated and would never have reached closed-won revenue.
+- **Meetings are the one metric with no fallback source, so the Granola pull asks for an
+  explicit quarter range.** `list_meetings` defaults to a ROLLING `last_30_days` window. On
+  7 Aug 2026 that window began on 8 Jul, so the first week of Q3 had fallen out of the dump,
+  and because `daily_metrics.meetings` is rebuilt from the dump alone the quarter total would
+  have quietly shed its oldest day every morning. Calls come from an explicit 1 Jul range,
+  tasks and LinkedIn from the whole Attio object, and the stage series from the accumulated
+  move log, so meetings were the only exposure. `parse_granola.py` now writes
+  `raw/granola_span.json` and `etl.py` carries forward any stored meeting day STRICTLY BEFORE
+  the dump starts, stating the window in `coverage.meeting_dump_note`. A day inside the span
+  with no meeting stays a real zero, or a cancelled meeting would live forever.
+- **The celebration spike's four weeks are four weeks of CALENDAR days, not the last 28 rows
+  in the store.** Tasks are dated by `completed_at`, so the series carries stale one-off
+  completions going back to Dec 2024: 16 all-zero ancient days sat in front of the real ones.
+  `len(store) >= 28` therefore read as "four weeks of history", the average branch fired, and
+  the `[-28:]` window swept those zeros into the mean. That pulled Chris's task average from
+  5.09 to 2.07 and would have posted "6 completed tasks, double their four-week average" to
+  the whole team about a day that was not close to double. The window is now anchored to dates
+  (`SPIKE_DAY` minus 28 days) and depth is measured as observed days inside it, with
+  `MIN_DENSE_DAYS = 15`, since 28 calendar days hold at most about 20 working days. This is
+  the same class of bug as the pooled-dates one above and the fix is the same principle:
+  never let the number of rows stand in for the passage of time.
 - Because the table has a column per scorecard person while the revenue panels count
   every owner, the banner can legitimately exceed the table's Contract out and Closed
   won totals. The page states the difference and names the deals whenever it is

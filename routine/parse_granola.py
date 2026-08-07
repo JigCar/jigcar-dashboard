@@ -94,6 +94,17 @@ if meetings and len(_with_emails) < 0.5 * len(meetings):
 
 os.makedirs(f"{SP}/raw", exist_ok=True)
 json.dump(meetings, open(f"{SP}/raw/granola.json", "w"), indent=0)
+# The span this dump actually covers, written out so etl.py can tell "no meeting that
+# day" apart from "that day is outside the dump". list_meetings defaults to a ROLLING
+# last_30_days window, so a run on 7 Aug saw only from 8 Jul and the first week of the
+# quarter fell out of the dump entirely. meetings is the one metric rebuilt purely from
+# this pull with nothing to fall back on, so without this the Q3 meeting totals would
+# quietly shed their oldest day every morning. Pull with an explicit custom range
+# covering the quarter AND let the ETL carry forward anything older than the span.
+json.dump({"from": min((m["date"] for m in meetings), default=None),
+           "to": max((m["date"] for m in meetings), default=None),
+           "dump": os.path.basename(F), "meetings": len(meetings)},
+          open(f"{SP}/raw/granola_span.json", "w"), indent=1)
 print("dump:", F)
 print("meetings parsed:", len(meetings))
 internal = [m for m in meetings if m["emails"] and all(e.endswith("@jigcar.com") for e in m["emails"])]
