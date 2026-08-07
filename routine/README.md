@@ -60,6 +60,15 @@ Pull steps first. Each writes only to `raw/`, so a transform never calls an API.
    failed deploy with a matching raw stamp is a Pages outage, not a repo fault -
    the live site keeps the last good build and the commit normally goes live when
    Pages recovers.
+   The SHA it checks comes from the REPO (the directory this script lives in), not from
+   `JIGCAR_SP`. `JIGCAR_SP` is the working directory for `raw/` and `build/` and is meant
+   to be allowed outside the checkout, so `git rev-parse HEAD` run there resolves nothing.
+   That failed silently once: the SHA became `""`, the deploy check polled for a
+   deployment matching an empty SHA, and it printed "FAIL deploy ... Publication is
+   UNCONFIRMED" about a build whose Pages deployment had already succeeded. That is the
+   worst direction for this check to fail in, because it tells the operator Pages is
+   broken and suppresses the Slack post on a perfectly healthy day. An unresolvable SHA
+   is now exit 4, UNDETERMINED, which is a different fact from exit 3, deploy failed.
 5. `slack_messages.py` - builds the two per-channel messages and prints them for
    review before anything is posted. Runs only after `verify_publish.py` exits 0.
 

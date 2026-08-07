@@ -52,11 +52,32 @@ while args:
         sha = args.pop(0)
     elif a == "--timeout":
         timeout = int(args.pop(0))
+HEXSHA = re.compile(r"^[0-9a-f]{40}$")
+# The SHA comes from the REPO, which is where this file lives, not from JIGCAR_SP.
+# JIGCAR_SP is the working directory for raw/ and build/ and is deliberately allowed to
+# be a scratch directory outside the checkout, so `git rev-parse` run there resolves
+# nothing. It failed silently: stdout was empty, sha became "", and the deploy check
+# then polled for a deployment matching an empty SHA, found none, and reported
+# "FAIL deploy ... Publication is UNCONFIRMED" for a build whose Pages deployment had
+# in fact already succeeded. That is the worst direction for this check to fail in: it
+# tells the operator Pages is broken and suppresses the Slack post on a healthy day.
 if not sha:
-    sha = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
-                         cwd=SP).stdout.strip()
+    for _cwd in (os.path.dirname(os.path.abspath(__file__)), SP):
+        _out = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
+                              cwd=_cwd).stdout.strip()
+        if HEXSHA.match(_out):
+            sha = _out
+            break
 
 stamp = json.load(open(f"{SP}/build/build.json"))["stamp"]
+# Never poll on an unresolved SHA. "I could not determine this" is exit 4 and is a
+# different fact from "the deploy failed", which is exit 3.
+if not (sha and HEXSHA.match(sha)):
+    print("FAIL: could not resolve the pushed commit SHA, so the deploy check cannot run. "
+          "Pass it explicitly with --sha <sha>. Publication is UNDETERMINED, which is not "
+          "the same as failed: check the github-pages deployment for HEAD of main before "
+          "concluding anything about Pages.")
+    raise SystemExit(4)
 print(f"verify: sha {sha[:8]} stamp {stamp!r} timeout {timeout}s")
 
 
