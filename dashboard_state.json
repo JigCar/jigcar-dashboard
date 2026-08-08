@@ -104,7 +104,7 @@
    "lastweek": 4,
    "month": 4,
    "quarter": 26,
-   "today": 1,
+   "today": 0,
    "trailing7": 4,
    "week": 4,
    "yesterday": 1
@@ -116,13 +116,13 @@
    "today": 0,
    "trailing7": 4,
    "week": 4,
-   "yesterday": 1
+   "yesterday": 0
   },
   "Elliott": {
    "lastweek": 5,
    "month": 5,
    "quarter": 28,
-   "today": 1,
+   "today": 0,
    "trailing7": 5,
    "week": 5,
    "yesterday": 1
@@ -131,7 +131,7 @@
    "lastweek": 5,
    "month": 5,
    "quarter": 26,
-   "today": 1,
+   "today": 0,
    "trailing7": 5,
    "week": 5,
    "yesterday": 1
@@ -140,7 +140,7 @@
    "lastweek": 2,
    "month": 5,
    "quarter": 24,
-   "today": 1,
+   "today": 0,
    "trailing7": 5,
    "week": 5,
    "yesterday": 1
@@ -149,7 +149,7 @@
    "lastweek": 5,
    "month": 5,
    "quarter": 28,
-   "today": 1,
+   "today": 0,
    "trailing7": 5,
    "week": 5,
    "yesterday": 1
@@ -161,14 +161,14 @@
    "Rupert_allo": "no Allo account, so calls are always 0 rather than a gap",
    "Rupert_email": "own mailbox not connected; his sends are visible only where a teammate was a recipient, so his figure remains a floor",
    "Rupert_groovin": "live: his invitations and messages are attributed from the Attio invitation record on the person",
-   "allo_reconciled": "allo_list_users confirmed 5 active seats. 59 call records pulled for 1 Jul to 7 Aug and regrouped per day, reconciled against allo_get_team_analytics over the same range with no discrepancy: James 22, Luke 17, Chris 11, Elliott 9, Bianca 0. No call has been logged yet today, and none was logged after 08:00 yesterday",
-   "email_today": "no real team send yet today. The run is at 07:19 local, so this is the morning being early rather than a quiet day; the only traffic on today's date is seven pieces of Luke's warm-up mail, all excluded",
-   "email_warmup": "Luke's mailbox is still emitting deliverability warm-up mail: machine-tagged '- wbx abc' subjects to synthetic recipients. 21 such sends yesterday and 7 so far today are excluded from his figure and counted separately in coverage, because bot traffic is not outreach. This is the third consecutive day on which his entire visible send volume is warm-up, so his sent-email column reads 0 for a real reason and not because the mailbox went dark",
-   "email_window": "6 Aug is now paged end to end for the whole day and holds 64 real team sends, up from the 46 the afternoon run could see by 14:24. 7 Aug is paged from midnight to 06:04 and holds none. 13 earlier days carry forward unchanged",
-   "groovin_unattributed": "none: every one of the 495 deduped events parsed a named rep out of the note body or title",
-   "leave_today": "Chris is on booked leave today, a full day, so his row is tagged and he is excluded from any performance judgement. Nobody else on the scorecard is off. Rupert is off 10 to 14 Aug, Chris again 12 to 13 and 20 to 24 Aug, Bianca 20 to 24 Aug, James 15, 17 and 24 Aug",
-   "linkedin_source": "counted from the Attio invitation record on the person, unioned with the person-side Groovin notes on the person record id. Requests sent is a floor because Groovin only records sends to CRM-paired profiles. Connections made is treated as complete. The notes are used only to recover invitations the last-only attribute had overwritten, never merged by name",
-   "meetings_window": "the Granola pull was widened from the rolling 30-day default to an explicit 1 Jul to 7 Aug range this run. On today's date the default window began on 8 Jul, so the first week of the quarter had fallen out of the dump and the Q3 meeting totals would have quietly shed it. The ETL also now carries forward any day older than the dump rather than rebuilding it as zero"
+   "allo_reconciled": "allo_list_users confirmed the same 5 active seats. 59 call records pulled for 1 Jul to 8 Aug and regrouped per day, reconciled against allo_get_team_analytics over the same range with no discrepancy: James 22, Luke 17, Chris 11, Elliott 9, Bianca 0. The newest call record is 6 Aug, so no call has been logged on either 7 or 8 Aug",
+   "email_today": "no team send at all today, and none is expected: it is 06:22 on a Saturday. The only traffic on today's date is eight pieces of Luke's warm-up mail, all excluded. The day is paged end to end and recorded as an explicit zero rather than left absent, so it reads as covered and quiet rather than unmeasured",
+   "email_warmup": "Luke's mailbox is still emitting deliverability warm-up mail: machine-tagged '- wbx abc' subjects to synthetic recipients. 22 such sends yesterday and 8 so far today are excluded from his figure and counted separately in coverage, because bot traffic is not outreach. Yesterday he also sent 4 real emails, so his column is a real 4 rather than the 26 the raw mailbox volume would have shown",
+   "email_window": "7 Aug is now paged end to end and holds 57 real team sends, against the handful the previous run could see by 06:04. 8 Aug is paged from midnight to 06:22 and holds none. 14 earlier days carry forward unchanged",
+   "groovin_unattributed": "none: every one of the 519 deduped events parsed a named rep out of the note body or title",
+   "leave_today": "nobody on the scorecard is off today, and today is a Saturday in any case. Chris was on booked leave for the whole of yesterday, 7 Aug, so his Friday row is tagged and he is excluded from any performance judgement covering it. Rupert is off 10 to 14 Aug, Chris again 12 to 13 and 20 to 24 Aug, Bianca 20 to 24 Aug, James 15, 17 and 24 Aug",
+   "linkedin_source": "counted from the Attio invitation record on the person, unioned with the person-side Groovin notes on the person record id. Requests sent is a floor because Groovin only records sends to CRM-paired profiles. Connections made is treated as complete but lags the invitation that earned it. The notes are used only to recover invitations the last-only attribute had overwritten, never merged by name",
+   "meetings_window": "the Granola pull covers 1 Jul to 7 Aug explicitly. Nothing is written up on today's date, which is a Saturday, so today's meeting count is a real zero inside the covered span rather than a gap"
   },
   "seats": {
    "Bianca": [
@@ -202,16 +202,16 @@
     "partial"
    ]
   },
-  "updated": "07 Aug 2026, 06:32",
+  "updated": "08 Aug 2026, 06:27",
   "workspace": [
    {
     "name": "Attio",
-    "note": "328 deals, 19,085 companies, 345 tasks (249 completed) and 3,092 notes via REST. All 827 invitation note bodies and all 97 chat notes fetched with no errors, so every LinkedIn event is attributed from the body or title and none is guessed. The email search paged 6 Aug from midnight through to 06:04 today end to end, two pages and 187 emails with no further results, so yesterday is now a complete day rather than the part-day the afternoon run recorded",
+    "note": "337 deals, 19,088 companies, 364 tasks (251 completed) and 3,173 notes via REST. All 877 invitation note bodies and all 99 chat notes fetched with no errors, so every one of the 519 deduped LinkedIn events is attributed from the note body or title and none is guessed. The email search paged yesterday from midnight through to 06:22 this morning end to end, two pages of 100 and 93 with the second returning has_more false, so 7 Aug is now a complete day. The previous run could only see it as far as 06:04, which is why yesterday's figures rise sharply here",
     "status": "ok"
    },
    {
     "name": "Granola",
-    "note": "189 meetings parsed, 1 Jul to 6 Aug. The pull now asks for the quarter explicitly rather than accepting the rolling 30-day default, which on today's date began on 8 Jul and would have dropped the first week of Q3 out of the meeting totals. Nothing has been written up yet today. Of yesterday's seven write-ups, six were internal (two dailies, a sales check-point, a trial prep, a proposal check-in and a demo prep) and one was external, Chris on the HR Owen trial sync",
+    "note": "201 meetings parsed, 1 Jul to 7 Aug. The pull asks for the quarter explicitly rather than accepting the rolling 30-day default, which on today's date would have begun on 9 Jul and dropped the first week of Q3 out of the meeting totals. Nothing is written up today, which is expected on a Saturday",
     "status": "ok"
    },
    {
@@ -221,7 +221,7 @@
    },
    {
     "name": "Groovin",
-    "note": "records LinkedIn activity into Attio incompletely, so requests sent remains a team-level floor. The fix shipped on 6 Aug is intended to log every MCP-sent invitation into Attio; it does not backfill, so the earlier gaps are permanent, and it stays unconfirmed from this side until a full post-fix day of one seat's sends reconciles clean against that seat's own Groovin panel. Today is the first run with a complete post-fix day behind it, but confirming it needs the seat's own panel, which is per-account evidence this routine must not substitute for. The one-credit-per-contact limit stands regardless of the fix: the record keeps only the last invitation per contact and names one sender, so where two seats work the same contact the earlier send is overwritten. This run counted 252 sent and 171 accepted from what arrived",
+    "note": "records LinkedIn activity into Attio incompletely, so requests sent remains a team-level floor. The fix shipped on 6 Aug is intended to log every MCP-sent invitation into Attio; it does not backfill, so the earlier gaps are permanent, and it stays unconfirmed from this side until a full post-fix day of one seat's sends reconciles clean against that seat's own Groovin panel, which is per-account evidence this routine must not substitute for. The one-credit-per-contact limit stands regardless of the fix: the record keeps only the last invitation per contact and names one sender, so where two seats work the same contact the earlier send is overwritten. This run counted 269 sent and 179 accepted from what arrived, 19 sent and 8 accepted of them recovered from the person-side notes the last-only attribute had overwritten",
     "status": "partial"
    }
   ]
@@ -231,19 +231,19 @@
   "calls_covered_from": "2026-07-21",
   "calls_source": "Allo per-seat call records (59 calls 2026-07-21 to 2026-08-06); Rupert has no Allo account, so his calls are always 0 and his seat reads na",
   "email_covered_from": "2026-07-24",
-  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-06T00:00:00Z to 2026-08-07T06:04:51Z and carried forward 13 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
+  "email_note": "sent-email coverage starts 2026-07-24 and accumulates a day per run; this run paged 2026-08-07T00:00:00.000Z to 2026-08-08T06:22:56.000Z and carried forward 14 earlier day(s). July days before 2026-07-24 are not covered and read as a floor, never as zero.",
   "email_rupert": "Rupert's own mailbox is not connected, so his sends are only visible where a teammate was a recipient",
   "email_split_from": "2026-07-25",
-  "email_split_join": "244 domains resolve to a deal; 160 of 168 open deals are joinable and 100.0% by pipeline value",
+  "email_split_join": "253 domains resolve to a deal; 168 of 176 open deals are joinable and 100.0% by pipeline value",
   "email_split_note": "sent emails split by recipient: live deal (an open deal, New Lead to Contracts), customer (Closed Won), or neither. Resolved by recipient domain to the Attio company and its strongest deal state. Only classified for the window above; days outside it show a total with no split.",
-  "email_split_to": "2026-08-07",
-  "email_warmup_note": "deliverability warm-up mail (machine-tagged '- wbx abc' subjects to synthetic recipients) is excluded from every per-person figure and counted here instead; it is bot traffic, not outreach. Excluded: 2026-08-06: 21, 2026-08-07: 7",
+  "email_split_to": "2026-08-08",
+  "email_warmup_note": "deliverability warm-up mail (machine-tagged '- wbx abc' subjects to synthetic recipients) is excluded from every per-person figure and counted here instead; it is bot traffic, not outreach. Excluded: 2026-08-07: 22, 2026-08-08: 8",
   "join_coverage": {
-   "domains_resolving": 244,
-   "joinable": 160,
+   "domains_resolving": 253,
+   "joinable": 168,
    "joinable_pct_by_value": 100.0,
    "joinable_value": 2000680.0,
-   "open_deals": 168,
+   "open_deals": 176,
    "pipeline_value": 2000680.0,
    "unjoinable": 8,
    "unjoinable_deals": [
@@ -310,14 +310,14 @@
   "li_accepted_note": "connections made lag the invitation that earned them, often by weeks, so a high accepted count reflects earlier outreach rather than work done in the period",
   "li_connect_gap": "none: every invitation sent and accepted carries a sender referenced by workspace-member id, so nothing is guessed",
   "li_connects_attributed_by": "the Attio invitation record on the person, whose sender is a workspace-member reference; no name parsing and no cadence-task proxy",
-  "li_join_gaps_note": "80 LinkedIn contacts this quarter carry a 'no deal' verdict that is a repairable data gap rather than a fact: the contact has no company on the person record, or the company record has no domain so it cannot join to a deal that may exist under a duplicate. Found live: an invitation to a contact on 'Vascor Transport Ltd' (no domain) read as no deal while the open VASCOR deal sat on 'VASCOR Logistics'. Repairing means adding the domain or merging the duplicate company in Attio. Affected: Rupert x42, James x17, Luke x12, Elliott x7, Chris x2.",
-  "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 97 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
-  "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. That record holds only the LAST invitation per contact, so the person-side Groovin notes are unioned in, joined on the person record id; this quarter that recovers 18 sent and 8 accepted, giving 252 sent in total. REQUESTS SENT IS A FLOOR ON EVERY SEAT, and THE PER-PERSON SPLIT UNDERSTATES ANY SEAT THAT SHARES CONTACTS WITH A COLLEAGUE. Re-measured contact by contact on 5 Aug 2026 against the connected Groovin account, which is Elliott's. That account held 16 pending sent invitations that LinkedIn dates to 4 Aug. Attio holds a 4 Aug invitation for only four of them, and credits two to Elliott, one to Luke (Gennetti) and one to James (Brost). Two causes, both structural. First, eight of the sixteen went to profiles Groovin does not pair to the CRM: they have an Attio person record but no invitation field at all, so the send was never written anywhere. Second, the record holds only the LAST invitation per contact and can name only one sender, so where two seats invite the same contact the earlier send is overwritten and one person loses the credit entirely. That is the most likely reading of Gennetti and Brost, whom Luke and James were working the same day. Two more (Smith, Ritchie) carry a 3 Aug stamp, and all sixteen pendings share one identical synthetic timestamp, so LinkedIn's pending date is reliable only to about the day. Chris's own Groovin panel showed 45 sent against 15 in Attio on 4 Aug, and his LinkedIn account cannot be read from here at all, so his figure has no independent check. Read this column as a team-level floor, never as a ranking between people. Connections made arrive complete, because an acceptance creates and pairs the CRM contact: Chris's panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date each message individually. Groovin shipped a fix on 6 Aug 2026 that should log every MCP-sent invitation into Attio with a note and the invitation attributes. It does not backfill: the 4 Aug gaps are permanent, and as of 6 Aug afternoon the newest unpaired sends from the connected account still had no Attio record, so the fix is not yet confirmed from this side. This caveat relaxes only when a full day of sends reconciles clean against a seat's own Groovin account, and the one-credit-per-contact limit stands regardless of the fix.",
+  "li_join_gaps_note": "85 LinkedIn contacts this quarter carry a 'no deal' verdict that is a repairable data gap rather than a fact: the contact has no company on the person record, or the company record has no domain so it cannot join to a deal that may exist under a duplicate. Found live: an invitation to a contact on 'Vascor Transport Ltd' (no domain) read as no deal while the open VASCOR deal sat on 'VASCOR Logistics'. Repairing means adding the domain or merging the duplicate company in Attio. Affected: Rupert x47, James x17, Luke x12, Elliott x7, Chris x2.",
+  "li_message_basis": "LinkedIn messages count individual messages sent by that person, each dated by its own timestamp inside the Groovin note, not by the date the note was created. 99 message(s) in the synced threads predate July and are excluded rather than credited to the day Groovin first synced them. Every conversation writes a person-side and a company-side note with identical bodies, so each message is counted once. Coverage before 21 Jul is a floor: it only includes threads Groovin has since synced.",
+  "li_source_note": "LinkedIn invitations sent and accepted are counted from the invitation record on the Attio person, which carries the real send time and names the sender by workspace-member id rather than by parsing prose. That record holds only the LAST invitation per contact, so the person-side Groovin notes are unioned in, joined on the person record id; this quarter that recovers 19 sent and 8 accepted, giving 269 sent in total. REQUESTS SENT IS A FLOOR ON EVERY SEAT, and THE PER-PERSON SPLIT UNDERSTATES ANY SEAT THAT SHARES CONTACTS WITH A COLLEAGUE. Re-measured contact by contact on 5 Aug 2026 against the connected Groovin account, which is Elliott's. That account held 16 pending sent invitations that LinkedIn dates to 4 Aug. Attio holds a 4 Aug invitation for only four of them, and credits two to Elliott, one to Luke (Gennetti) and one to James (Brost). Two causes, both structural. First, eight of the sixteen went to profiles Groovin does not pair to the CRM: they have an Attio person record but no invitation field at all, so the send was never written anywhere. Second, the record holds only the LAST invitation per contact and can name only one sender, so where two seats invite the same contact the earlier send is overwritten and one person loses the credit entirely. That is the most likely reading of Gennetti and Brost, whom Luke and James were working the same day. Two more (Smith, Ritchie) carry a 3 Aug stamp, and all sixteen pendings share one identical synthetic timestamp, so LinkedIn's pending date is reliable only to about the day. Chris's own Groovin panel showed 45 sent against 15 in Attio on 4 Aug, and his LinkedIn account cannot be read from here at all, so his figure has no independent check. Read this column as a team-level floor, never as a ranking between people. Connections made arrive complete, because an acceptance creates and pairs the CRM contact: Chris's panel showed 7 accepted against 7 in Attio. Messages come from the chat notes, which date each message individually. Groovin shipped a fix on 6 Aug 2026 that should log every MCP-sent invitation into Attio with a note and the invitation attributes. It does not backfill: the 4 Aug gaps are permanent, and as of 6 Aug afternoon the newest unpaired sends from the connected account still had no Attio record, so the fix is not yet confirmed from this side. This caveat relaxes only when a full day of sends reconciles clean against a seat's own Groovin account, and the one-credit-per-contact limit stands regardless of the fix.",
   "linkedin_notes_covered_from": "2026-07-14",
   "meeting_dump_from": "2026-07-01",
-  "meeting_dump_note": "Granola was pulled for 2026-07-01 to 2026-08-06 and every day in that span is re-derived from this run's dump. No day is carried forward: the dump covers the quarter to date. list_meetings' default window is a rolling 30 days, so the pull asks for the quarter explicitly and the carry-forward exists so a short dump can never write earlier days down to zero.",
-  "meeting_dump_to": "2026-08-06",
-  "meeting_region_note": "REGION IS THE WEAK LINK IN THIS SPLIT. Of 145 deals in the meeting window, 4 carry Region 'UK & I' and 37 carry no Region at all: {'Canada': 10, 'Australia': 11, 'USA': 83, 'UK & I': 4, '(unassigned)': 37}. The unset ones are largely UK companies by name, so the non-UK column currently overstates non-UK work and the UK column understates it. The bracketed figure in that column is the unset portion, published separately so a blank field is never read as a non-UK deal. Setting Region on these deals in Attio is what fixes it: ACV Logistics, Arnold Clark, Birchwood, Boar Vehicle Logistics, Carwow, D&I, DMN Logistics Ltd, Drayton Motors, Drift Bridge, Drive Motor Retail, Ecomotive (Transported), Elevate Logistics, G&K Logistics, Grainger, Group 1 Automotive, Hartwell, Jemca, John Grose Group, Listers, Lookers, MVT Logistics, Mannheim Logistics Services, Mobile Services, NVD and more",
+  "meeting_dump_note": "Granola was pulled for 2026-07-01 to 2026-08-07 and every day in that span is re-derived from this run's dump. No day is carried forward: the dump covers the quarter to date. list_meetings' default window is a rolling 30 days, so the pull asks for the quarter explicitly and the carry-forward exists so a short dump can never write earlier days down to zero.",
+  "meeting_dump_to": "2026-08-07",
+  "meeting_region_note": "REGION IS THE WEAK LINK IN THIS SPLIT. Of 153 deals in the meeting window, 4 carry Region 'UK & I' and 37 carry no Region at all: {'Canada': 10, 'Australia': 11, 'USA': 91, 'UK & I': 4, '(unassigned)': 37}. The unset ones are largely UK companies by name, so the non-UK column currently overstates non-UK work and the UK column understates it. The bracketed figure in that column is the unset portion, published separately so a blank field is never read as a non-UK deal. Setting Region on these deals in Attio is what fixes it: ACV Logistics, Arnold Clark, Birchwood, Boar Vehicle Logistics, Carwow, D&I, DMN Logistics Ltd, Drayton Motors, Drift Bridge, Drive Motor Retail, Ecomotive (Transported), Elevate Logistics, G&K Logistics, Grainger, Group 1 Automotive, Hartwell, Jemca, John Grose Group, Listers, Lookers, MVT Logistics, Mannheim Logistics Services, Mobile Services, NVD and more",
   "meeting_region_unset": 37,
   "meeting_split_audit": [
    {
@@ -464,8 +464,39 @@
    "unset": 9
   },
   "progressed_shutoff": "measured by diffing this run's stage snapshot against the previous run's",
-  "stage_diff": [],
-  "stage_moves_accumulated": 87,
+  "stage_diff": [
+   {
+    "date": "2026-08-08",
+    "from": "Qualification",
+    "kind": "shutoff",
+    "name": "Hennessy Automobile Companies - Buy Signal (Transportation Manager ops signal)",
+    "owner": "Luke",
+    "record_id": "7fd696e4",
+    "to": "Closed Lost",
+    "value": 0.0
+   },
+   {
+    "date": "2026-08-08",
+    "from": "Trial",
+    "kind": "progressed",
+    "name": "HR Owen",
+    "owner": "Chris",
+    "record_id": "c0b92649",
+    "to": "Contracts",
+    "value": 30000.0
+   },
+   {
+    "date": "2026-08-08",
+    "from": "Qualification",
+    "kind": "progressed",
+    "name": "Dick Lovett",
+    "owner": "Luke",
+    "record_id": "dfcb4a8b",
+    "to": "Demo",
+    "value": 0.0
+   }
+  ],
+  "stage_moves_accumulated": 90,
   "tasks_dated_by": "completed_at from the Attio tasks API",
   "tasks_unassigned": 2
  },
@@ -696,6 +727,14 @@
     1,
     2,
     0
+   ],
+   "2026-08-07": [
+    4,
+    4,
+    0,
+    0,
+    1,
+    0
    ]
   },
   "emails": {
@@ -812,6 +851,14 @@
     4
    ],
    "2026-08-07": [
+    23,
+    4,
+    2,
+    10,
+    16,
+    2
+   ],
+   "2026-08-08": [
     0,
     0,
     0,
@@ -929,6 +976,14 @@
     0,
     0,
     0,
+    6,
+    0,
+    1
+   ],
+   "2026-08-08": [
+    0,
+    0,
+    0,
     0,
     0,
     0
@@ -1040,6 +1095,14 @@
     1
    ],
    "2026-08-07": [
+    17,
+    2,
+    2,
+    2,
+    13,
+    1
+   ],
+   "2026-08-08": [
     0,
     0,
     0,
@@ -1192,6 +1255,14 @@
     1,
     1,
     4
+   ],
+   "2026-08-07": [
+    1,
+    1,
+    1,
+    0,
+    1,
+    4
    ]
   },
   "liAccDeal": {
@@ -1256,7 +1327,7 @@
     0,
     1,
     0,
-    2,
+    1,
     1
    ],
    "2026-07-31": [
@@ -1277,14 +1348,14 @@
    ],
    "2026-08-03": [
     0,
-    1,
+    0,
     1,
     0,
     2,
     1
    ],
    "2026-08-04": [
-    1,
+    2,
     2,
     3,
     0,
@@ -1306,6 +1377,14 @@
     1,
     0,
     0
+   ],
+   "2026-08-07": [
+    1,
+    0,
+    0,
+    0,
+    1,
+    1
    ]
   },
   "liConnAll": {
@@ -1412,6 +1491,14 @@
     0,
     0,
     3
+   ],
+   "2026-08-07": [
+    7,
+    0,
+    0,
+    0,
+    0,
+    10
    ]
   },
   "liConnDeal": {
@@ -1489,7 +1576,7 @@
    ],
    "2026-08-03": [
     0,
-    4,
+    2,
     0,
     0,
     3,
@@ -1518,6 +1605,14 @@
     0,
     0,
     1
+   ],
+   "2026-08-07": [
+    7,
+    0,
+    0,
+    0,
+    0,
+    5
    ]
   },
   "liMsgAll": {
@@ -1660,7 +1755,7 @@
    "2026-08-06": [
     1,
     0,
-    1,
+    0,
     0,
     0,
     4
@@ -1720,7 +1815,7 @@
     0,
     0,
     0,
-    2,
+    1,
     1
    ],
    "2026-08-03": [
@@ -1943,11 +2038,19 @@
    ],
    "2026-08-06": [
     1,
+    1,
+    0,
+    1,
+    0,
+    1
+   ],
+   "2026-08-07": [
     0,
     0,
-    0,
-    0,
-    0
+    2,
+    2,
+    1,
+    1
    ]
   },
   "meetingsOther": {
@@ -2204,6 +2307,14 @@
     0,
     0,
     0
+   ],
+   "2026-08-08": [
+    1,
+    1,
+    0,
+    0,
+    0,
+    0
    ]
   },
   "shutoff": {
@@ -2229,6 +2340,14 @@
     0,
     0,
     1,
+    0
+   ],
+   "2026-08-08": [
+    0,
+    1,
+    0,
+    0,
+    0,
     0
    ]
   },
@@ -2456,11 +2575,19 @@
     0,
     0,
     2
+   ],
+   "2026-08-07": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
    ]
   }
  },
- "last_run": "2026-08-07",
- "last_run_stamp": "07 Aug 2026, 06:32",
+ "last_run": "2026-08-08",
+ "last_run_stamp": "08 Aug 2026, 06:27",
  "leave": {
   "Bianca": [
    "2026-07-27",
@@ -2482,9 +2609,7 @@
    "2026-08-23",
    "2026-08-24"
   ],
-  "Elliott": [
-   "2026-08-31"
-  ],
+  "Elliott": [],
   "James": [
    "2026-06-22",
    "2026-06-23",
@@ -2511,8 +2636,7 @@
    "2026-08-11",
    "2026-08-12",
    "2026-08-13",
-   "2026-08-14",
-   "2026-08-31"
+   "2026-08-14"
   ]
  },
  "meeting_classification": {
@@ -2534,15 +2658,10 @@
    "2026-08-03|Introduction: Jigcar/Jason Blood": "adviser / partner exploration, no deal attached"
   },
   "excluded_count": 15,
-  "included_count": 63,
-  "internal_only_count": 95
+  "included_count": 67,
+  "internal_only_count": 100
  },
- "off_today": [
-  {
-   "half": null,
-   "person": "Chris"
-  }
- ],
+ "off_today": [],
  "perf_flags": {
   "2026-07-27": null,
   "2026-07-28": null,
@@ -2555,7 +2674,8 @@
   "2026-08-04": null,
   "2026-08-05": null,
   "2026-08-06": null,
-  "2026-08-07": null
+  "2026-08-07": null,
+  "2026-08-08": null
  },
  "pre_2026_won": [
   "12f2dbef",
@@ -3441,6 +3561,36 @@
    "record_id": "fe20cd68",
    "to": "Qualification",
    "value": 0.0
+  },
+  {
+   "date": "2026-08-08",
+   "from": "Qualification",
+   "kind": "shutoff",
+   "name": "Hennessy Automobile Companies - Buy Signal (Transportation Manager ops signal)",
+   "owner": "Luke",
+   "record_id": "7fd696e4",
+   "to": "Closed Lost",
+   "value": 0.0
+  },
+  {
+   "date": "2026-08-08",
+   "from": "Trial",
+   "kind": "progressed",
+   "name": "HR Owen",
+   "owner": "Chris",
+   "record_id": "c0b92649",
+   "to": "Contracts",
+   "value": 30000.0
+  },
+  {
+   "date": "2026-08-08",
+   "from": "Qualification",
+   "kind": "progressed",
+   "name": "Dick Lovett",
+   "owner": "Luke",
+   "record_id": "dfcb4a8b",
+   "to": "Demo",
+   "value": 0.0
   }
  ],
  "stage_shape": {
@@ -3929,6 +4079,60 @@
     5,
     144000.0
    ]
+  },
+  "2026-08-08": {
+   "Buy Signal": [
+    36,
+    0.0
+   ],
+   "Churn": [
+    2,
+    54804.0
+   ],
+   "Closed Lost": [
+    23,
+    117000.0
+   ],
+   "Closed Won": [
+    16,
+    778500.0
+   ],
+   "Contacted - no outcome": [
+    10,
+    0.0
+   ],
+   "Contracts": [
+    7,
+    359600.0
+   ],
+   "Demo": [
+    21,
+    609000.0
+   ],
+   "New Lead": [
+    12,
+    168480.0
+   ],
+   "None": [
+    1,
+    0.0
+   ],
+   "Nurture": [
+    109,
+    2100600.0
+   ],
+   "Proposal": [
+    8,
+    390600.0
+   ],
+   "Qualification": [
+    88,
+    359000.0
+   ],
+   "Trial": [
+    4,
+    114000.0
+   ]
   }
  },
  "stage_snapshot": {
@@ -3946,6 +4150,11 @@
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
    "value": 36000.0
+  },
+  "01b2c30e": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
   },
   "024e1ee8": {
    "owner": "Bob O'Reilly",
@@ -4162,6 +4371,11 @@
    "stage": "Contacted - no outcome",
    "value": 0.0
   },
+  "1ff390f0": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "1ff4cc2c": {
    "owner": "Elliott",
    "stage": "Closed Won",
@@ -4170,6 +4384,11 @@
   "227ceccf": {
    "owner": "Bob O'Reilly",
    "stage": "Nurture",
+   "value": 0.0
+  },
+  "237e78a2": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "2566cc1c": {
@@ -4367,6 +4586,11 @@
    "stage": "Closed Lost",
    "value": 0.0
   },
+  "47523be7": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "477eba00": {
    "owner": "Jon Pollock",
    "stage": "Nurture",
@@ -4415,6 +4639,16 @@
   "53b2e023": {
    "owner": "Chris",
    "stage": "Nurture",
+   "value": 0.0
+  },
+  "5402e5b3": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
+  "546dc5e4": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
    "value": 0.0
   },
   "5608fb4d": {
@@ -4536,6 +4770,11 @@
    "owner": "Bob O'Reilly",
    "stage": "Qualification",
    "value": 80000.0
+  },
+  "62427b5c": {
+   "owner": "Elliott",
+   "stage": "Buy Signal",
+   "value": 0.0
   },
   "6285799c": {
    "owner": "Elliott",
@@ -4674,7 +4913,7 @@
   },
   "7fd696e4": {
    "owner": "Luke",
-   "stage": "Qualification",
+   "stage": "Closed Lost",
    "value": 0.0
   },
   "8009f9a8": {
@@ -5072,6 +5311,11 @@
    "stage": "Contracts",
    "value": 48000.0
   },
+  "b35c6d56": {
+   "owner": "Chris",
+   "stage": "Buy Signal",
+   "value": 0.0
+  },
   "b38030db": {
    "owner": "Chris",
    "stage": "New Lead",
@@ -5149,7 +5393,7 @@
   },
   "c0b92649": {
    "owner": "Chris",
-   "stage": "Trial",
+   "stage": "Contracts",
    "value": 30000.0
   },
   "c15259da": {
@@ -5211,6 +5455,11 @@
    "owner": "Chris",
    "stage": "Proposal",
    "value": 32000.0
+  },
+  "cac26aa6": {
+   "owner": "Luke",
+   "stage": "Buy Signal",
+   "value": 0.0
   },
   "cb2165dd": {
    "owner": "Bob O'Reilly",
@@ -5364,7 +5613,7 @@
   },
   "dfcb4a8b": {
    "owner": "Luke",
-   "stage": "Qualification",
+   "stage": "Demo",
    "value": 0.0
   },
   "e0f27685": {
